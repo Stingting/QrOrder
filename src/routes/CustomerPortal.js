@@ -22,7 +22,7 @@ Portal.propTypes = {
   recDishes: PropTypes.object,
 };
 
-// 指定关联
+// 指定关联recDishes
 function mapStateToProps({ recDishes }) {
   return {recDishes};
 }
