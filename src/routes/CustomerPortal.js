@@ -6,10 +6,6 @@ import {Layout} from 'antd';
 const { Header, Content, Footer, Sider} = Layout;
 function Portal({ fetch, location, dispatch, recDishes }) {
 
-  const {
-    list
-  } = recDishes;
-
   return (
     <Layout>
       <Header>xxxxxx</Header>
@@ -26,7 +22,7 @@ Portal.propTypes = {
   recDishes: PropTypes.object,
 };
 
-// 指定订阅数据，这里关联了 users
+// 指定关联
 function mapStateToProps({ recDishes }) {
   return {recDishes};
 }
