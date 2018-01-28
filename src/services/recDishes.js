@@ -7,3 +7,9 @@ export function getRecDishes() {
     method: 'POST'
   });
 }
+
+export function getDishDetail(id) {
+  return request('/api/getDishDetail', {
+    method : 'POST'
+  });
+}
