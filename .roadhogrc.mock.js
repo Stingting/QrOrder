@@ -1,7 +1,8 @@
-// export default {
-// };
-//
+export default {
+};
 
+
+/*
 const fs=require('fs');
 const path=require('path');
 const mockPath=path.join(__dirname+'/mock');
@@ -13,3 +14,4 @@ fs.readdirSync(mockPath).forEach(file=>{
 });
 
 module.exports=mock;
+*/

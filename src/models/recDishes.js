@@ -1,10 +1,15 @@
-import  {getRecDishes, getDishDetail} from '../services/recDishes';
+import {getDishDetail, getMerchantInfo} from '../services/customer';
+import {getLocalStorage} from "../utils/helper";
 
 export default {
   namespace : 'recDishes',
 
   state :{
-    list: [{id:1, dishName: '红绕肉'}], //初始化
+    count:0, //总数
+    desc:'', //商家简介
+    name:'', //商家名称
+    pic:[], //商家图片
+    list: [{id:1, name: '红绕肉', pic:'', price:''}], //初始化推荐菜单列表
     loading : false, //控制加载状态
     detail : {}, //详情,
     detailModalVisible:false
@@ -26,25 +31,35 @@ export default {
   },
   effects: {
     //声明时需要添加*，普通函数内部不能使用yield关键字，否则会出错
-    *getRecDishes(action, {put, call}) {
+    *getMerchantInfo(action, {put, call}) {
       yield put({type: 'showLoading', loading: true});
-      const {data} = yield call(getRecDishes);
-      console.log("结果=" + data.result);
+      const {data} = yield call(getMerchantInfo, getLocalStorage("merchantId"));
+      // console.log(data);
+      //请求成功
       if (data) {
         yield put({
           type : 'showDishList',
           loading : false,
-          list : data.result
+          list : data.data,
+          count:data.count,
+          desc:data.desc,
+          name:data.name,
+          pic:data.pic
       });
+      } else {
+        yield put ({
+          type:'showLoading',
+          loading : false
+        })
       }
     },
 
     *getDishDetail({payload:id}, {put, call}) {
-      const {data} = yield call(getDishDetail,id);
+      const {data} = yield call(getDishDetail, getLocalStorage("merchantId"), id);
       if(data) {
         yield put({
           type : 'showDishDetail',
-          detail : data.result,
+          detail : data,
           detailModalVisible:true
         })
       }
@@ -53,11 +68,12 @@ export default {
 ,
   subscriptions: {
     setup({ dispatch,history }){
-      console.log('running subscriptions ...');
-      //监听，当进入pathname时，触发`getRecDishes` action
-      return history.listen(({ pathname,search })=>{
-        console.log(`pathname: ${pathname}`);
-        dispatch({ type:'getRecDishes'});
+      //监听，当进入pathname时，触发`getMerchantInfo` action
+      return history.listen(({ pathname,search})=>{
+        //进入首页时触发的操作
+        if(pathname.includes('/app/v1/cportal')) {
+          dispatch({type: 'getMerchantInfo'});
+        }
       });
     }
   },

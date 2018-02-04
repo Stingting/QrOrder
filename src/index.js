@@ -11,6 +11,8 @@ app.use(createLoading());
 // 3. Model
 // app.model(require('./models/example').default);
 app.model(require('./models/recDishes').default);
+app.model(require('./models/scanPage').default);
+app.model(require('./models/menu').default);
 
 // 4. Router
 app.router(require('./router').default);

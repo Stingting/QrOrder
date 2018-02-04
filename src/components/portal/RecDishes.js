@@ -10,12 +10,12 @@ const RecDishes = ({list, loading, detailModalVisible,showDishDetail, detail, cl
         dataSource={list}
         renderItem={item => (
           <List.Item>
-            <Card title={item.dishName}>
+            <Card title={item.name}>
               <div onClick = {() => showDishDetail(item.id)}>
-                <img src={item.image}/>
+                <img src={item.pic}/>
               </div>
               <Modal
-                title={item.dishName}
+                title={item.name}
                 mask = {false}
                 footer={null}
                 visible={detailModalVisible}
