@@ -4,6 +4,7 @@ import IndexPage from './routes/IndexPage';
 import cportal from './routes/CustomerPortal';
 import scanpage from './routes/ScanPage';
 import menu from './routes/MenuPage';
+import chat from './routes/ChatPage';
 
 function RouterConfig({ history }) {
   return (
@@ -13,6 +14,7 @@ function RouterConfig({ history }) {
         <Route path="/app/v1/scanpage/:id" exact component={scanpage} />
         <Route path="/app/v1/cportal" exact component={cportal} />
         <Route path="/app/v1/menu" exact component={menu} />
+        <Route path="/app/v1/chat" exact component={chat} />
       </Switch>
     </Router>
   );

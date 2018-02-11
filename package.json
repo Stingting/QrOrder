@@ -1,7 +1,7 @@
 {
   "private": true,
   "scripts": {
-    "start": "set PORT=8090&&roadhog server --host=192.168.2.101",
+    "start": "set PORT=80&&roadhog server",
     "build": "roadhog build",
     "lint": "eslint --ext .js src test",
     "precommit": "npm run lint"
@@ -11,6 +11,8 @@
     "dva": "^2.1.0",
     "dva-loading": "^1.0.4",
     "mockjs": "^1.0.1-beta3",
+    "mqtt": "^2.15.2",
+    "mqtt-react": "0.0.3",
     "path-to-regexp": "^2.1.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0"

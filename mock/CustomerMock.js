@@ -41,5 +41,36 @@ module.exports={
       success: true,
       result: data.data,
     });
+  },
+
+  [`POST /v1/customer/chatRoom/`](req,res){
+    const data = Mock.mock({
+      'data': {
+        "count": 66463,
+        "num": 20614,
+        "remark": "测试内容9adj",
+        "words|1-3": [
+          "快速回复1",
+          "快速回复2",
+          "快速回复3",
+          "快速回复4",
+          "快速回复5"
+        ]
+      }
+    });
+    res.json(data.data);
+  },
+
+  [`POST /v1/customer/chatRecord'`](req,res){
+    const data = Mock.mock({
+      'data': [
+        {
+          "content|1-10": "内容",
+          "head": "@IMAGE",
+          "time": "@time"
+        }
+      ]
+    });
+    res.json(data.data);
   }
-}
+};

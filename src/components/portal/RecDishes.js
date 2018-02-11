@@ -11,7 +11,7 @@ const RecDishes = ({list, loading, detailModalVisible,showDishDetail, detail, cl
         renderItem={item => (
           <List.Item>
             <Card title={item.name}>
-              <div onClick = {() => showDishDetail(item.id)}>
+              <div onClick = {() => showDishDetail(item.dashId)}>
                 <img src={item.pic}/>
               </div>
               <Modal

@@ -23,6 +23,21 @@ export function getMenu(merchantId, page, size) {
   });
 }
 
-//
+//获取聊天室信息
+export function getChatRoomInfo(merchantId, tableNum) {
+ /* return request('/v1/customer/chatRoom/' + merchantId + "/" + tableNum, {
+    method: 'POST'
+  })*/
+ return request('/v1/customer/chatRoom/', {
+    method: 'POST'
+  })
+}
+
+//获取聊天记录
+export function getChatRecord(merchantId, tableNum) {
+  return request('/v1/customer/chatRecord', {
+    method:'POST'
+  })
+}
 
 

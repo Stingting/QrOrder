@@ -23,12 +23,15 @@ export default {
       return history.listen(({pathname, search}) => {
         const path = constant.scanPath;
         if (pathname.includes(path)) {
-          const match = pathToRegexp(path + '/:id').exec(pathname);
+          const match = pathToRegexp(path + '/:id/:num').exec(pathname);
           if (match) {
-            const id = match[match.length - 1];
+            const id = match[match.length - 2];
+            const num = match[match.length - 1];
             //缓存商家id
             setLocalStorage("merchantId", id);
-            // dispatch action with id
+            //缓存桌号
+            setLocalStorage("tableNum", num);
+            console.log("merchantId=" + id + ", tableNum=" + num);
             //跳转首页
             // With query
             dispatch({type: 'toIndex'});

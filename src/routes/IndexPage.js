@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'dva';
 import styles from './IndexPage.css';
+import MenuBanner from '../components/common/MenuBanner';
 
 function IndexPage() {
   return (

@@ -13,6 +13,8 @@ app.use(createLoading());
 app.model(require('./models/recDishes').default);
 app.model(require('./models/scanPage').default);
 app.model(require('./models/menu').default);
+app.model(require('./models/chat').default);
+app.model(require('./models/navigation').default);
 
 // 4. Router
 app.router(require('./router').default);
