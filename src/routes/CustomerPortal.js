@@ -4,7 +4,6 @@ import {connect} from 'dva';
 import RecDishes from "../components/portal/RecDishes";
 import MerchantDesc from "../components/portal/MerchantDesc";
 import MainLayout from '../components/common/MainLayout';
-import styles from '../assets/less/global.less';
 import {Layout} from 'antd';
 
 const { Header, Content, Footer, Sider} = Layout;
@@ -38,14 +37,8 @@ function Portal({ dispatch , fetch, location, recDishes}) {
   };
   return (
     <MainLayout>
-    <Layout>
-      <Header className={styles.header}>
         <MerchantDesc {...merchantProps}></MerchantDesc>
-      </Header>
-      <Content>
         <RecDishes {...dishListProps} showDishDetail={showDishDetail} closeDetailDialog = {closeDetailDialog}></RecDishes>
-      </Content>
-    </Layout>
     </MainLayout>
   );
 }

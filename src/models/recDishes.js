@@ -9,7 +9,7 @@ export default {
     desc:'', //商家简介
     name:'', //商家名称
     pic:[], //商家图片
-    list: [{id:1, name: '红绕肉', pic:'', price:''}], //初始化推荐菜单列表
+    list: [{id:1, name: '红绕肉', pic:'', price:0}], //初始化推荐菜单列表
     loading : false, //控制加载状态
     detail : {}, //详情,
     detailModalVisible:false

@@ -1,11 +1,8 @@
 import React , {Component} from 'react';
-import { Avatar } from 'antd';
-
+import styles from './MerchantDesc.less'
 const MerchantDesc = ({pic,name,desc}) => {
   return (
-    <div>
-      <Avatar src={pic[0]} size="large" shape="square" /><span>{name}</span><span>{desc}</span>
-    </div>
+      <div>{name}</div>
   )
 };
 

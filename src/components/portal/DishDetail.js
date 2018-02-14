@@ -4,8 +4,8 @@ const DishDetail = ({detail}) => {
 
   return (
     <div>
-      <span>{detail.dishName}</span>
-      <span><img src={detail.image}/></span>
+      <div>{detail.name}</div>
+      <div><img src={detail.pic}/></div>
     </div>
   )
 };

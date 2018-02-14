@@ -1,9 +1,14 @@
 import dva from 'dva';
 import './index.css';
 import createLoading from 'dva-loading';
+import {message} from 'antd';
 
 // 1. Initialize
-const app = dva();
+const app = dva({
+  onError(e) {
+    message.error(e.message, /* duration */3); //全局错误处理
+  },
+});
 
 // 2. Plugins
 app.use(createLoading());
@@ -15,6 +20,7 @@ app.model(require('./models/scanPage').default);
 app.model(require('./models/menu').default);
 app.model(require('./models/chat').default);
 app.model(require('./models/navigation').default);
+app.model(require('./models/cart').default);
 
 // 4. Router
 app.router(require('./router').default);
