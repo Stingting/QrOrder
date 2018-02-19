@@ -19,18 +19,6 @@ const PaidList = ({paidList,deleteDish,showDishDetail,detailModalVisible,closeDe
               title={item.name}
               description={"价格：" + item.price + "元，" + "种类：" + item.type + "，购买数量："+ item.count}
             />
-
-            <Modal
-              title={item.name}
-              mask = {false}
-              footer={null}
-              visible={detailModalVisible}
-              onOk={() => closeDetailDialog(true)}
-              onCancel={() => closeDetailDialog(true)}
-            >
-            <DishDetail detail={detail}></DishDetail>
-            </Modal>
-
           </List.Item>
         )}
       />
@@ -45,6 +33,17 @@ const PaidList = ({paidList,deleteDish,showDishDetail,detailModalVisible,closeDe
         </Collapse>
       </div>
       <div style={{'display':paidList.length>0?'none':'inline'}}>暂无已支付订单数据</div>
+      <Modal
+        title="菜式详情"
+        mask={true}
+        maskStyle={{backgroundColor:'rgba(232,230,225,0.5)'}}
+        footer={null}
+        visible={detailModalVisible}
+        onOk={() => closeDetailDialog(true)}
+        onCancel={() => closeDetailDialog(true)}
+      >
+        <DishDetail detail={detail}></DishDetail>
+      </Modal>
     </div>
   );
 };

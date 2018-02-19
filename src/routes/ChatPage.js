@@ -12,9 +12,9 @@ const { Header, Content, Footer, Sider} = Layout;
 
 function ChatPage({ dispatch , fetch, location, chat}) {
 
-  const {num, count, remark,sendContent,sendMessages,words} = chat;
+  const {num, count, remark,sendContent,sendMessages,words,visible} = chat;
   const chatHeadProps = {num, count, remark};
-  const messageInputProps = {sendContent,words};
+  const messageInputProps = {sendContent,words,visible};
   const chatContentProps = {sendMessages};
 
   //监听输入框变化
@@ -26,21 +26,26 @@ function ChatPage({ dispatch , fetch, location, chat}) {
   }
 
   //发送消息
-  function handleSend() {
-    dispatch({
-      type : 'chat/handleSend' //指定action,namespace+action
-    })
+  function handleSend(msg) {
+    if (msg !='') {
+      dispatch({
+        type: 'chat/handleSend', //指定action,namespace+action
+        msg: msg
+      })
+    }
   }
 
+  function handleVisibleChange(visible) {
+    dispatch({
+      type : 'chat/handleVisibleChange', //指定action,namespace+action
+      visible:visible
+    })
+  }
   return (
     <MainLayout>
-      <Header className={styles.header}>
-        <ChatHead {...chatHeadProps}/>
-      </Header>
-      <Content className={styles.content}>
-        <ChatContent {...chatContentProps}/>
-        <MessageInput {...messageInputProps} handleSend={handleSend} handleChange={handleChange}/>
-      </Content>
+      <ChatHead {...chatHeadProps}/>
+      <ChatContent {...chatContentProps}/>
+      <MessageInput {...messageInputProps} handleSend={handleSend} handleChange={handleChange} handleVisibleChange={handleVisibleChange}/>
     </MainLayout>
   );
 }

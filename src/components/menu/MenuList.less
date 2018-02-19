@@ -1,3 +1,37 @@
 .demo-loadmore-list {
   min-height: 350px;
 }
+.menu {
+  .head {
+    position:fixed;
+    top:0;
+    width:100%;
+    z-index: 5;
+    padding-left: 10px;
+    height: 50px;
+    background-color: red;
+    span {
+      color: white;
+      font-size: 22px;
+      vertical-align: center;
+      display: block;
+    }
+  }
+  .content {
+    padding-top:50px;
+    padding-bottom: 56px;
+    max-height: 600px;
+    overflow-y: auto;
+    padding-left: 10px;
+    .item {
+      cursor: pointer;
+    }
+    .item:hover{
+      background-color: rgba(170,187,255,0.13);
+    }
+    .dishname {
+      font-weight: bold;
+      font-size: 18px;
+    }
+  }
+}

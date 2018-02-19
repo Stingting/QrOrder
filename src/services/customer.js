@@ -21,7 +21,7 @@ export function getDishDetail(merchantId, dishId) {
 
 //获取菜单列表
 export function getMenu(merchantId, page, size) {
-  return request('/v1/customer/menu/' + merchantId, {
+  return request('/v1/customer/menu/', {
     method :'POST'
   });
 }
@@ -64,5 +64,29 @@ export function getOrderDetail(merchantId, orderId) {
     method : 'POST'
   })
 }
+
+
+//获取用户收藏的菜单列表
+export function getCollectList(merchantId, page, size) {
+  return request('/v1/customer/user/collectList', {
+    method :'POST'
+  })
+}
+
+//收藏、取消收藏
+export function changeCollect(dishId, merchantId, isCollect) {
+  return request('/v1/customer/menu/collect', {
+    method :'POST'
+  })
+}
+
+
+//加入购物车、增加、减少购买数量
+export function changePurchaseNum(count,dashId,id,type) {
+  return request('/v1/customer/menu/purchaseNum', {
+    method:'POST'
+  })
+}
+
 
 

@@ -9,7 +9,7 @@ const { Header, Content, Footer, Sider} = Layout;
 
 function MenuPage({ dispatch , fetch, location, menu}) {
 
-  const {loading,data,visible,detail,loadingMore,showLoadingMore} = menu;
+  const {loading,data,visible,detail,loadingMore,showLoadingMore,purchaseNum} = menu;
 
   function showDishDetail(id) {
     dispatch({
@@ -17,7 +17,7 @@ function MenuPage({ dispatch , fetch, location, menu}) {
       payload : id
     })
   }
-  function closeDetailDialog(closeFlag) {
+  function closeDetailDialog( closeFlag) {
     dispatch({
       type : 'menu/closeDetailDialog'
     })
@@ -32,17 +32,45 @@ function MenuPage({ dispatch , fetch, location, menu}) {
 
   }
 
-  const menuListProps={loading,data, visible,detail,loadingMore,showLoadingMore};
+  //收藏或取消收藏
+  function changeCollect() {
+    dispatch({
+      type:'menu/changeCollect'
+    })
+  }
+
+  /**
+   * 增加购买数量
+   */
+ function addToCart(dishId,dishType) {
+      dispatch({
+        type:'menu/addToCart',
+        dishId:dishId,
+        dishType:dishType
+      })
+  }
+
+  /*
+   *减少购买数量
+   */
+  function reduceToCart(dishId, dishType) {
+    dispatch({
+      type:'menu/reduceToCart',
+      dishId:dishId,
+      dishType:dishType
+    })
+  }
+  const menuListProps={loading,data, visible,detail,loadingMore,showLoadingMore,purchaseNum};
 
   return (
     <MainLayout>
-    <Layout>
-      <Header className={styles.header}>
-      </Header>
-      <Content>
-        <MenuList {...menuListProps} showDishDetail={showDishDetail} closeDetailDialog = {closeDetailDialog} onLoadMore = {onLoadMore}></MenuList>
-      </Content>
-    </Layout>
+       <MenuList {...menuListProps} showDishDetail={showDishDetail}
+                 closeDetailDialog = {closeDetailDialog}
+                 onLoadMore = {onLoadMore}
+                 changeCollect = {changeCollect}
+                 addToCart={addToCart}
+                 reduceToCart={reduceToCart}>
+       </MenuList>
     </MainLayout>
   );
 }

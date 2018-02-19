@@ -12,9 +12,9 @@ function MainLayout({ children, location }) {
       <Content className={styles.content}>
         {children}
       </Content>
-      <Footer className={styles.footer}>
+      {/*<Footer className={styles.footer}>*/}
         <MenuBanner></MenuBanner>
-      </Footer>
+      {/*</Footer>*/}
     </Layout>
   );
 }

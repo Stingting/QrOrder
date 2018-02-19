@@ -1,4 +1,4 @@
-import {getDishDetail, getMenu} from '../services/customer';
+import {getDishDetail, getMenu,changePurchaseNum,changeCollect} from '../services/customer';
 import {getLocalStorage} from "../utils/helper";
 
 export default {
@@ -6,15 +6,17 @@ export default {
   namespace: 'menu',
 
   state: {
-    page:1,
-    size:5,
-    count:0,
-    data:[{dashId:1,desc:'test',name:'test',pic:'',price:0,saleCount:0,type:'test'}],
-    visible:false,
-    loading:false,
-    detail:{},
-    loadingMore: false,
-    showLoadingMore: true
+    page:1, //菜单列表当前页
+    size:5, //每页显示个数
+    count:0, //菜单列表总数
+    data:[{dashId:1,desc:'test',name:'test',pic:'',price:0,saleCount:0,type:'test'}], //菜单列表数据
+    visible:false, //弹框是否可见
+    loading:false, //显示列表加载样式
+    detail:{count:0, desc: "", name: "", pic: "", price: 0, saleCount: 0, type: "", isCollect:false}, //菜式详情
+    loadingMore: false, //列表显示加载更多按钮判断
+    showLoadingMore: true,//是否显示加载更多
+    totalPurchaseNum:0 //记录总的购买数量
+
   },
 
   subscriptions: {
@@ -76,6 +78,26 @@ export default {
           }
         );
       }
+    },
+
+    *addToCart({dishId, dishType}, {call, put, select}) {
+      yield put({type: 'addPurchaseNum'});
+      const count = yield select(state => state.menu.detail.count);
+      const {data} = yield call(changePurchaseNum, count,dishId,getLocalStorage("merchantId"),dishType);
+
+    },
+
+    *reduceToCart({dishId,dishType}, {call,put,select}) {
+      yield put({type: 'reducePurchaseNum'});
+      const count = yield select(state => state.menu.detail.count);
+      const {data} = yield call(changePurchaseNum, count,dishId,getLocalStorage("merchantId"),dishType);
+    },
+
+    *changeCollect({payload}, {call, put,select}) {
+      yield put({type:'changeCollectState'});
+      const isCollect = yield select(state => state.menu.detail.isCollect);
+      const dishId = yield select(state => state.menu.detail.id);
+      const {data} = yield call(changeCollect, dishId, getLocalStorage("merchantId"),isCollect);
     }
   },
 
@@ -103,6 +125,20 @@ export default {
     },
     showLoadMore(state, payload) {
       return {...state, payload};
+    },
+    changeCollectState(state, payload) {
+      state.detail.isCollect = !state.detail.isCollect;
+      return {...state, payload}
+    },
+    addPurchaseNum(state, payload) {
+      state.detail.count++;
+      state.totalPurchaseNum++;
+      return {...state, payload}
+    },
+    reducePurchaseNum(state,payload) {
+      state.detail.count--;
+      state.totalPurchaseNum--;
+      return {...state,payload}
     }
   },
 

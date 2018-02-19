@@ -77,8 +77,15 @@ function CartPage({ dispatch , fetch, location, scan, cart,recDishes}) {
           <span className={cartStyles['head-font']}>我的订单</span>
         </div>
         <Tabs defaultActiveKey={activeKey} onChange={getPayList}>
-          <TabPane tab="未支付" key="1"><UnpaidList {...unpaidListProps} showPayDetail={showPayDetail}/></TabPane>
-          <TabPane tab="已支付" key="2"><PaidList {...paidListProps} deleteDish = {deleteDish} closeDetailDialog={closeDetailDialog} showDishDetail={showDishDetail}/></TabPane>
+          <TabPane tab="未支付" key="1">
+            <UnpaidList {...unpaidListProps} showPayDetail={showPayDetail}/>
+          </TabPane>
+          <TabPane tab="已支付" key="2">
+            <PaidList {...paidListProps}
+                      deleteDish = {deleteDish}
+                      closeDetailDialog={closeDetailDialog}
+                      showDishDetail={showDishDetail}/>
+          </TabPane>
         </Tabs>
     </MainLayout>
   );

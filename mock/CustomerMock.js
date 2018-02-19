@@ -17,7 +17,7 @@ module.exports={
       "desc|1-20": "简介",
       "name|1-5": "名称",
       "pic|1-5": [
-        "@IMAGE(200x200)"
+        "@IMAGE(600x200)"
       ]
     });
     res.json(data);
@@ -26,32 +26,33 @@ module.exports={
   //获取菜单列表
   [`POST /v1/customer/menu/`](req,res){
     const data = Mock.mock({
-      'data': {
-          "count": 70500,
+      "count": 16523,
+      "data|1-20": [
+        {
+          "dashId": "测试内容68q7",
           "desc|0-30": "简介",
           "name|1-5": "菜名",
-          "pic": "@image(200x200, @color, @name)",
-          "price": 61370,
-          "saleCount": 68771,
+          "pic": "@IMAGE(100x100)",
+          "price": 35851,
+          "saleCount": 40408,
           "type|1-2": "种类"
-      }
+        }
+      ]
     });
-    res.json({
-      success: true,
-      result: data.data,
-    });
+    res.json(data);
   },
 
   //获取菜式详情
   [`POST /v1/customer/menu/detail`](req,res){
     const data = Mock.mock({
-      "count": 11802,
+      "count": 0,
       "desc|0-30": "简介",
       "name|1-5": "菜名",
       "pic": "@IMAGE(200x200, @color,@name)",
       "price": 42353,
       "saleCount": 73500,
-      "type|1-2": "种类"
+      "type|1-2": "种类",
+      "isCollect":false //用户是否已经收藏该菜式的标识
     });
     res.json(data);
   },
@@ -63,7 +64,7 @@ module.exports={
         "count": 66463,
         "num": 20614,
         "remark": "测试内容9adj",
-        "words|1-3": [
+        "words": [
           "快速回复1",
           "快速回复2",
           "快速回复3",
@@ -86,7 +87,7 @@ module.exports={
         }
       ]
     });
-    res.json(data.data);
+    res.json(data);
   },
 
   //获取订单列表
@@ -123,7 +124,7 @@ module.exports={
   },
 
   //获取订单详情
-  [`POST  /v1/customer/orderDetail/`](req,res) {
+  [`POST /v1/customer/orderDetail/`](req,res) {
     const data = Mock.mock({
       "count": 38144,
       "data|1-3": [
@@ -144,5 +145,46 @@ module.exports={
       "remark": "测试内容yx12"
     });
     res.json(data);
-  }
+  },
+
+  //获取用户收藏的菜单列表
+  [`POST /v1/customer/user/collectList`](req,res) { //注：POST后面是一个空格，否则404
+    console.log("come?");
+    const data = Mock.mock({
+      "count": 47503,
+      "data|1-20": [
+        {
+          "dashId": "测试内容2v35",
+          "desc|0-30": "简介",
+          "name|1-5": "菜名",
+          "pic": "@IMAGE(100x100)",
+          "price": 24623,
+          "salesVolume": 82143,
+          "type|1-2": "种类"
+        }
+      ]
+    });
+    res.json(data);
+  },
+
+  //收藏、取消收藏
+  [`POST /v1/customer/menu/collect`](req,res) { //注：POST后面是一个空格，否则404
+    const data = Mock.mock(
+      {
+        "isOk": true
+      }
+    );
+    res.json(data);
+  },
+
+  //加入购物车、增加、减少购买数量
+  [`POST /v1/customer/menu/purchaseNum`](req,res) { //注：POST后面是一个空格，否则404
+    const data = Mock.mock(
+      {
+        "isOk": true
+      }
+    );
+    res.json(data);
+  },
+
 };

@@ -11,6 +11,7 @@ export default {
     paidList:[], //已支付订单
     unpaidList:[], //未支付订单,
     price:0, //订单总价
+    id:'', //订单id
     activeKey:'1',
     totalUnpaidCount:0 //未支付的菜式数量
   },
@@ -32,7 +33,7 @@ export default {
     *getPayList({ payload }, { call, put , select}) {  // eslint-disable-line
       yield put({ type: 'changeActiveKey', activeKey:payload });
       const activeKey = yield select(state => state.cart.activeKey);
-      const isPaid = activeKey=='1'?false:true;
+      const isPaid = activeKey==='1'?false:true;
       const {data} = yield call(getPayList, getLocalStorage("merchantId"), isPaid);
       if (data) {
         if (isPaid) {

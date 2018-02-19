@@ -10,9 +10,7 @@ export default {
     name:'', //商家名称
     pic:[], //商家图片
     list: [{id:1, name: '红绕肉', pic:'', price:0}], //初始化推荐菜单列表
-    loading : false, //控制加载状态
-    detail : {}, //详情,
-    detailModalVisible:false
+    loading : false,//控制加载状态
   },
   reducers: {
     showLoading(state, payload) {
@@ -20,13 +18,6 @@ export default {
     },
     showDishList(state, payload) {
       return {...state, ...payload};
-    },
-    showDishDetail(state, payload) {
-      return {...state, ...payload}
-    },
-    closeDetailDialog(state,payload) {
-      state.detailModalVisible = false;
-      return {...state, payload}
     }
   },
   effects: {
@@ -53,17 +44,6 @@ export default {
         })
       }
     },
-
-    *getDishDetail({payload:id}, {put, call}) {
-      const {data} = yield call(getDishDetail, getLocalStorage("merchantId"), id);
-      if(data) {
-        yield put({
-          type : 'showDishDetail',
-          detail : data,
-          detailModalVisible:true
-        })
-      }
-    }
   }
 ,
   subscriptions: {

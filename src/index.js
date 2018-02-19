@@ -21,6 +21,7 @@ app.model(require('./models/menu').default);
 app.model(require('./models/chat').default);
 app.model(require('./models/navigation').default);
 app.model(require('./models/cart').default);
+app.model(require('./models/pcenter').default);
 
 // 4. Router
 app.router(require('./router').default);

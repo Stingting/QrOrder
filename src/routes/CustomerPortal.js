@@ -8,37 +8,75 @@ import {Layout} from 'antd';
 
 const { Header, Content, Footer, Sider} = Layout;
 
-function Portal({ dispatch , fetch, location, recDishes}) {
+function Portal({ dispatch , fetch, location, recDishes,menu}) {
   function showDishDetail(id) {
     dispatch({
-      type : 'recDishes/getDishDetail', //指定action,namespace+action
+      type : 'menu/getDishDetail', //指定action,namespace+action
       payload : id
     })
   }
-  function closeDetailDialog(closeFlag) {
+  function closeDetailDialog( closeFlag) {
     dispatch({
-      type : 'recDishes/closeDetailDialog'
+      type : 'menu/closeDetailDialog'
+    })
+  }
+
+  //收藏或取消收藏
+  function changeCollect() {
+    dispatch({
+      type:'menu/changeCollect'
+    })
+  }
+
+  /**
+   * 增加购买数量
+   */
+  function addToCart(dishId,dishType) {
+    dispatch({
+      type:'menu/addToCart',
+      dishId:dishId,
+      dishType:dishType
+    })
+  }
+
+  /*
+   *减少购买数量
+   */
+  function reduceToCart(dishId, dishType) {
+    dispatch({
+      type:'menu/reduceToCart',
+      dishId:dishId,
+      dishType:dishType
     })
   }
   const {
-    loading, list, detailModalVisible,detail,name,pic,desc
+    loading, list, name,pic,desc
   } = recDishes;
 
-  const dishListProps={
-    list,
-    loading,
-    detailModalVisible,
-    detail
-  };
+  const {
+    visible,detail
+  } = menu;
+
   const merchantProps = {
     name,
     pic,
     desc
   };
+
+  const dishProps = {
+    list, loading, visible,detail
+  };
   return (
     <MainLayout>
         <MerchantDesc {...merchantProps}></MerchantDesc>
-        <RecDishes {...dishListProps} showDishDetail={showDishDetail} closeDetailDialog = {closeDetailDialog}></RecDishes>
+        <RecDishes
+          {...dishProps}
+          showDishDetail={showDishDetail}
+          closeDetailDialog = {closeDetailDialog}
+          changeCollect={changeCollect}
+          addToCart={addToCart}
+          reduceToCart={reduceToCart}>
+        </RecDishes>
     </MainLayout>
   );
 }
@@ -48,8 +86,8 @@ Portal.propTypes = {
 };
 
 // 指定关联recDishes model
-function mapStateToProps({ recDishes}) {
-  return {recDishes};
+function mapStateToProps({ recDishes,menu}) {
+  return {recDishes,menu};
 }
 
 // 建立数据关联关系

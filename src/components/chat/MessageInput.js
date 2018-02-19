@@ -1,25 +1,29 @@
 import React from 'react';
-import {Input, Icon, Button} from 'antd';
-import { Select } from 'antd';
-const Option = Select.Option;
+import {Input, Icon, Button,Form,Popover} from 'antd';
+import styles from './Chat.less';
+const FormItem = Form.Item;
 
-const MessageInput = ({sendContent, handleSend, handleChange,words}) => {
-
-  const suffix = <Button type="primary" onClick={()=>handleSend()}>发送</Button>;
-  const options = words.map(d => <Option key={d}>{d}</Option>);
+const MessageInput = ({sendContent, handleSend, handleChange,words,visible,handleVisibleChange}) => {
+  const content = words.map(d => <p className={styles["quick-send"]} onClick={()=>handleSend(d)}>{d}</p>);
   return (
-    <div style={{ marginBottom: 0 }}>
-      <Select
-        style={{ width: 200 }}
-        placeholder="快速回复"
-        onChange={(value)=>handleChange(value)}>
-        {options}
-      </Select>
-      <Input  placeholder="Enter your message"
-             value={sendContent}
-             onChange={(e)=>handleChange(e.target.value)}
-             onPressEnter={()=>handleSend()}
-             suffix={suffix}/>
+    <div className={styles["chat-input"]}>
+      <Form layout="inline">
+        <FormItem>
+          <Input className={styles.input}
+                 placeholder="Enter your message"
+                 value={sendContent}
+                 onChange={(e) => handleChange(e.target.value)}
+                 onPressEnter={() => handleSend(sendContent)}/>
+        </FormItem>
+        <FormItem>
+          <Popover content={content} trigger="click" visible={visible} onVisibleChange={(e)=>handleVisibleChange(e)}>
+            <Button type="primary">快速回复</Button>
+          </Popover>
+        </FormItem>
+        <FormItem>
+          <Button className={styles.btn} type="primary" onClick={() => handleSend(sendContent)}>发送</Button>
+        </FormItem>
+      </Form>
     </div>
   );
 };

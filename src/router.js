@@ -7,6 +7,10 @@ import menu from './routes/MenuPage';
 import chat from './routes/ChatPage';
 import cart from './routes/CartPage';
 import PayDetail from './components/cart/PayDetail';
+import user from './routes/PersonalCenter';
+import UserCollection from './components/pcenter/UserCollection';
+import About from './components/pcenter/About';
+import UpdateNickname from './components/pcenter/UpdateNickname';
 
 function RouterConfig({ history }) {
   return (
@@ -19,6 +23,10 @@ function RouterConfig({ history }) {
         <Route path="/app/v1/chat" exact component={chat} />
         <Route path="/app/v1/cart" exact component={cart} />
         <Route path="/app/v1/cart/paydetail" exact component={PayDetail} />
+        <Route path="/app/v1/user" exact component={user} />
+        <Route path="/app/v1/user/collect" exact component={UserCollection} />
+        <Route path="/app/v1/user/about" exact component={About} />
+        <Route path="/app/v1/user/updateNickname" exact component={UpdateNickname} />
       </Switch>
     </Router>
   );
