@@ -94,24 +94,48 @@ module.exports={
   [`POST /v1/customer/order`](req, res) {
     const data = Mock.mock({
       "data|1-3": [
-      {
-        "list|1-10": [
-          {
-            "count": 11403,
-            "dashId": "测试内容41b6",
-            "name|1-5": "菜名",
-            "pic": "@IMAGE(100x100)",
-            "price": 86473,
-            "type|1-2": "种类"
-          }
-        ],
-        "nickName": "测试内容3715",
-        "price": 28553
-      }
-    ],
-      "price": 3434343
-
+        {
+          "id": 12877,
+          "list|1-10": [
+            {
+              "count": 84145,
+              "dashId": "测试内容1qr7",
+              "name|1-5": "菜名",
+              "pic": "@IMAGE(100x100)",
+              "price": 40012,
+              "type|1-2": "种类"
+            }
+          ],
+          "nickName": "测试内容os8c",
+          "price": 60332
+        }
+      ],
+      "price": "测试内容72h7"
     });
+    res.json(data);
+  },
+  //获取未支付订单
+  [`POST /v1/customer/unpaidOrder`](req, res) {
+    const data = Mock.mock(
+      {
+        "count": 21512,
+        "data": {
+          "list|1-10": [
+            {
+              "count": 24528,
+              "dashId": "测试内容425t",
+              "name|1-5": "菜名",
+              "pic": "@IMAGE(100x100)",
+              "price": 18177,
+              "type|1-2": "种类"
+            }
+          ],
+          "nickName": "测试内容5d3s",
+          "price": 41078
+        },
+        "price": "测试内容f4de"
+      }
+    );
     res.json(data);
   },
 
@@ -126,23 +150,22 @@ module.exports={
   //获取订单详情
   [`POST /v1/customer/orderDetail/`](req,res) {
     const data = Mock.mock({
-      "count": 38144,
-      "data|1-3": [
-        {
-          "list|1-10": [
-            {
-              "count": 38844,
-              "name|1-5": "菜名",
-              "price": 21122,
-              "type|1-2": "种类"
-            }
-          ],
-          "nickName": "测试内容fc1s",
-          "price": 88207
-        }
-      ],
-      "price": "测试内容sby0",
-      "remark": "测试内容yx12"
+        "count": 38144,
+        "data":
+          {
+            "list|1-10": [
+              {
+                "count": 38844,
+                "name|1-5": "菜名",
+                "price": 21122,
+                "type|1-2": "种类"
+              }
+            ],
+            "nickName": "测试内容fc1s",
+            "price": 88207
+          },
+        "price": "测试内容sby0",
+        "remark": "测试内容yx12"
     });
     res.json(data);
   },
@@ -181,6 +204,17 @@ module.exports={
   [`POST /v1/customer/menu/purchaseNum`](req,res) { //注：POST后面是一个空格，否则404
     const data = Mock.mock(
       {
+        "isOk": true
+      }
+    );
+    res.json(data);
+  },
+
+  //确认订单
+  [`POST /v1/customer/order/confirmOrder`](req,res) {
+    const data = Mock.mock(
+      {
+        "id": 60282,
         "isOk": true
       }
     );

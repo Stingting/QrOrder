@@ -24,7 +24,7 @@ function PayDetail ({dispatch,details,cart}) {
       <Content>
         <List
           itemLayout="horizontal"
-          dataSource={details}
+          dataSource={cart.detail}
           renderItem={item => (
             <List.Item actions={[<a>edit</a>, <a>more</a>]}>
               <List.Item.Meta

@@ -5,7 +5,7 @@ const Panel = Collapse.Panel;
 const PaidList = ({paidList,deleteDish,showDishDetail,detailModalVisible,closeDetailDialog,detail}) => {
   const text = "您确定要删除吗？";
   const panel = paidList.map((item,key) => (
-    <Panel header={item.nickName + ", 订单总价：" + item.price + "元"} key={key}>
+    <Panel header={item.nickName + "订单号：" + item.id + ", 订单总价：" + item.price + "元"} key={key}>
       <List
         itemLayout="horizontal"
         dataSource={item.list}

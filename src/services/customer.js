@@ -44,9 +44,16 @@ export function getChatRecord(merchantId, tableNum) {
 }
 
 
-//获取订单列表
-export function getPayList(merchantId, isPaid) {
+//获取已支付订单列表
+export function getPaidList(merchantId, isPaid) {
   return request('/v1/customer/order', {
+    method:'POST'
+  })
+}
+
+//获取未支付订单列表
+export function getUnPaidList(merchantId, isPaid) {
+  return request('/v1/customer/unpaidorder', {
     method:'POST'
   })
 }
@@ -84,6 +91,13 @@ export function changeCollect(dishId, merchantId, isCollect) {
 //加入购物车、增加、减少购买数量
 export function changePurchaseNum(count,dashId,id,type) {
   return request('/v1/customer/menu/purchaseNum', {
+    method:'POST'
+  })
+}
+
+//确认订单
+export function confirmOrder(dishes, merchantId, personNum, tableNum) {
+  return request('/v1/customer/order/confirmOrder', {
     method:'POST'
   })
 }

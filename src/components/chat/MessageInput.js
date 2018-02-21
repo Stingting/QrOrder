@@ -7,23 +7,20 @@ const MessageInput = ({sendContent, handleSend, handleChange,words,visible,handl
   const content = words.map(d => <p className={styles["quick-send"]} onClick={()=>handleSend(d)}>{d}</p>);
   return (
     <div className={styles["chat-input"]}>
-      <Form layout="inline">
-        <FormItem>
-          <Input className={styles.input}
-                 placeholder="Enter your message"
-                 value={sendContent}
-                 onChange={(e) => handleChange(e.target.value)}
-                 onPressEnter={() => handleSend(sendContent)}/>
-        </FormItem>
-        <FormItem>
-          <Popover content={content} trigger="click" visible={visible} onVisibleChange={(e)=>handleVisibleChange(e)}>
-            <Button type="primary">快速回复</Button>
-          </Popover>
-        </FormItem>
-        <FormItem>
-          <Button className={styles.btn} type="primary" onClick={() => handleSend(sendContent)}>发送</Button>
-        </FormItem>
-      </Form>
+      <div className={styles.input}>
+        <Input placeholder="Enter your message"
+               value={sendContent}
+               onChange={(e) => handleChange(e.target.value)}
+               onPressEnter={() => handleSend(sendContent)}/>
+      </div>
+      <div className={styles["quick-send"]}>
+        <Popover content={content} trigger="click" visible={visible} onVisibleChange={(e) => handleVisibleChange(e)}>
+          <Button type="primary" size="small">快速回复</Button>
+        </Popover>
+      </div>
+      <div className={styles.btn}>
+        <Button type="primary" size="small" onClick={() => handleSend(sendContent)}>发送</Button>
+      </div>
     </div>
   );
 };

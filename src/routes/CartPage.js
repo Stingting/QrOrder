@@ -13,10 +13,10 @@ const TabPane = Tabs.TabPane;
 
 function CartPage({ dispatch , fetch, location, scan, cart,recDishes}) {
 
-  const { paidList,unpaidList,activeKey} = cart;
+  const { paidList,unpaidData,activeKey,price} = cart;
   const {detailModalVisible,detail} = recDishes;
-  const paidListProps = {paidList,detailModalVisible,detail};
-  const unpaidListProps = {unpaidList};
+  const paidListProps = {paidList,detailModalVisible,detail,price};
+  const unpaidListProps = {unpaidData,price};
 
   /**
    * 获取支付列表
@@ -31,12 +31,11 @@ function CartPage({ dispatch , fetch, location, scan, cart,recDishes}) {
   }
 
   /**
-   * 跳转支付详情页面
+   * 跳转订单详情页面
    */
-  function showPayDetail(details) {
+  function toOrderDetail() {
     dispatch({
-      type:'cart/showPayDetail',
-      details:details
+      type:'cart/toOrderDetail'
     })
   }
 
@@ -78,7 +77,7 @@ function CartPage({ dispatch , fetch, location, scan, cart,recDishes}) {
         </div>
         <Tabs defaultActiveKey={activeKey} onChange={getPayList}>
           <TabPane tab="未支付" key="1">
-            <UnpaidList {...unpaidListProps} showPayDetail={showPayDetail}/>
+            <UnpaidList {...unpaidListProps} toOrderDetail={toOrderDetail}/>
           </TabPane>
           <TabPane tab="已支付" key="2">
             <PaidList {...paidListProps}

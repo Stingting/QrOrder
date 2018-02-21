@@ -1,4 +1,4 @@
-import {getPayList,deleteDish} from '../services/customer';
+import {getPaidList, getUnPaidList, deleteDish, getOrderDetail, getPayList,confirmOrder} from '../services/customer';
 import {getLocalStorage} from "../utils/helper";
 import {routerRedux} from 'dva/router';
 import {message} from 'antd';
@@ -9,23 +9,33 @@ export default {
 
   state: {
     paidList:[], //已支付订单
-    unpaidList:[], //未支付订单,
+    unpaidData:{}, //用户未支付订单,
     price:0, //订单总价
-    id:'', //订单id
     activeKey:'1',
-    totalUnpaidCount:0 //未支付的菜式数量
+    totalUnpaidCount:0, //未支付的菜式数量,
+    detail:{count:0,data:{},price:0,remark:""} //订单详情
   },
 
   subscriptions: {
     setup({ dispatch, history }) {  // eslint-disable-line
-      return history.listen(({ pathname,search})=>{
+      return history.listen(({ pathname,search,params})=>{
          if(pathname.includes('/app/v1/cart')) {
            dispatch({
              type:'getPayList',
              payload:'1'
            })
          }
-      });
+
+        if (pathname.includes('/app/v1/cart/orderdetail')) {
+          /**
+           * 获取订单详情信息
+           */
+          dispatch({
+            type: 'getOrderDetail',
+            orderId: params.orderId
+          })
+        }
+        });
     }
   },
 
@@ -34,25 +44,42 @@ export default {
       yield put({ type: 'changeActiveKey', activeKey:payload });
       const activeKey = yield select(state => state.cart.activeKey);
       const isPaid = activeKey==='1'?false:true;
-      const {data} = yield call(getPayList, getLocalStorage("merchantId"), isPaid);
-      if (data) {
-        if (isPaid) {
-          yield put({
-            type: 'refreshPayList',
-            paidList:data.data,
-            price:data.price
-          })
-        } else {
-          yield put({
-            type :'refreshPayList',
-            unpaidList:data.data,
-            price:data.price
-          })
-        }
+      if (isPaid) {
+        const {data} = yield call(getPaidList, getLocalStorage("merchantId"));
+        yield put({
+          type: 'refreshPayList',
+          paidList:data.data,
+          price:data.price
+        })
+      } else {
+        const {data} = yield call(getUnPaidList, getLocalStorage("merchantId"));
+        yield put({
+          type :'refreshPayList',
+          unpaidData:data.data,
+          price:data.price
+        })
       }
     },
-    *showPayDetail({payload}, {call,put,select}) {
-      yield put(routerRedux.push('/app/v1/cart/paydetail', payload));
+    *toOrderDetail({payload}, {call,put,select}) {
+      const dishes = yield select(state =>state.cart.unpaidData.list);
+      //确认订单
+      const {data} = yield call(confirmOrder, dishes,getLocalStorage("merchantId"), getLocalStorage("personNum"), getLocalStorage("tableNum"));
+      if(data.isOk) {
+        yield put(routerRedux.push({
+          pathname: '/app/v1/cart/orderdetail',
+          params: {
+            orderId: data.id
+          },
+        }));
+      }
+    },
+
+    *getOrderDetail({orderId}, {call,put,select}) {
+      const {data} = yield call (getOrderDetail, orderId,getLocalStorage("merchantId"));
+      yield put({
+        type:'showOrderDetail',
+        detail : data
+      })
     },
 
     *backToUnpaidList({payload}, {call,put,select}) {
@@ -75,6 +102,9 @@ export default {
       return { ...state, ...payload };
     },
     refreshPayList(state, payload) {
+      return {...state, ...payload};
+    },
+    showOrderDetail(state, payload) {
       return {...state, ...payload};
     }
   },
