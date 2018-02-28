@@ -1,5 +1,5 @@
 import {getDishDetail, getMerchantInfo} from '../services/customer';
-import {getLocalStorage} from "../utils/helper";
+import {getLocalStorage,getSessionStorage} from "../utils/helper";
 
 export default {
   namespace : 'recDishes',
@@ -24,18 +24,18 @@ export default {
     //声明时需要添加*，普通函数内部不能使用yield关键字，否则会出错
     *getMerchantInfo(action, {put, call}) {
       yield put({type: 'showLoading', loading: true});
-      const {data} = yield call(getMerchantInfo, getLocalStorage("merchantId"));
+      const {data} = yield call(getMerchantInfo, getSessionStorage("merchantId"));
       // console.log(data);
       //请求成功
       if (data) {
         yield put({
           type : 'showDishList',
           loading : false,
-          list : data.data,
-          count:data.count,
-          desc:data.desc,
-          name:data.name,
-          pic:data.pic
+          list : data.data.data,
+          count:data.data.count,
+          desc:data.data.desc,
+          name:data.data.name,
+          pic:data.data.pic===undefined?[]:data.data.pic
       });
       } else {
         yield put ({

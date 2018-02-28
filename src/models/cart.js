@@ -1,5 +1,5 @@
-import {getPaidList, getUnPaidList, deleteDish, getOrderDetail, getPayList,confirmOrder} from '../services/customer';
-import {getLocalStorage} from "../utils/helper";
+import {getPaidList, getUnPaidList, deleteDish, getOrderDetail,confirmOrder} from '../services/customer';
+import {getLocalStorage,getSessionStorage} from "../utils/helper";
 import {routerRedux} from 'dva/router';
 import {message} from 'antd';
 
@@ -45,14 +45,14 @@ export default {
       const activeKey = yield select(state => state.cart.activeKey);
       const isPaid = activeKey==='1'?false:true;
       if (isPaid) {
-        const {data} = yield call(getPaidList, getLocalStorage("merchantId"));
+        const {data} = yield call(getPaidList, getSessionStorage("merchantId"));
         yield put({
           type: 'refreshPayList',
           paidList:data.data,
           price:data.price
         })
       } else {
-        const {data} = yield call(getUnPaidList, getLocalStorage("merchantId"));
+        const {data} = yield call(getUnPaidList, getSessionStorage("merchantId"));
         yield put({
           type :'refreshPayList',
           unpaidData:data.data,
@@ -63,7 +63,7 @@ export default {
     *toOrderDetail({payload}, {call,put,select}) {
       const dishes = yield select(state =>state.cart.unpaidData.list);
       //确认订单
-      const {data} = yield call(confirmOrder, dishes,getLocalStorage("merchantId"), getLocalStorage("personNum"), getLocalStorage("tableNum"));
+      const {data} = yield call(confirmOrder, dishes,getSessionStorage("merchantId"), getSessionStorage("personNum"), getSessionStorage("tableNum"));
       if(data.isOk) {
         yield put(routerRedux.push({
           pathname: '/app/v1/cart/orderdetail',
@@ -75,7 +75,7 @@ export default {
     },
 
     *getOrderDetail({orderId}, {call,put,select}) {
-      const {data} = yield call (getOrderDetail, orderId,getLocalStorage("merchantId"));
+      const {data} = yield call (getOrderDetail, orderId,getSessionStorage("merchantId"));
       yield put({
         type:'showOrderDetail',
         detail : data
@@ -88,7 +88,7 @@ export default {
 
     *deleteDish({dishId,orderId},{call,put,select}) {
       const activeKey = yield select(state => state.cart.activeKey);
-      const {data} = yield call(deleteDish, dishId, orderId, getLocalStorage("merchantId")) ;
+      const {data} = yield call(deleteDish, dishId, orderId, getSessionStorage("merchantId")) ;
       if (data.isOk) {
          message.success("删除成功！", 0.2);
          //刷新支付列表

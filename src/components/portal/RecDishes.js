@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import { List, Card ,Icon, Modal} from 'antd';
+import React from 'react';
+import {Card, List, Modal} from 'antd';
 import DishDetail from "./DishDetail";
 import styles from './RecDishes.less';
 
@@ -15,8 +15,8 @@ const RecDishes = ({list, loading, showDishDetail,visible, detail, closeDetailDi
           renderItem={item => (
             <List.Item>
               <Card title={item.name}>
-                <div onClick={() => showDishDetail(item.dashId)}>
-                  <img src={item.pic}/>
+                <div onClick={() => showDishDetail(item.id)}>
+                  <img src={item.pic} alt=""/>
                 </div>
                 <div>
                   &yen;{item.price}

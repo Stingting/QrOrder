@@ -28,3 +28,12 @@ export function getLocalStorage(key) {
   return value;
 }
 
+export function setSessionStorage(key, value) {
+  return sessionStorage.setItem(key, JSON.stringify(value));
+}
+
+export function getSessionStorage(key) {
+  const value = JSON.parse(sessionStorage.getItem(key));
+  return value;
+}
+

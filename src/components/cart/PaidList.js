@@ -17,7 +17,7 @@ const PaidList = ({paidList,deleteDish,showDishDetail,detailModalVisible,closeDe
               onClick={()=>showDishDetail(item.dashId)}
               avatar={<Avatar  src={item.pic}/>}
               title={item.name}
-              description={"价格：" + item.price + "元，" + "种类：" + item.type + "，购买数量："+ item.count}
+              description={`价格：${item.price}元，种类：${item.type }，购买数量：${item.count}`}
             />
           </List.Item>
         )}

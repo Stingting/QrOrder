@@ -1,6 +1,6 @@
 import {routerRedux} from 'dva/router';
 import {getCollectList} from "../services/customer";
-import {getLocalStorage} from "../utils/helper";
+import {getLocalStorage,getSessionStorage} from "../utils/helper";
 
 export default {
 
@@ -40,7 +40,7 @@ export default {
       const page = yield select(state => state.pcenter.page);
       const size = yield select(state => state.pcenter.size);
       yield put({type: 'showLoading', loading: true});
-      const {data} = yield call(getCollectList, getLocalStorage("merchantId"), page, size);
+      const {data} = yield call(getCollectList, getSessionStorage("merchantId"), page, size);
       if(data) {
         yield put(
           {
@@ -58,7 +58,7 @@ export default {
       const size = yield select(state => state.menu.size);
       const list = yield select(state => state.menu.data); //当前列表
       yield put({type: 'showLoading', loading: true});
-      const {data} = yield call(getCollectList, getLocalStorage("merchantId"), page, size);
+      const {data} = yield call(getCollectList, getSessionStorage("merchantId"), page, size);
       if(data) {
         const result = list.concat(data.data); //拼接
         yield put(

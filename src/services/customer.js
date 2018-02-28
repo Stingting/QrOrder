@@ -1,60 +1,117 @@
 import request from '../utils/request';
 import constant from '../config';
+import qs from 'qs';
+import {getSessionStorage} from "../utils/helper";
 
-//获取商家详情
+/**
+ * 登录
+ * @param params
+ * @returns {Object}
+ */
+export function login(params) {
+  return request('/v1/user/login', {
+    method:'POST',
+    headers:{
+      "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
+    },
+    body:qs.stringify(params)
+  })
+}
+
+
+/**
+ * 获取商家详情
+ * @param merchantId
+ * @returns {Object}
+ */
 export function getMerchantInfo(merchantId) {
-  /*return request('/v1/customer/home/'+ merchantId, {
-    method: 'POST'
-  });*/
-  return request('/v1/customer/home', {
-    method: 'POST'
+  return request(`/v1/home/${merchantId}`, {
+    method: 'GET',
+    headers: {
+      authorization:constant.authorization
+    }
   });
 }
 
-//获取菜式详情
+/*
+*获取菜式详情
+ */
 export function getDishDetail(merchantId, dishId) {
-  return request('/v1/customer/menu/detail', {
-    method : 'POST'
+  return request(`/v1/menu/${merchantId}/${dishId}`, {
+    method : 'GET',
+    headers: {
+      authorization:constant.authorization
+    }
   });
 }
 
 
-//获取菜单列表
-export function getMenu(merchantId, page, size) {
-  return request('/v1/customer/menu/', {
-    method :'POST'
+/**
+ * 获取菜单列表
+ * @param merchantId
+ * @returns {Object}
+ */
+export function getMenu(merchantId) {
+  return request(`/v1/menu/${merchantId}`, {
+    method :'GET',
+    headers:{
+      authorization:constant.authorization
+    }
   });
 }
 
-//获取聊天室信息
+/**
+ * 获取聊天室信息
+ * @param merchantId
+ * @param tableNum
+ * @returns {Object}
+ */
 export function getChatRoomInfo(merchantId, tableNum) {
- /* return request('/v1/customer/chatRoom/' + merchantId + "/" + tableNum, {
-    method: 'POST'
-  })*/
- return request('/v1/customer/chatRoom/', {
-    method: 'POST'
+ return request(`/v1/customer/chatRoom/${merchantId}/${tableNum}`, {
+    method: 'get',
+    headers:{
+     authorization:getSessionStorage("token")
+    }
   })
 }
 
-//获取聊天记录
+/**
+ * 获取聊天记录
+ * @param merchantId
+ * @param tableNum
+ * @returns {Object}
+ */
 export function getChatRecord(merchantId, tableNum) {
-  return request('/v1/customer/chatRecord', {
-    method:'POST'
+  return request(`/v1/customer/chatRecord/${merchantId}/${tableNum}`, {
+    method:'get',
+    headers:{
+      authorization:getSessionStorage("token")
+    }
   })
 }
 
 
-//获取已支付订单列表
-export function getPaidList(merchantId, isPaid) {
-  return request('/v1/customer/order', {
-    method:'POST'
+/**
+ * 获取已支付订单列表
+ * @param merchantId
+ * @returns {Object}
+ */
+export function getPaidList(merchantId) {
+  return request(`/v1/order${merchantId}`, {
+    method:'get',
+    headers: {
+      authorization:constant.authorization
+    }
   })
 }
 
 //获取未支付订单列表
-export function getUnPaidList(merchantId, isPaid) {
-  return request('/v1/customer/unpaidorder', {
-    method:'POST'
+export function getUnPaidList(merchantId) {
+  return request(`/v1/shopping/${merchantId}`, {
+    method:'get',
+    headers: {
+      authorization:constant.authorization
+    }
   })
 }
 
@@ -80,10 +137,26 @@ export function getCollectList(merchantId, page, size) {
   })
 }
 
-//收藏、取消收藏
+/**
+ * 收藏、取消收藏食物
+ * @param dishId
+ * @param merchantId
+ * @param isCollect
+ * @returns {Object}
+ */
 export function changeCollect(dishId, merchantId, isCollect) {
-  return request('/v1/customer/menu/collect', {
-    method :'POST'
+  const params = {
+    id:merchantId,
+    foodId:dishId,
+    isCollect:isCollect
+  };
+  return request(`/v1/menu/collect/${merchantId}/${dishId}`, {
+    method :'PUT',
+    headers: {
+      authorization:constant.authorization,
+      "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+    },
+    body:qs.stringify(params)
   })
 }
 
