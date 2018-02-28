@@ -1,7 +1,7 @@
 import constant from '../config';
 import mqttClient from '../utils/mqttUtil';
 import {getMenu, getChatRoomInfo,getChatRecord} from "../services/customer";
-import {getLocalStorage} from "../utils/helper";
+import {getLocalStorage,getSessionStorage} from "../utils/helper";
 import moment from 'moment';
 
 export default {
@@ -25,22 +25,24 @@ export default {
         //进入聊天页面时触发的操作
         if(pathname.includes('/app/v1/chat')) {
           //获取聊天室信息
-          dispatch({type: 'getChatRoomInfo'});
+          // dispatch({type: 'getChatRoomInfo'});
           //获取聊天记录
-          dispatch({type: 'getChatRecord'});
+          // dispatch({type: 'getChatRecord'});
           //进入聊天页面时清空未读条数
           dispatch({type:'clearUnReadCount'});
         }
+        //连接mqtt服务
         mqttClient.getInstance().on('connect', function () {
-          console.log("connect to emqtt...");
-          mqttClient.getInstance().subscribe(constant.topic);
+          //订阅主题：order_system/2/2/chat, order_system/business_id/table_id/chat
+          const topic = `order_system/${getSessionStorage("merchantId")}/${getSessionStorage("tableNum")}/chat`;
+          mqttClient.getInstance().subscribe(topic);
           mqttClient.getInstance().on('message', function (topic, message) {
             // message is Buffer
             console.log(`收到的消息 ${message.toString()}`);
             //设置聊天消息
             dispatch({type:'setChatMessage', chatMsg:message.toString()});
-            if(!pathname.includes('/app/v1/chat')) {
-              dispatch({type:'addUnreadCount'});  //这里有bug,pathname判断错获取不到当前的path,取到的是上次的，要刷新页面才能取到正确的，点下面菜单切换获取不正确
+            if(!history.location.pathname.includes('/app/v1/chat')) { //判断当前页面是否是聊天页面，这里用history.location.pathname获取当前路径
+              dispatch({type:'addUnreadCount'});
             }
           });
         });
@@ -59,7 +61,7 @@ export default {
 
   effects: {
     *getChatRoomInfo({ payload }, { call, put }) {  // eslint-disable-line
-      const {data} = yield call(getChatRoomInfo, getLocalStorage("merchantId"), getLocalStorage("tableNum"));
+      const {data} = yield call(getChatRoomInfo, getSessionStorage("merchantId"), getSessionStorage("tableNum"));
       yield put({
         type: 'showChatRoomInfo' ,
         count : data.count,
@@ -69,7 +71,7 @@ export default {
       });
     },
     *getChatRecord({payload}, {call,put}) {
-      const {data} = yield call(getChatRecord, getLocalStorage("merchantId"), getLocalStorage("tableNum"));
+      const {data} = yield call(getChatRecord, getSessionStorage("merchantId"), getSessionStorage("tableNum"));
       yield put({
         type:'refreshChatMsg',
         chatRecords:data.data
@@ -83,9 +85,16 @@ export default {
     },
     handleSend(state, payload) {
       //添加发送内容
-      const msg = {time:moment(new Date()).format('YYYY-MM-DD HH:mm:ss'), head:"",content:payload.msg};
+      const msg = {
+        time:moment(new Date()).format('YYYY-MM-DD HH:mm:ss'),
+        head:getSessionStorage("head"),
+        content:payload.msg,
+        userId:getSessionStorage("userId"),
+        nickName:getSessionStorage("nickName")
+      };
       //发送string 或 Buffer 类型
-      mqttClient.getInstance().publish(constant.topic, JSON.stringify(msg));
+      const topic = `order_system/${getSessionStorage("merchantId")}/${getSessionStorage("tableNum")}/chat`;
+      mqttClient.getInstance().publish(topic, JSON.stringify(msg));
       //发送后清空发送文本框内容
       state.sendContent = "";
       state.visible=false;
