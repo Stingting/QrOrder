@@ -20,10 +20,11 @@ const MenuList = ({loading, loadingMore, showLoadingMore, data, visible, showDis
   return (
     <div className={styles.menu}>
       <div className={styles.head}><span>本店菜谱</span></div>
-        <div style={{paddingTop:60}}>
+        <div style={{paddingTop:50}}>
           <Layout>
-            <Sider  width={100} style={{ background: '#fff' }}>
+            <Sider width={100} style={{ background: '#fff',overflowY:'auto'}}>
               <Menu
+                theme='light'
                 onClick={handleTypeClick}
                 selectedKeys={[currentType]}>
                 {siderMenu}
@@ -31,8 +32,9 @@ const MenuList = ({loading, loadingMore, showLoadingMore, data, visible, showDis
             </Sider>
             <Content>
             <div className={styles.content}>
+              <div className={styles["dish-head"]}>{currentType}</div>
+              <div className={styles["dish-content"]}>
               <List
-                className={styles["demo-loadmore-list"]}
                 itemLayout="horizontal"
                 dataSource={currentDishes}
                 size="middle"
@@ -51,6 +53,7 @@ const MenuList = ({loading, loadingMore, showLoadingMore, data, visible, showDis
                   </List.Item>
                 )}
               />
+              </div>
             </div>
           </Content>
         </Layout>

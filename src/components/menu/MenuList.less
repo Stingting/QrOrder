@@ -18,11 +18,19 @@
     }
   }
   .content {
-    padding-top:50px;
-    padding-bottom: 56px;
     max-height: 600px;
     overflow-y: auto;
-    padding-left: 10px;
+    .dish-head {
+      height:30px;
+      line-height:30px;
+      position:fixed;
+      background-color: rgba(255,255,255,0.4);
+      z-index:5;
+      width:100%;
+    }
+    .dish-content {
+      background-color: #ffffff;
+    }
     .item {
       cursor: pointer;
     }
