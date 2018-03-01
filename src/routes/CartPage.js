@@ -11,11 +11,11 @@ import cartStyles from './CartPage.less';
 const { Header, Content, Footer, Sider} = Layout;
 const TabPane = Tabs.TabPane;
 
-function CartPage({ dispatch , fetch, location, scan, cart,recDishes}) {
+function CartPage({ dispatch , fetch, location, scan, cart,menu}) {
 
   const { paidList,unpaidData,activeKey,price} = cart;
-  const {detailModalVisible,detail} = recDishes;
-  const paidListProps = {paidList,detailModalVisible,detail,price};
+  const {visible,detail} = menu;
+  const paidListProps = {paidList,visible,detail,price};
   const unpaidListProps = {unpaidData,price};
 
   /**
@@ -50,23 +50,46 @@ function CartPage({ dispatch , fetch, location, scan, cart,recDishes}) {
     });
   }
 
-  /**
-   * 展示菜单详情
-   */
   function showDishDetail(id) {
     dispatch({
-      type : 'recDishes/getDishDetail', //指定action,namespace+action
+      type : 'menu/getDishDetail', //指定action,namespace+action
       payload : id
+    })
+  }
+  function closeDetailDialog( closeFlag) {
+    dispatch({
+      type : 'menu/closeDetailDialog'
+    })
+  }
+
+  //收藏或取消收藏
+  function changeCollect(foodId,isCollect) {
+    dispatch({
+      type:'menu/changeCollect',
+      isCollect:isCollect,
+      foodId:foodId
     })
   }
 
   /**
-   * 关闭详情框
-   * @param closeFlag
+   * 增加购买数量
    */
-  function closeDetailDialog(closeFlag) {
+  function addToCart(dishId,dishType) {
     dispatch({
-      type : 'recDishes/closeDetailDialog'
+      type:'menu/addToCart',
+      dishId:dishId,
+      dishType:dishType
+    })
+  }
+
+  /*
+   *减少购买数量
+   */
+  function reduceToCart(dishId, dishType) {
+    dispatch({
+      type:'menu/reduceToCart',
+      dishId:dishId,
+      dishType:dishType
     })
   }
 
@@ -83,7 +106,11 @@ function CartPage({ dispatch , fetch, location, scan, cart,recDishes}) {
             <PaidList {...paidListProps}
                       deleteDish = {deleteDish}
                       closeDetailDialog={closeDetailDialog}
-                      showDishDetail={showDishDetail}/>
+                      showDishDetail={showDishDetail}
+                      changeCollect={changeCollect}
+                      addToCart={addToCart}
+                      reduceToCart={reduceToCart}
+            />
           </TabPane>
         </Tabs>
     </MainLayout>
@@ -92,7 +119,7 @@ function CartPage({ dispatch , fetch, location, scan, cart,recDishes}) {
 CartPage.propTypes = {
 
 };
-function mapStateToProps({cart,recDishes}) {
-  return {cart,recDishes};
+function mapStateToProps({cart,menu}) {
+  return {cart,menu};
 }
 export default connect(mapStateToProps)(CartPage);

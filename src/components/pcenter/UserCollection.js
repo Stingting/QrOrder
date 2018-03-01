@@ -22,9 +22,11 @@ function UserCollection({dispatch,pcenter,menu}) {
   }
 
   //收藏或取消收藏
-  function changeCollect() {
+  function changeCollect(foodId,isCollect) {
     dispatch({
-      type:'menu/changeCollect'
+      type:'menu/changeCollect',
+      isCollect:isCollect,
+      foodId:foodId
     })
   }
 
@@ -50,26 +52,12 @@ function UserCollection({dispatch,pcenter,menu}) {
     })
   }
 
-  //加载更多
-  function onLoadMore() {
-    dispatch({
-      type : 'pcenter/onLoadMore'
-    })
-  }
-
   //返回个人中心
   function collectBack() {
     dispatch({
       type: 'pcenter/backToPcenter'
     })
   }
-  const loadMore = showLoadingMore ? (
-    <div style={{ textAlign: 'center', marginTop: 12, height: 32, lineHeight: '32px' }}>
-      {loadingMore && <Spin />}
-      {!loadingMore && <Button onClick={()=>onLoadMore()}>加载更多</Button>}
-    </div>
-  ) : null;
-
   return (
     <div>
       <div className={styles['collect-head']}>
@@ -80,13 +68,12 @@ function UserCollection({dispatch,pcenter,menu}) {
           className={styles["demo-loadmore-list"]}
           loading={loading}
           itemLayout="horizontal"
-          loadMore={loadMore}
           dataSource={data}
           size="middle"
           renderItem={item => (
-            <List.Item className={styles.item}  onClick={() => showDishDetail(item.dashId)} >
+            <List.Item className={styles.item}  onClick={() => showDishDetail(item.id)} >
               <List.Item.Meta
-                avatar={<img src={item.pic}/>}
+                avatar={<img width={150} height={150} alt={item.name} src={item.pic}/>}
                 title={<span className={styles.dishname}>{item.name}</span>}
                 description={<div>
                   <div>{item.desc}</div>

@@ -6,7 +6,7 @@ import styles from '../../assets/less/global.less';
 
 function MenuBanner ({dispatch, navigation,menu,chat}) {
   const totalPurchaseNum = menu.totalPurchaseNum;
-  const unReadCount = chat.unReadCount
+  const unReadCount = chat.unReadCount;
   function handleClick (e) {
     dispatch({
       type:'navigation/setCurrentKey',

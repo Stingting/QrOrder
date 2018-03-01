@@ -11,19 +11,25 @@ const UnpaidList = ({unpaidData,price,toOrderDetail}) => {
       {/*<p className={styles.split}>/!*订单号：{item.id}*!/</p>*/}
       <List
         itemLayout="horizontal"
-        dataSource={item.list}
+        dataSource={item}
         renderItem={item => (
           <List.Item>
             <List.Item.Meta
-              avatar={<img src={item.pic}/>}
+              avatar={<img width={150} height={150} alt={item.name} src={item.pic}/>}
               title={item.name}
-              description={"价格：" + item.price}
+              description={
+                <div>
+                  <div>{item.desc}</div>
+                  <div>{item.type.name}&nbsp;月售:&nbsp;{item.saleCount}</div>
+                  <div><span style={{color: 'red'}}>&yen;{item.price}</span></div>
+                </div>
+                }
             />
           </List.Item>
         )}
       />
       <div className={styles.bottom}>
-        <span>总价：&yen;{item.price} &nbsp;&nbsp;</span>
+        <span>总价：&yen;{price} &nbsp;&nbsp;</span>
         <Button type="danger" onClick={()=>toOrderDetail()}>确认订单</Button>
       </div>
     </div>

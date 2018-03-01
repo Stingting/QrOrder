@@ -13,7 +13,7 @@ const config = {
   Appsecret:'622c4e3e2cc06e1bffca0458bc60b9f3',
   userName:"user",
   password:"user",
-  authorization:'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1MjAxNTk1MDgsImlhdCI6MTUxOTU1NDcwOCwiaWQiOjIyNywicGFzc3dvcmQiOiIxMTEiLCJ1c2VyTmFtZSI6ImJ1c2luZXNzMCJ9.2Jml0TgZyMYEj3EG3JvMUy90fK9SMouM87gNlW1Vtzg'
+  authorization:''
 };
 
 export default config;

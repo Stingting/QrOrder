@@ -10,7 +10,7 @@ export default {
     data:{}, //分类菜单map数据
     visible:false, //弹框是否可见
     loading:false, //显示列表加载样式
-    detail:{count:0, desc: "", name: "", pic: "", price: 0, saleCount: 0, type: "", isCollect:false}, //菜式详情
+    detail:{}, //菜式详情
     totalPurchaseNum:0 ,//记录总的购买数量
     types:[],//菜式分类
     currentType:'',//当前选中的菜式分类
@@ -62,22 +62,23 @@ export default {
 
     *addToCart({dishId, dishType}, {call, put, select}) {
       yield put({type: 'addPurchaseNum'});
-      const count = yield select(state => state.menu.detail.count);
-      const {data} = yield call(changePurchaseNum, count,dishId,getSessionStorage("merchantId"),dishType);
+      const selectedCount = yield select(state => state.menu.detail.selectedCount);
+      const {data} = yield call(changePurchaseNum, selectedCount,dishId,getSessionStorage("merchantId"),dishType);
 
     },
 
     *reduceToCart({dishId,dishType}, {call,put,select}) {
       yield put({type: 'reducePurchaseNum'});
-      const count = yield select(state => state.menu.detail.count);
-      const {data} = yield call(changePurchaseNum, count,dishId,getSessionStorage("merchantId"),dishType);
+      const selectedCount = yield select(state => state.menu.detail.selectedCount);
+      const {data} = yield call(changePurchaseNum, selectedCount,dishId,getSessionStorage("merchantId"),dishType);
     },
 
-    *changeCollect({payload}, {call, put,select}) {
-      yield put({type:'changeCollectState'});
-      const isCollect = yield select(state => state.menu.detail.isCollect);
-      const dishId = yield select(state => state.menu.detail.id);
-      const {data} = yield call(changeCollect, dishId, getSessionStorage("merchantId"),isCollect);
+    *changeCollect({isCollect,foodId}, {call, put,select}) {
+      yield put({
+          type:'changeCollectState',
+          isCollect:isCollect
+      });
+      const {data} = yield call(changeCollect, foodId, getSessionStorage("merchantId"),isCollect);
     }
   },
 
@@ -101,16 +102,16 @@ export default {
       return {...state, payload};
     },
     changeCollectState(state, payload) {
-      state.detail.isCollect = !state.detail.isCollect;
+      state.detail.isCollect = payload.isCollect;
       return {...state, payload}
     },
     addPurchaseNum(state, payload) {
-      state.detail.count++;
+      state.detail.selectedCount++;
       state.totalPurchaseNum++;
       return {...state, payload}
     },
     reducePurchaseNum(state,payload) {
-      state.detail.count--;
+      state.detail.selectedCount--;
       state.totalPurchaseNum--;
       return {...state,payload}
     },

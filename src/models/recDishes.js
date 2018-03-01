@@ -1,5 +1,5 @@
-import {getDishDetail, getMerchantInfo} from '../services/customer';
-import {getLocalStorage,getSessionStorage} from "../utils/helper";
+import {getMerchantInfo} from '../services/customer';
+import {getSessionStorage} from "../utils/helper";
 
 export default {
   namespace : 'recDishes',
@@ -9,7 +9,7 @@ export default {
     desc:'', //商家简介
     name:'', //商家名称
     pic:[], //商家图片
-    list: [{id:1, name: '红绕肉', pic:'', price:0}], //初始化推荐菜单列表
+    list: [], //初始化推荐菜单列表
     loading : false,//控制加载状态
   },
   reducers: {
@@ -31,11 +31,11 @@ export default {
         yield put({
           type : 'showDishList',
           loading : false,
-          list : data.data.data,
+          list : data.data.food,
           count:data.data.count,
           desc:data.data.desc,
           name:data.data.name,
-          pic:data.data.pic===undefined?[]:data.data.pic
+          pic:(data.data.pic===undefined||data.data.pic===''||data.data.pic==null)?[]:data.data.pic
       });
       } else {
         yield put ({

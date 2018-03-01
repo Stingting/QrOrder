@@ -13,13 +13,14 @@ const RecDishes = ({list, loading, showDishDetail,visible, detail, closeDetailDi
           grid={{column: 1}}
           dataSource={list}
           renderItem={item => (
-            <List.Item>
+            <List.Item onClick={() => showDishDetail(item.id)}>
               <Card title={item.name}>
-                <div onClick={() => showDishDetail(item.id)}>
-                  <img src={item.pic} alt=""/>
+                <div>
+                  <img width={150} height={150} src={item.pic} alt=""/>
                 </div>
                 <div>
-                  &yen;{item.price}
+                  <div>{item.desc}</div>
+                  <div>&yen;{item.price}&nbsp;销量：{item.saleCount}份</div>
                 </div>
               </Card>
             </List.Item>

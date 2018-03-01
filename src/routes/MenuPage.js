@@ -24,9 +24,11 @@ function MenuPage({ dispatch , fetch, location, menu}) {
   }
 
   //收藏或取消收藏
-  function changeCollect() {
+  function changeCollect(foodId,isCollect) {
     dispatch({
-      type:'menu/changeCollect'
+      type:'menu/changeCollect',
+      isCollect:isCollect,
+      foodId:foodId
     })
   }
 

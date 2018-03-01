@@ -10,10 +10,14 @@ export default {
   state: {
     paidList:[], //已支付订单
     unpaidData:{}, //用户未支付订单,
-    price:0, //订单总价
+    price:0, //订单总价,
+    count:0,
     activeKey:'1',
     totalUnpaidCount:0, //未支付的菜式数量,
-    detail:{count:0,data:{},price:0,remark:""} //订单详情
+    totalPerson:0,
+    totalPrice: 0,
+    totalCount: 0,
+    detail:{} //订单详情
   },
 
   subscriptions: {
@@ -45,25 +49,37 @@ export default {
       const activeKey = yield select(state => state.cart.activeKey);
       const isPaid = activeKey==='1'?false:true;
       if (isPaid) {
-        const {data} = yield call(getPaidList, getSessionStorage("merchantId"));
+        const {data} = yield call(getPaidList, getSessionStorage("merchantId"),getSessionStorage("tableNum"));
         yield put({
           type: 'refreshPayList',
-          paidList:data.data,
-          price:data.price
+          paidList:data.data.list,
+          totalPerson:data.data.totalPerson,
+          totalPrice: data.data.totalPrice,
+          totalCount: data.data.totalCount
         })
       } else {
         const {data} = yield call(getUnPaidList, getSessionStorage("merchantId"));
         yield put({
           type :'refreshPayList',
-          unpaidData:data.data,
-          price:data.price
+          unpaidData:data.data.list,
+          price:data.data.price,
+          count:data.data.count
         })
       }
     },
     *toOrderDetail({payload}, {call,put,select}) {
-      const dishes = yield select(state =>state.cart.unpaidData.list);
+      const foods = yield select(state =>state.cart.unpaidData);
       //确认订单
-      const {data} = yield call(confirmOrder, dishes,getSessionStorage("merchantId"), getSessionStorage("personNum"), getSessionStorage("tableNum"));
+      const params = [];
+      foods.map(function(food){
+        const obj = {
+          id:food.id,
+          type:food.type,
+          num:food.num
+        };
+        params.push(obj);
+      });
+      const {data} = yield call(confirmOrder, params,getSessionStorage("merchantId"), getSessionStorage("personNum"), getSessionStorage("tableNum"));
       if(data.isOk) {
         yield put(routerRedux.push({
           pathname: '/app/v1/cart/orderdetail',
@@ -75,10 +91,10 @@ export default {
     },
 
     *getOrderDetail({orderId}, {call,put,select}) {
-      const {data} = yield call (getOrderDetail, orderId,getSessionStorage("merchantId"));
+      const {data} = yield call (getOrderDetail,getSessionStorage("merchantId"),orderId);
       yield put({
         type:'showOrderDetail',
-        detail : data
+        detail : data.data
       })
     },
 

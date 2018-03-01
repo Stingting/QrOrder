@@ -28,7 +28,7 @@ export function getMerchantInfo(merchantId) {
   return request(`/v1/home/${merchantId}`, {
     method: 'GET',
     headers: {
-      authorization:constant.authorization
+      authorization:getSessionStorage("token")
     }
   });
 }
@@ -40,7 +40,7 @@ export function getDishDetail(merchantId, dishId) {
   return request(`/v1/menu/${merchantId}/${dishId}`, {
     method : 'GET',
     headers: {
-      authorization:constant.authorization
+      authorization:getSessionStorage("token")
     }
   });
 }
@@ -55,7 +55,7 @@ export function getMenu(merchantId) {
   return request(`/v1/menu/${merchantId}`, {
     method :'GET',
     headers:{
-      authorization:constant.authorization
+      authorization:getSessionStorage("token")
     }
   });
 }
@@ -94,13 +94,14 @@ export function getChatRecord(merchantId, tableNum) {
 /**
  * 获取已支付订单列表
  * @param merchantId
+ * @param tableNum
  * @returns {Object}
  */
-export function getPaidList(merchantId) {
-  return request(`/v1/order${merchantId}`, {
+export function getPaidList(merchantId,tableNum) {
+  return request(`/v1/order/${merchantId}/table/${tableNum}`, {
     method:'get',
     headers: {
-      authorization:constant.authorization
+      authorization:getSessionStorage("token")
     }
   })
 }
@@ -110,12 +111,12 @@ export function getUnPaidList(merchantId) {
   return request(`/v1/shopping/${merchantId}`, {
     method:'get',
     headers: {
-      authorization:constant.authorization
+      authorization:getSessionStorage("token")
     }
   })
 }
 
-//删除订单菜式
+//删除订单菜式(暂时不用删除)
 export function deleteDish(dishId, orderId) {
   return request('/v1/customer/order/delete', {
     method:'POST'
@@ -124,16 +125,22 @@ export function deleteDish(dishId, orderId) {
 
 //获取订单详情
 export function getOrderDetail(merchantId, orderId) {
-  return request('/v1/customer/orderDetail', {
-    method : 'POST'
+  return request(`v1/order/${merchantId}/${orderId}`, {
+    method : 'GET',
+    headers: {
+      authorization:getSessionStorage("token")
+    }
   })
 }
 
 
 //获取用户收藏的菜单列表
-export function getCollectList(merchantId, page, size) {
-  return request('/v1/customer/user/collectList', {
-    method :'POST'
+export function getCollectList(merchantId) {
+  return request(`v1/menu/collect/${merchantId}`, {
+    method :'GET',
+    headers: {
+      authorization:getSessionStorage("token")
+    }
   })
 }
 
@@ -153,7 +160,7 @@ export function changeCollect(dishId, merchantId, isCollect) {
   return request(`/v1/menu/collect/${merchantId}/${dishId}`, {
     method :'PUT',
     headers: {
-      authorization:constant.authorization,
+      authorization:getSessionStorage("token"),
       "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
     },
     body:qs.stringify(params)
@@ -162,16 +169,39 @@ export function changeCollect(dishId, merchantId, isCollect) {
 
 
 //加入购物车、增加、减少购买数量
-export function changePurchaseNum(count,dashId,id,type) {
-  return request('/v1/customer/menu/purchaseNum', {
-    method:'POST'
+export function changePurchaseNum(num,foodId,id,type) {
+  const params = {
+    foodId:foodId,
+    id:id,
+    num:num,
+    type:type
+  };
+  return request(`v1/shopping/${id}`, {
+    method:'PUT',
+    headers:{
+      authorization:getSessionStorage("token"),
+      "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+    },
+    body:qs.stringify(params)
   })
 }
 
 //确认订单
-export function confirmOrder(dishes, merchantId, personNum, tableNum) {
-  return request('/v1/customer/order/confirmOrder', {
-    method:'POST'
+export function confirmOrder(food, merchantId, personNum, tableNum) {
+  const params = {
+    // food:JSON.stringify(food),
+    food:"[{\"id\": 1107,\"num\": 1,\"type\": \"\"},{\"id\": 1102,\"num\": 2,\"type\": \"\"}]",
+    id:merchantId,
+    personNum:4, //todo , 这里先写死，扫码中会包含人数，后面处理
+    tableId:tableNum
+  };
+  return request(`/v1/order/${merchantId}`, {
+    method:'POST',
+    headers:{
+      authorization:getSessionStorage("token"),
+      "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+    },
+    body:qs.stringify(params)
   })
 }
 
