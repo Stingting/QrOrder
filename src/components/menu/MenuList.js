@@ -41,7 +41,7 @@ const MenuList = ({loading, loadingMore, showLoadingMore, data, visible, showDis
                 renderItem={item => (
                   <List.Item className={styles.item}  onClick={() => showDishDetail(item.id)} >
                     <List.Item.Meta
-                      avatar={<Avatar src={item.pic}/>}
+                      avatar={<img width={150} height={150} alt={item.name} src={item.pic}/>}
                       title={<span className={styles.dishname}>{item.name}</span>}
                       description={<div>
                         <div>{item.desc}</div>

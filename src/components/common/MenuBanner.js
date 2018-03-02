@@ -1,5 +1,5 @@
 import React from 'react';
-import {Icon, Menu} from 'antd';
+import {Icon, Menu,Badge} from 'antd';
 import {Link} from 'dva/router';
 import {connect} from 'dva';
 import styles from '../../assets/less/global.less';
@@ -23,10 +23,13 @@ function MenuBanner ({dispatch, navigation,menu,chat}) {
       <Menu.Item key="portal"> <Icon type="home"  className={styles.menu}/><div className={styles["menu-text"]}>首页</div>
         <Link to="/app/v1/cportal"></Link>
       </Menu.Item>
-      <Menu.Item key="menu"> <Icon type="appstore-o"  className={styles.menu}/><div className={styles["menu-text"]}>菜谱</div>
+      <Menu.Item key="menu"> <Icon type="appstore-o" className={styles.menu}/><div className={styles["menu-text"]}>菜谱</div>
         <Link to="/app/v1/menu"></Link>
       </Menu.Item>
-      <Menu.Item key="cart"> <Icon type="shopping-cart" className={styles.menu}/><sup style={{display:totalPurchaseNum===0?'none':'inline'}}>{totalPurchaseNum}</sup>
+      <Menu.Item key="cart">
+        <Badge count={totalPurchaseNum} overflowCount={999} offset={[0,30]}  style={{marginTop:-10}}>
+          <Icon type="profile"className={styles.menu}  style={{marginTop:-10}}/>
+        </Badge>
         <div className={styles["menu-text"]}>订单</div>
         <Link to="/app/v1/cart"></Link>
       </Menu.Item>

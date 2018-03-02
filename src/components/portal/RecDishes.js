@@ -1,5 +1,5 @@
 import React from 'react';
-import {Card, List, Modal} from 'antd';
+import {Card, List, Modal,Avatar} from 'antd';
 import DishDetail from "./DishDetail";
 import styles from './RecDishes.less';
 
@@ -14,15 +14,16 @@ const RecDishes = ({list, loading, showDishDetail,visible, detail, closeDetailDi
           dataSource={list}
           renderItem={item => (
             <List.Item onClick={() => showDishDetail(item.id)}>
-              <Card title={item.name}>
-                <div>
-                  <img width={150} height={150} src={item.pic} alt=""/>
-                </div>
-                <div>
+              <List.Item.Meta
+                avatar={<img width={150} height={150} alt={item.name} src={item.pic}/>}
+                title={<span className={styles.dishname}>{item.name}</span>}
+                description={<div>
                   <div>{item.desc}</div>
-                  <div>&yen;{item.price}&nbsp;销量：{item.saleCount}份</div>
-                </div>
-              </Card>
+                  <div>{item.type.name}&nbsp;月售:&nbsp;{item.saleCount}</div>
+                  <div><span style={{color: 'red'}}>&yen;{item.price}</span>
+                  </div>
+                </div>}
+              />
             </List.Item>
           )}
         />

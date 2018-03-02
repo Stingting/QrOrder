@@ -1,13 +1,22 @@
 .rec-dishes {
+  padding-top: 120px;
   padding-bottom: 56px;
   .title{
+    position: fixed;
+    z-index: 5;
+    width: 100%;
     height: 30px;
+    line-height: 30px;
+    padding-left: 10px;
     font-weight: bold;
     font-size: 14px;
-    padding: 5px;
+    background-color: white;
   }
   .content{
-    max-height: 600px;
-    overflow-y: auto;
+    padding-top: 30px;
+    .dishname {
+      font-weight: bold;
+      font-size: 18px;
+    }
   }
 }
