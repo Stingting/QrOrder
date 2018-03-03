@@ -9,17 +9,58 @@
   background-color: #dddddd;
 }
 .chat-content{
+  max-height: 500px;
   padding-top:60px;
-  padding-bottom: 56px;
+  padding-bottom: 40px;
   overflow-y: auto;
   padding-left: 10px;
-  height: 360px;
-  background-color: #fafafa;
+  .chat-thread {
+  margin: 24px auto 0 auto;
+  padding: 0 18px 0 0;
+  list-style: none;
+  .head-left {
+    float: left;
+    display: inline-block;
+  }
+  .content-left {
+    position: relative;
+    float: left;
+    display: inline-block;
+    padding: 6px 40px 6px 20px;
+    margin: 0 0 20px 10px;
+    font: 16px/20px 'Noto Sans', sans-serif;
+    border-radius: 10px;
+    background-color: rgba(25, 147, 147, 0.2);
+  }
+  .head-right {
+    float: right;
+    display: inline-block;
+  }
+  .content-right {
+    position: relative;
+    float: right;
+    display: inline-block;
+    padding: 6px 40px 6px 20px;
+    margin: 0 10px 20px 0;
+    font: 16px/20px 'Noto Sans', sans-serif;
+    border-radius: 10px;
+    background-color: rgba(25, 147, 147, 0.2);
+  }
+  .time {
+    clear: both;
+    text-align: center;
+    font-size: 10px;
+  }
+}
 }
 
 .chat-input {
-  position: absolute;
+  position: fixed;
+  z-index: 5;
+  height: 40px;
+  background-color: white;
   width: 100%;
+  bottom: 48px;
   .input {
     display: inline-block;
     width: 80%;
@@ -36,43 +77,6 @@
   }
 }
 
-.chat-thread {
-  margin: 24px auto 0 auto;
-  padding: 0 18px 0 0;
-  list-style: none;
-  .head-left {
-    float: left;
-    display: inline-block;
-  }
- .content-left {
-   position: relative;
-   float: left;
-   display: inline-block;
-   padding: 16px 40px 16px 20px;
-   margin: 0 0 20px 10px;
-   font: 16px/20px 'Noto Sans', sans-serif;
-   border-radius: 10px;
-   background-color: rgba(25, 147, 147, 0.2);
- }
-  .head-right {
-    float: right;
-    display: inline-block;
-  }
-  .content-right {
-    position: relative;
-    float: right;
-    display: inline-block;
-    padding: 16px 40px 16px 20px;
-    margin: 0 10px 20px 0;
-    font: 16px/20px 'Noto Sans', sans-serif;
-    border-radius: 10px;
-    background-color: rgba(25, 147, 147, 0.2);
-  }
-  .time {
-    clear: both;
-    text-align: center;
-    font-size: 10px;
-  }
-}
+
 
 

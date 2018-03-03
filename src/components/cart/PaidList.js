@@ -17,8 +17,15 @@ const PaidList = ({paidList,deleteDish,showDishDetail,visible,closeDetailDialog,
                               </Popconfirm>]*/}}>
             <List.Item.Meta
               avatar={<img width={150} height={150} alt={item.name} src={item.pic}/>}
-              title={item.name}
-              description={<div>价格：&yen;{item.price}元，种类：{item.type }，购买数量：{item.saleCount}</div>}
+              title={<span style={{fontWeight: 'bold',fontSize: 16}}>{item.name}</span>}
+              description=
+                {
+                  <div>
+                    <div>{item.desc}</div>
+                    <div>{item.type.name}&nbsp;月售:&nbsp;{item.saleCount}</div>
+                    <div><span style={{color: 'red'}}>&yen;{item.price}</span></div>
+                  </div>
+                }
             />
           </List.Item>
         )}

@@ -4,6 +4,7 @@ import MainLayout from '../components/common/MainLayout';
 import {Divider, Icon,Avatar} from 'antd';
 import styles from './PersonalCenter.less';
 import {routerRedux} from "dva/router";
+import {getSessionStorage} from "../utils/helper";
 
 function PersonalCenter({dispatch, pcenter}) {
 
@@ -52,7 +53,7 @@ function PersonalCenter({dispatch, pcenter}) {
       <div>
         <div className={styles['pcenter-head']} onClick={toUpdateNickname}>
           <div className={styles.head}>
-            <Avatar style={{verticalAlign: 'middle' }} size="large" type="user"></Avatar>
+            <img width={60} height={60} src={getSessionStorage("head")} alt=''/>
           </div>
           <div className={styles.name}>ssssss</div>
           <div className={styles.uname}><Icon type="right" /></div>

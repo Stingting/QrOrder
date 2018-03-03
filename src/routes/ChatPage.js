@@ -48,9 +48,11 @@ function ChatPage({ dispatch , fetch, location, chat}) {
   }
   return (
     <MainLayout>
-      <ChatHead {...chatHeadProps}/>
-      <ChatContent {...chatContentProps}/>
-      <MessageInput {...messageInputProps} handleSend={handleSend} handleChange={handleChange} handleVisibleChange={handleVisibleChange}/>
+      <div>
+        <ChatHead {...chatHeadProps}/>
+        <ChatContent {...chatContentProps}/>
+        <MessageInput {...messageInputProps} handleSend={handleSend} handleChange={handleChange} handleVisibleChange={handleVisibleChange}/>
+      </div>
     </MainLayout>
   );
 }

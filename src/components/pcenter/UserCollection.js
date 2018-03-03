@@ -60,10 +60,10 @@ function UserCollection({dispatch,pcenter,menu}) {
   }
   return (
     <div>
-      <div className={styles['collect-head']}>
-        <span className={styles['head-font']} onClick={collectBack}><Icon type="left"/>我的收藏</span>
+      <div className={styles['collect-head']} onClick={collectBack}>
+       <Icon type="left"/>我的收藏
       </div>
-      <div>
+      <div className={styles['collect-content']}>
         <List
           className={styles["demo-loadmore-list"]}
           loading={loading}
@@ -73,7 +73,7 @@ function UserCollection({dispatch,pcenter,menu}) {
           renderItem={item => (
             <List.Item className={styles.item}  onClick={() => showDishDetail(item.id)} >
               <List.Item.Meta
-                avatar={<img width={150} height={150} alt={item.name} src={item.pic}/>}
+                avatar={<img width={100} height={100} alt={item.name} src={item.pic}/>}
                 title={<span className={styles.dishname}>{item.name}</span>}
                 description={<div>
                   <div>{item.desc}</div>

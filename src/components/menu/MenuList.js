@@ -10,7 +10,7 @@ const MenuList = ({loading, loadingMore, showLoadingMore, data, visible, showDis
 
   //侧边分类栏
   const siderMenu = types.map((key) => (
-    <Menu.Item key={key}>{key}</Menu.Item>
+    <Menu.Item key={key}><span className="nav-text">{key}</span></Menu.Item>
   ));
 
   //选中分类切换菜式
@@ -22,39 +22,42 @@ const MenuList = ({loading, loadingMore, showLoadingMore, data, visible, showDis
       <div className={styles.head}><span>本店菜谱</span></div>
         <div style={{paddingTop:50}}>
           <Layout>
-            <Sider width={100} style={{ background: '#fff',overflowY:'auto'}}>
+            <Sider width={100} style={{ overflow: 'auto', height: '100vh', position: 'fixed', left: 0 ,background: '#fff'}}>
               <Menu
+                style={{borderRight:0}}
                 theme='light'
+                mode="inline"
                 onClick={handleTypeClick}
                 selectedKeys={[currentType]}>
                 {siderMenu}
               </Menu>
             </Sider>
-            <Content>
-            <div className={styles.content}>
-              <div className={styles["dish-head"]}>{currentType}</div>
-              <div className={styles["dish-content"]}>
-              <List
-                itemLayout="horizontal"
-                dataSource={currentDishes}
-                size="middle"
-                renderItem={item => (
-                  <List.Item className={styles.item}  onClick={() => showDishDetail(item.id)} >
-                    <List.Item.Meta
-                      avatar={<img width={150} height={150} alt={item.name} src={item.pic}/>}
-                      title={<span className={styles.dishname}>{item.name}</span>}
-                      description={<div>
-                        <div>{item.desc}</div>
-                        <div>{item.type.name}&nbsp;月售:&nbsp;{item.saleCount}</div>
-                        <div><span style={{color: 'red'}}>&yen;{item.price}</span>
-                        </div>
-                      </div>}
-                    />
-                  </List.Item>
-                )}
-              />
+            <Content  style={{marginLeft:100}}>
+              <div className={styles.content}>
+                <div className={styles["dish-head"]}>{currentType}</div>
+                <div className={styles["dish-content"]}>
+                <List
+                  itemLayout="horizontal"
+                  dataSource={currentDishes}
+                  size="middle"
+                  split={false}
+                  renderItem={item => (
+                    <List.Item className={styles.item}  onClick={() => showDishDetail(item.id)} >
+                      <List.Item.Meta
+                        avatar={<img width={100} height={100} alt={item.name} src={item.pic}/>}
+                        title={<span className={styles.dishname}>{item.name}</span>}
+                        description={<div>
+                          <div>{item.desc}</div>
+                          <div>{item.type.name}&nbsp;月售:&nbsp;{item.saleCount}</div>
+                          <div><span style={{color: 'red'}}>&yen;{item.price}</span>
+                          </div>
+                        </div>}
+                      />
+                    </List.Item>
+                  )}
+                />
+                </div>
               </div>
-            </div>
           </Content>
         </Layout>
       </div>

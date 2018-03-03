@@ -16,7 +16,7 @@ const UnpaidList = ({unpaidData,price,toOrderDetail}) => {
           <List.Item>
             <List.Item.Meta
               avatar={<img width={150} height={150} alt={item.name} src={item.pic}/>}
-              title={item.name}
+              title={<span className={styles.dishname}>{item.name}</span>}
               description={
                 <div>
                   <div>{item.desc}</div>
