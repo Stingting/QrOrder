@@ -13,7 +13,7 @@ function OrderDetail ({dispatch,location,cart}) {
   const orderDetailContent = detailList.map((item,key) => (
     <div className={styles["detail-content"]}>
       <div className={styles.tip}>
-        <div className={styles.tip1}>用餐人数：{item.personNum}人&nbsp;餐桌号：{item.tableName}</div>
+        <div className={styles.tip1}>餐桌号：{item.tableName}&nbsp;&nbsp;用餐人数：{item.personNum}人</div>
         {/*<div className={styles.tip2}>备注：{item.remark}</div>*/}
       </div>
       <Divider/>
@@ -24,13 +24,13 @@ function OrderDetail ({dispatch,location,cart}) {
           <List.Item>
             <List.Item.Meta
               avatar={<img width={150} height={150} alt={item.name} src={item.pic}/>}
-              title={item.name}
-              description={
-                <div>
-                  <div>{item.desc}</div>
-                  <div>价格：&yen;{item.price}, &nbsp;购买数量：{item.saleCount}</div>
+              title={<span className={styles.dishname}>{item.name}</span>}
+              description={<div>
+                <div>{item.desc}</div>
+                <div>{item.type.name}&nbsp;月售:&nbsp;{item.saleCount}</div>
+                <div><span style={{color: 'red'}}>&yen;{item.price}</span>
                 </div>
-              }
+              </div>}
             />
           </List.Item>
         )}
@@ -52,9 +52,7 @@ function OrderDetail ({dispatch,location,cart}) {
 
   return (
     <div>
-      <div className={styles["detail-head"]}>
-        <span onClick={backToUnpaidList} className={styles["head-font"]}><Icon type="left"/>订单详情</span>
-      </div>
+      <div className={styles["detail-head"]} onClick={backToUnpaidList}><Icon type="left"/>订单详情</div>
       <div>
         {orderDetailContent}
       </div>
