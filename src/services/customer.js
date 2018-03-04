@@ -189,10 +189,10 @@ export function changePurchaseNum(num,foodId,id,type) {
 //确认订单
 export function confirmOrder(food, merchantId, personNum, tableNum) {
   const params = {
-    // food:JSON.stringify(food),
-    food:"[{\"id\": 1107,\"num\": 1,\"type\": \"\"},{\"id\": 1102,\"num\": 2,\"type\": \"\"}]",
+    food:JSON.stringify(food),
+    // food:"[{\"id\": 1107,\"num\": 1,\"type\": \"\"},{\"id\": 1102,\"num\": 2,\"type\": \"\"}]",
     id:merchantId,
-    personNum:4, //todo , 这里先写死，扫码中会包含人数，后面处理
+    personNum:personNum,
     tableId:tableNum
   };
   return request(`/v1/order/${merchantId}`, {

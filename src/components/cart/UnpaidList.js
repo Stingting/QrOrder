@@ -1,13 +1,15 @@
 import React from 'react';
-import {Button, List} from 'antd';
+import {Button, List,Select,Divider} from 'antd';
 import styles from './UnpaidList.less';
 
-const UnpaidList = ({unpaidData,price,toOrderDetail}) => {
+const Option = Select.Option;
+
+const UnpaidList = ({unpaidData,price,toOrderDetail,handlePersonNumChange}) => {
 
   const unpaidList = new Array();
   unpaidList.push(unpaidData);
   const unpaidContent = unpaidList.map((item,key) => (
-    <div className={styles.item}>
+    <div className={styles.item} key={key}>
       {/*<p className={styles.split}>/!*订单号：{item.id}*!/</p>*/}
       <List
         itemLayout="horizontal"
@@ -15,29 +17,49 @@ const UnpaidList = ({unpaidData,price,toOrderDetail}) => {
         renderItem={item => (
           <List.Item>
             <List.Item.Meta
-              avatar={<img width={150} height={150} alt={item.name} src={item.pic}/>}
+              avatar={<img width={80} height={80} alt={item.name} src={item.pic}/>}
               title={<span className={styles.dishname}>{item.name}</span>}
               description={
                 <div>
-                  <div>{item.desc}</div>
-                  <div>{item.type.name}&nbsp;月售:&nbsp;{item.saleCount}</div>
-                  <div><span style={{color: 'red'}}>&yen;{item.price}</span></div>
+                  &times;{item.num}
                 </div>
                 }
             />
+            <div>&yen;{item.price}</div>
           </List.Item>
         )}
       />
-      <div className={styles.bottom}>
-        <span>总价：&yen;{price} &nbsp;&nbsp;</span>
-        <Button type="danger" onClick={()=>toOrderDetail()}>确认订单</Button>
-      </div>
     </div>
   ));
+
+  const maxPersonNum=20;
+  const listOptions = () => {
+    const res = [];
+    for(let i = 1; i <= maxPersonNum; i++) {
+      res.push(<Option value={i} key={i}>{i}人</Option>)
+    }
+    return res
+  };
+
   return (
     <div className={styles["unpaid-list"]}>
       <div className={styles.content}>
         {unpaidContent}
+      </div>
+      <Divider dashed={true}/>
+      <div className={styles.option}>
+        用餐人数：
+        <Select
+          placeholder="选择用餐人数"
+          style={{ width: '80%' }}
+          onChange={(value)=>handlePersonNumChange(value)}>
+          {listOptions()}
+        </Select>
+      </div>
+      <Divider dashed={true}/>
+      <div className={styles.bottom}>
+        <span>合计：&yen;{price} &nbsp;&nbsp;</span>
+        <Button type="danger" onClick={()=>toOrderDetail()}>确认订单</Button>
       </div>
     </div>
   );

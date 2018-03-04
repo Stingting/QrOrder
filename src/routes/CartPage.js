@@ -93,6 +93,16 @@ function CartPage({ dispatch , fetch, location, scan, cart,menu}) {
     })
   }
 
+  /**
+   * 选择用餐人数
+   */
+  function handlePersonNumChange(personNum) {
+    console.log(`用餐人数：${personNum}`);
+    dispatch({
+      type:'cart/handlePersonNumChange',
+      personNum:personNum
+    })
+  }
   return (
     <MainLayout>
         <div className={cartStyles['cart-head']}>
@@ -101,7 +111,7 @@ function CartPage({ dispatch , fetch, location, scan, cart,menu}) {
         <div className={cartStyles.tab}>
           <Tabs defaultActiveKey={activeKey} onChange={getPayList}>
             <TabPane tab="未支付" key="1">
-              <UnpaidList {...unpaidListProps} toOrderDetail={toOrderDetail}/>
+              <UnpaidList {...unpaidListProps} toOrderDetail={toOrderDetail} handlePersonNumChange={handlePersonNumChange}/>
             </TabPane>
             <TabPane tab="已支付" key="2">
               <PaidList {...paidListProps}

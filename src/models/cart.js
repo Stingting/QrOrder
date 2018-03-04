@@ -17,7 +17,8 @@ export default {
     totalPerson:0,
     totalPrice: 0,
     totalCount: 0,
-    detail:{} //订单详情
+    detail:{}, //订单详情
+    personNum:null //用餐人数
   },
 
   subscriptions: {
@@ -69,24 +70,30 @@ export default {
     },
     *toOrderDetail({payload}, {call,put,select}) {
       const foods = yield select(state =>state.cart.unpaidData);
+      const personNum = yield select(state=>state.cart.personNum);
+      if(personNum==null || personNum==undefined||personNum=='') {
+        message.warn("请选择用餐人数！",2);
+      }
       //确认订单
-      const params = [];
-      foods.map(function(food){
-        const obj = {
-          id:food.id,
-          type:food.type,
-          num:food.num
-        };
-        params.push(obj);
-      });
-      const {data} = yield call(confirmOrder, params,getSessionStorage("merchantId"), getSessionStorage("personNum"), getSessionStorage("tableNum"));
-      if(data.isOk) {
-        yield put(routerRedux.push({
-          pathname: '/app/v1/cart/orderdetail',
-          params: {
-            orderId: data.id
-          },
-        }));
+      else {
+        const params = [];
+        foods.map(function (food) {
+          const obj = {
+            id: food.id,
+            type: food.type,
+            num: food.num
+          };
+          params.push(obj);
+        });
+        const {data} = yield call(confirmOrder, params, getSessionStorage("merchantId"),  personNum, getSessionStorage("tableNum"));
+        if (data) {
+          yield put(routerRedux.push({
+            pathname: '/app/v1/cart/orderdetail',
+            params: {
+              orderId: data.id
+            },
+          }));
+        }
       }
     },
 
@@ -121,6 +128,10 @@ export default {
       return {...state, ...payload};
     },
     showOrderDetail(state, payload) {
+      return {...state, ...payload};
+    },
+    handlePersonNumChange(state,payload) {
+      state.personNum = payload.personNum;
       return {...state, ...payload};
     }
   },
