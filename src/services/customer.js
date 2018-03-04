@@ -82,7 +82,7 @@ export function getChatRoomInfo(merchantId, tableNum) {
  * @returns {Object}
  */
 export function getChatRecord(merchantId, tableNum) {
-  return request(`/v1/customer/chatRecord/${merchantId}/${tableNum}`, {
+  return request(`/v1/chat/${merchantId}/table/${tableNum}`, {
     method:'get',
     headers:{
       authorization:getSessionStorage("token")

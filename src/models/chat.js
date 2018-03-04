@@ -3,6 +3,7 @@ import mqttClient from '../utils/mqttUtil';
 import {getMenu, getChatRoomInfo,getChatRecord} from "../services/customer";
 import {getLocalStorage,getSessionStorage} from "../utils/helper";
 import moment from 'moment';
+import uuid from 'uuid';
 
 export default {
 
@@ -27,14 +28,15 @@ export default {
           //获取聊天室信息
           // dispatch({type: 'getChatRoomInfo'});
           //获取聊天记录
-          // dispatch({type: 'getChatRecord'});
+          dispatch({type: 'getChatRecord'});
           //进入聊天页面时清空未读条数
           dispatch({type:'clearUnReadCount'});
         }
         //连接mqtt服务
         mqttClient.getInstance().on('connect', function () {
-          //订阅主题：order_system/2/2/chat, order_system/business_id/table_id/chat
-          const topic = `order_system/${getSessionStorage("merchantId")}/${getSessionStorage("tableNum")}/chat`;
+          //订阅主题： orderSystem/2/2/chat,  orderSystem/business_id/table_id/chat
+          const topic = `orderSystem/${getSessionStorage("merchantId")}/${getSessionStorage("tableNum")}/chat`;
+          console.log(`订阅的主题：${topic}`);
           mqttClient.getInstance().subscribe(topic);
           mqttClient.getInstance().on('message', function (topic, message) {
             // message is Buffer
@@ -72,10 +74,17 @@ export default {
     },
     *getChatRecord({payload}, {call,put}) {
       const {data} = yield call(getChatRecord, getSessionStorage("merchantId"), getSessionStorage("tableNum"));
-      yield put({
-        type:'refreshChatMsg',
-        chatRecords:data.data
-      });
+      if(data) {
+        const chatRecords = [];
+        data.data.map((item,key) => (
+             chatRecords.push(item.data)
+        ));
+        console.log(`聊天记录：${JSON.stringify(chatRecords)}`);
+        yield put({
+          type: 'refreshChatMsg',
+          chatRecords: chatRecords
+        });
+      }
     }
   },
 
@@ -86,15 +95,21 @@ export default {
     handleSend(state, payload) {
       //添加发送内容
       const msg = {
-        time:moment(new Date()).format('YYYY-MM-DD HH:mm:ss'),
+        msgId:uuid.v4(),
+        time:new Date().getTime(),
         head:getSessionStorage("head"),
         content:payload.msg,
         userId:getSessionStorage("userId"),
         nickName:getSessionStorage("nickName")
       };
+      const sendMsg = {
+        data:msg,
+        dataType: "text",
+        action:"say"
+      };
       //发送string 或 Buffer 类型
-      const topic = `order_system/${getSessionStorage("merchantId")}/${getSessionStorage("tableNum")}/chat`;
-      mqttClient.getInstance().publish(topic, JSON.stringify(msg));
+      const topic = `orderSystem/${getSessionStorage("merchantId")}/${getSessionStorage("tableNum")}/chat`;
+      mqttClient.getInstance().publish(topic, JSON.stringify(sendMsg));
       //发送后清空发送文本框内容
       state.sendContent = "";
       state.visible=false;
@@ -105,7 +120,10 @@ export default {
       return{...state, ...payload};
     },
     setChatMessage(state, payload) {
-      state.sendMessages.push(JSON.parse(payload.chatMsg));
+      const msg = JSON.parse(payload.chatMsg);
+      if(msg) {
+        state.sendMessages.push(msg.data);
+      }
       return{...state, ...payload}
     },
     addUnreadCount(state, payload) {
