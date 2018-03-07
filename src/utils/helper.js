@@ -37,3 +37,12 @@ export function getSessionStorage(key) {
   return value;
 }
 
+/**
+ * 判断是否为空对象
+ * @param obj
+ * @returns {boolean}
+ */
+export function isEmptyObject(obj){
+  for(var n in obj){return false}
+  return true;
+}

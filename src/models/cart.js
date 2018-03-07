@@ -60,12 +60,14 @@ export default {
         })
       } else {
         const {data} = yield call(getUnPaidList, getSessionStorage("merchantId"));
-        yield put({
-          type :'refreshPayList',
-          unpaidData:data.data.list,
-          price:data.data.price,
-          count:data.data.count
-        })
+        if(data) {
+          yield put({
+            type: 'refreshPayList',
+            unpaidData: data.data.list,
+            price: data.data.price,
+            count: data.data.count
+          })
+        }
       }
     },
     *toOrderDetail({payload}, {call,put,select}) {

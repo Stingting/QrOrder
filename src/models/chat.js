@@ -76,14 +76,16 @@ export default {
       const {data} = yield call(getChatRecord, getSessionStorage("merchantId"), getSessionStorage("tableNum"));
       if(data) {
         const chatRecords = [];
-        data.data.map((item,key) => (
-             chatRecords.push(item.data)
-        ));
-        console.log(`聊天记录：${JSON.stringify(chatRecords)}`);
-        yield put({
-          type: 'refreshChatMsg',
-          chatRecords: chatRecords
-        });
+        if(data.data!=null && data.data.length>0) {
+          data.data.map((item, key) => (
+            chatRecords.push(item.data)
+          ));
+          console.log(`聊天记录：${JSON.stringify(chatRecords)}`);
+          yield put({
+            type: 'refreshChatMsg',
+            chatRecords: chatRecords
+          });
+        }
       }
     }
   },
