@@ -205,5 +205,21 @@ export function confirmOrder(food, merchantId, personNum, tableNum) {
   })
 }
 
+/**
+ * 加入餐桌, 清桌
+ * status 3:加入, 4:清理
+ * @param params
+ * @returns {Object}
+ */
+export function addOrCleanTable(params) {
+  return request(`/v1/table/${params.merchantId}/status/${params.tableId}`, {
+    method :'PUT',
+    headers: {
+      authorization:getSessionStorage("token"),
+      "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+    },
+    body:qs.stringify(params)
+  })
+}
 
 
