@@ -4,7 +4,10 @@ import {connect} from 'dva';
 import RecDishes from "../components/portal/RecDishes";
 import MerchantDesc from "../components/portal/MerchantDesc";
 import MainLayout from '../components/common/MainLayout';
-import {Layout} from 'antd';
+import {Layout,Modal,Button, Form, Input} from 'antd';
+import EditPersonNum from '../components/portal/EditPersonNum';
+
+const FormItem = Form.Item;
 
 const { Header, Content, Footer, Sider} = Layout;
 
@@ -51,6 +54,27 @@ function Portal({ dispatch , fetch, location, recDishes,menu}) {
       dishType:dishType
     })
   }
+
+  /**
+   * 关闭用餐人数填写框
+   */
+  function closeDialog() {
+    dispatch({
+      type:'recDishes/closeDialog'
+    })
+  }
+
+  /**
+   * 加入餐桌
+   * @param personNum
+   */
+  function joinTable(personNum) {
+    dispatch({
+      type:'recDishes/joinTable',
+      personNum:personNum
+    })
+  }
+
   const {
     loading, list, name,pic,desc
   } = recDishes;
@@ -58,6 +82,8 @@ function Portal({ dispatch , fetch, location, recDishes,menu}) {
   const {
     visible,detail
   } = menu;
+
+  const {addPersonNumModalVisible} = recDishes;
 
   const merchantProps = {
     name,
@@ -79,6 +105,18 @@ function Portal({ dispatch , fetch, location, recDishes,menu}) {
           addToCart={addToCart}
           reduceToCart={reduceToCart}>
         </RecDishes>
+        <Modal
+          title="填写用餐人数"
+          maskClosable={false}
+          closable={false}
+          visible={addPersonNumModalVisible}
+          mask={true}
+          maskStyle={{backgroundColor: 'rgba(232,230,225,0.5)'}}
+          footer={null}
+          onOk={() => closeDialog(true)}
+          onCancel={() => closeDialog(true)}>
+          <EditPersonNum joinTable={joinTable}/>
+        </Modal>
     </MainLayout>
   );
 }

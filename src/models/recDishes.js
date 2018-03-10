@@ -1,5 +1,5 @@
-import {getMerchantInfo} from '../services/customer';
-import {getSessionStorage} from "../utils/helper";
+import {getMerchantInfo,addOrCleanTable} from '../services/customer';
+import {getSessionStorage,setSessionStorage,isObject} from "../utils/helper";
 
 export default {
   namespace : 'recDishes',
@@ -11,12 +11,21 @@ export default {
     pic:[], //商家图片
     list: [], //初始化推荐菜单列表
     loading : false,//控制加载状态
+    addPersonNumModalVisible:false
   },
   reducers: {
     showLoading(state, payload) {
       return {...state, ...payload};
     },
     showDishList(state, payload) {
+      return {...state, ...payload};
+    },
+    setPersonNumModalVisible(state, payload) {
+      state.addPersonNumModalVisible = true;
+      return {...state, ...payload};
+    },
+    closeDialog(state,payload) {
+      state.addPersonNumModalVisible = false;
       return {...state, ...payload};
     }
   },
@@ -44,15 +53,36 @@ export default {
         })
       }
     },
+    *joinTable({personNum}, {put,call}) {
+       const params = {
+          merchantId:getSessionStorage("merchantId"),
+          status:3,
+          tableId:getSessionStorage("tableNum"),
+          personNum:personNum
+       };
+       const {data} = yield call(addOrCleanTable,params);
+       if(data&&data.isOk) {
+         setSessionStorage("personNum", personNum);
+         console.log(`加入餐桌成功！`);
+         yield put({
+           type:'closeDialog'
+         })
+       }
+    }
   }
 ,
   subscriptions: {
     setup({ dispatch,history }){
       //监听，当进入pathname时，触发`getMerchantInfo` action
       return history.listen(({ pathname,search})=>{
-        //进入首页时触发的操作
+        //进入首页时获取商家信息
         if(pathname.includes('/app/v1/cportal')) {
           dispatch({type: 'getMerchantInfo'});
+        }
+        //进入首页时填写用餐人数后加入餐桌
+        if(pathname.includes('/app/v1/cportal') && !isObject(getSessionStorage("personNum"))) {
+            //弹出人数填写框加入餐桌
+            dispatch({type:'setPersonNumModalVisible'});
         }
       });
     }

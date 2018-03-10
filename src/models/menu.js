@@ -63,14 +63,14 @@ export default {
     *addToCart({dishId, dishType}, {call, put, select}) {
       yield put({type: 'addPurchaseNum'});
       const selectedCount = yield select(state => state.menu.detail.selectedCount);
-      const {data} = yield call(changePurchaseNum, selectedCount,dishId,getSessionStorage("merchantId"),dishType);
+      const {data} = yield call(changePurchaseNum, selectedCount,dishId,getSessionStorage("merchantId"),dishType,getSessionStorage("tableNum"));
 
     },
 
     *reduceToCart({dishId,dishType}, {call,put,select}) {
       yield put({type: 'reducePurchaseNum'});
       const selectedCount = yield select(state => state.menu.detail.selectedCount);
-      const {data} = yield call(changePurchaseNum, selectedCount,dishId,getSessionStorage("merchantId"),dishType);
+      const {data} = yield call(changePurchaseNum, selectedCount,dishId,getSessionStorage("merchantId"),dishType,getSessionStorage("tableNum"));
     },
 
     *changeCollect({isCollect,foodId}, {call, put,select}) {

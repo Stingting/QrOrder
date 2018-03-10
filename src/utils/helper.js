@@ -39,6 +39,18 @@ export function getSessionStorage(key) {
 
 /**
  * 判断是否为空对象
+ * @param value
+ * @returns {boolean}
+ */
+export function isObject(value) {
+  if(value==='undefined' || value===undefined || value==null||value==='') {
+    return false;
+  }
+  return true;
+}
+
+/**
+ * 判断是否为空对象
  * @param obj
  * @returns {boolean}
  */
@@ -46,3 +58,5 @@ export function isEmptyObject(obj){
   for(var n in obj){return false}
   return true;
 }
+
+

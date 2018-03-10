@@ -169,14 +169,15 @@ export function changeCollect(dishId, merchantId, isCollect) {
 
 
 //加入购物车、增加、减少购买数量
-export function changePurchaseNum(num,foodId,id,type) {
+export function changePurchaseNum(num,foodId,id,type,tableId) {
   const params = {
     foodId:foodId,
     id:id,
     num:num,
-    type:type
+    type:type,
+    tableId:tableId
   };
-  return request(`v1/shopping/${id}`, {
+  return request(`v1/shopping/${id}/table/${tableId}`, {
     method:'PUT',
     headers:{
       authorization:getSessionStorage("token"),
@@ -212,7 +213,7 @@ export function confirmOrder(food, merchantId, personNum, tableNum) {
  * @returns {Object}
  */
 export function addOrCleanTable(params) {
-  return request(`/v1/table/${params.merchantId}/status/${params.tableId}`, {
+  return request(`/v1/table/${params.merchantId}`, {
     method :'PUT',
     headers: {
       authorization:getSessionStorage("token"),
