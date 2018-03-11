@@ -32,6 +32,9 @@ function OrderDetail ({dispatch,location,cart}) {
                 </div>
               </div>}
             />
+            <div>
+              &times;{item.num}
+            </div>
           </List.Item>
         )}
       />

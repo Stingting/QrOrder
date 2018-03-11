@@ -22,11 +22,16 @@ const UnpaidList = ({unpaidData,price}) => {
               title={<span className={styles.dishname}>{item.name}</span>}
               description={
                 <div>
-                  &times;{item.num}
+                  <div>{item.desc}</div>
+                  <div>{item.type.name}&nbsp;月售:&nbsp;{item.saleCount}</div>
+                  <div><span style={{color: 'red'}}>&yen;{item.price}</span>
+                  </div>
                 </div>
-                }
+              }
             />
-            <div>&yen;{item.price}</div>
+          <div>
+            &times;{item.num}
+          </div>
           </List.Item>
         )}
       />

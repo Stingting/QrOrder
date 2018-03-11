@@ -95,10 +95,11 @@ export function getChatRecord(merchantId, tableNum) {
  * 获取已支付订单列表
  * @param merchantId
  * @param tableNum
+*  @param status 1 : 未支付， 2：已支付， 10：所有
  * @returns {Object}
  */
-export function getPaidList(merchantId,tableNum) {
-  return request(`/v1/order/${merchantId}/table/${tableNum}`, {
+export function getPaidList(merchantId,tableNum,status) {
+  return request(`/v1/order/${merchantId}/table/${tableNum}?status=${status}`, {
     method:'get',
     headers: {
       authorization:getSessionStorage("token")
@@ -111,7 +112,7 @@ export function getPaidList(merchantId,tableNum) {
  * @param merchantId
  * @param tableNum
  * @param status 1 : 未支付， 2：已支付， 10：所有
- * @returns {Object} /v1/order/227/table/88?status=2
+ * @returns {Object}
  */
 export function getUnPaidList(merchantId,tableNum,status) {
   return request(`/v1/order/${merchantId}/table/${tableNum}?status=${status}`, {

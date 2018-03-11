@@ -11,21 +11,20 @@ const CartList = ({confirmOrder,cartList,addToCartForCart,reduceToCartForCart}) 
       title: '菜名',
       dataIndex: 'name',
       key: 'name',
-      width: 30
+      width: '30%'
     }, {
       title: '价格',
       dataIndex: 'price',
-      width: 30,
       key: 'price',
       render: (text, record) => (
         <span key={text}>&yen;{text}</span>
-      )
+      ),
+      width: '40%',
     },
       {
         title: '操作',
         dataIndex: 'id',
         key: 'id',
-        width: 30,
         render: (text, record) => (
           <div>
             <span className={styles.addorplus} style={{display:userId === getSessionStorage("userId")?'inline':'none'}}>
@@ -38,7 +37,8 @@ const CartList = ({confirmOrder,cartList,addToCartForCart,reduceToCartForCart}) 
               <span className={styles.count}> &times;{record.num}</span>
             </span>
           </div>
-        )
+        ),
+        width: '30%',
       }];
     return columns;
   }

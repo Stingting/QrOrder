@@ -27,6 +27,9 @@ const PaidList = ({paidList,deleteDish,showDishDetail,visible,closeDetailDialog,
                   </div>
                 }
             />
+            <div>
+              &times;{item.num}
+            </div>
           </List.Item>
         )}
       />
