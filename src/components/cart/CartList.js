@@ -19,7 +19,7 @@ const CartList = ({confirmOrder,cartList,addToCartForCart,reduceToCartForCart}) 
       render: (text, record) => (
         <span key={text}>&yen;{text}</span>
       ),
-      width: '40%',
+      width: '30%',
     },
       {
         title: '操作',
@@ -38,7 +38,7 @@ const CartList = ({confirmOrder,cartList,addToCartForCart,reduceToCartForCart}) 
             </span>
           </div>
         ),
-        width: '30%',
+        width: '40%',
       }];
     return columns;
   }
