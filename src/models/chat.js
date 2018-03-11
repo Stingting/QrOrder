@@ -26,7 +26,7 @@ export default {
         //进入聊天页面时触发的操作
         if(pathname.includes('/app/v1/chat')) {
           //获取聊天室信息
-          // dispatch({type: 'getChatRoomInfo'});
+          dispatch({type: 'getChatRoomInfo'});
           //获取聊天记录
           dispatch({type: 'getChatRecord'});
           //进入聊天页面时清空未读条数
@@ -66,10 +66,8 @@ export default {
       const {data} = yield call(getChatRoomInfo, getSessionStorage("merchantId"), getSessionStorage("tableNum"));
       yield put({
         type: 'showChatRoomInfo' ,
-        count : data.count,
-        num: data.num,
-        remark:data.remark,
-        words:data.words
+        count : data.data.personNum,
+        num: data.data.id
       });
     },
     *getChatRecord({payload}, {call,put}) {

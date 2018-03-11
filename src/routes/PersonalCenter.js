@@ -9,6 +9,15 @@ import {getSessionStorage} from "../utils/helper";
 function PersonalCenter({dispatch, pcenter}) {
 
   /**
+   * 跳转购物车页面
+   */
+  function toCartPage() {
+      dispatch({
+        type:'pcenter/toCartPage'
+      });
+  }
+
+  /**
    * 跳转收藏列表页面
    */
   function toCollectPage() {
@@ -60,6 +69,10 @@ function PersonalCenter({dispatch, pcenter}) {
         </div>
         <div className={styles['pcenter-content']}>
           <ul>
+            <li onClick={toCartPage}>
+              <Icon type="profile" className={styles['icon-collect']}/><span className={styles.title}>我的订单</span>
+            </li>
+            <Divider/>
             <li onClick={toCollectPage}>
               <Icon type="star" className={styles['icon-collect']}/><span className={styles.title}>我的收藏</span>
             </li>

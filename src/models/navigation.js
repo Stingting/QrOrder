@@ -1,4 +1,3 @@
-
 export default {
 
   namespace: 'navigation',
@@ -13,16 +12,14 @@ export default {
   },
 
   effects: {
-    *fetch({ payload }, { call, put }) {  // eslint-disable-line
-      yield put({ type: 'save' });
-    },
+
   },
 
   reducers: {
     setCurrentKey(state, payload) {
       state.current = payload.current;
       return { ...state, ...payload };
-    },
+    }
   },
 
 };

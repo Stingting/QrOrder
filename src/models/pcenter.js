@@ -25,11 +25,13 @@ export default {
   },
 
   effects: {
-    *toCollectPage({ payload }, { call, put }) {  // eslint-disable-line
+    *toCartPage({ payload }, { call, put }) {
+      yield put(routerRedux.push('/app/v1/cart', payload));
+    },
+    *toCollectPage({ payload }, { call, put }) {
       yield put(routerRedux.push('/app/v1/user/collect', payload));
     },
-
-    *about({ payload }, { call, put }) {  // eslint-disable-line
+    *about({ payload }, { call, put }) {
       yield put(routerRedux.push('/app/v1/user/about', payload));
     },
     *getCollectList({payload}, {call, put, select}) {

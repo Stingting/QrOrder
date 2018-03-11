@@ -111,7 +111,7 @@ function Portal({ dispatch , fetch, location, recDishes,menu}) {
           closable={false}
           visible={addPersonNumModalVisible}
           mask={true}
-          maskStyle={{backgroundColor: 'rgba(232,230,225,0.5)'}}
+          maskStyle={{backgroundColor: 'rgba(240, 240, 245,0.5)'}}
           footer={null}
           onOk={() => closeDialog(true)}
           onCancel={() => closeDialog(true)}>

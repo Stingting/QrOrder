@@ -6,7 +6,7 @@ const FormItem = Form.Item;
 const EditPersonNum = ({form:{getFieldDecorator,validateFields},joinTable}) => {
 
   const formItemLayout ={
-    labelCol: { span: 4 },
+    labelCol: { span: 8 },
     wrapperCol: { span: 8},
   };
 
@@ -19,7 +19,7 @@ const EditPersonNum = ({form:{getFieldDecorator,validateFields},joinTable}) => {
     validateFields((err, values) => {
       if (!err) {
         //加入餐桌
-        joinTable(values);
+        joinTable(values.personNum);
       }
     });
   }

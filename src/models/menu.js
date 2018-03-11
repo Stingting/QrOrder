@@ -73,6 +73,31 @@ export default {
       const {data} = yield call(changePurchaseNum, selectedCount,dishId,getSessionStorage("merchantId"),dishType,getSessionStorage("tableNum"));
     },
 
+    *addToCartForCart({dish}, {call, put, select}) {
+      yield put({type: 'addCartPurchaseNum'});
+      let num = dish.num +1;
+      const {data} = yield call(changePurchaseNum,num,dish.id,getSessionStorage("merchantId"),dish.type,getSessionStorage("tableNum"));
+      if(data&&data.isOk) {
+          //刷新购车列表
+        yield put({
+          type:'cart/getCartList'
+        })
+      }
+    },
+
+    *reduceToCartForCart({dish}, {call,put,select}) {
+      yield put({type: 'reduceCartPurchaseNum'});
+      let num = dish.num - 1;
+      const {data} = yield call(changePurchaseNum, num, dish.id, getSessionStorage("merchantId"), dish.type, getSessionStorage("tableNum"));
+      if(data&&data.isOk) {
+        //刷新购车列表
+        yield put({
+          type:'cart/getCartList'
+        })
+      }
+
+    },
+
     *changeCollect({isCollect,foodId}, {call, put,select}) {
       yield put({
           type:'changeCollectState',
@@ -115,10 +140,23 @@ export default {
       state.totalPurchaseNum--;
       return {...state,payload}
     },
+    addCartPurchaseNum(state, payload) {
+      state.totalPurchaseNum++;
+      return {...state, payload}
+    },
+    reduceCartPurchaseNum(state,payload) {
+      state.totalPurchaseNum--;
+      return {...state,payload}
+    },
     changeCurrentType(state,payload) {
       const currentType = payload.key;
       state.currentType = currentType;
       state.currentDishes = state.data[currentType];
+      return {...state, ...payload};
+    },
+    cleanPurchaseNum(state,payload) {
+      console.log(`已经下单，清空购买数量了`);
+      state.totalPurchaseNum = 0;
       return {...state, ...payload};
     }
   },

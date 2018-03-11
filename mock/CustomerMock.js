@@ -3,7 +3,7 @@ import {getDishDetail} from "../src/services/customer";
 const Mock=require('mockjs');
 module.exports={
   //获取商家信息
-  [`POST /v1/customer/home/`](req,res){
+  [`POST /v1/home/`](req,res){
     const data = Mock.mock({
       "count": 50774,
       "data|1-20": [
@@ -24,7 +24,7 @@ module.exports={
   },
 
   //获取菜单列表
-  [`POST /v1/customer/menu/`](req,res){
+  [`POST /v1/menu/`](req,res){
     const data = Mock.mock({
       "count": 16523,
       "data|1-20": [
@@ -45,14 +45,18 @@ module.exports={
   //获取菜式详情
   [`POST /v1/customer/menu/detail`](req,res){
     const data = Mock.mock({
-      "count": 0,
+      "data": {
       "desc|0-30": "简介",
-      "name|1-5": "菜名",
-      "pic": "@IMAGE(200x200, @color,@name)",
-      "price": 42353,
-      "saleCount": 73500,
-      "type|1-2": "种类",
-      "isCollect":false //用户是否已经收藏该菜式的标识
+        "id": 50772,
+        "isCollect": false,
+        "isRecommend": true,
+        "name|1-5": "菜名",
+        "num": 65232,
+        "pic": "@IMAGE(200x200, @color,@name)",
+        "price": 52002,
+        "saleCount": 24454,
+        "type|1-2": "种类"
+    }
     });
     res.json(data);
   },

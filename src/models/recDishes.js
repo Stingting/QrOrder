@@ -64,6 +64,7 @@ export default {
        if(data&&data.isOk) {
          setSessionStorage("personNum", personNum);
          console.log(`加入餐桌成功！`);
+         console.log(`当前餐桌用餐人数：${getSessionStorage("personNum")}`);
          yield put({
            type:'closeDialog'
          })

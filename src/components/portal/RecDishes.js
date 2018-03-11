@@ -15,7 +15,7 @@ const RecDishes = ({list, loading, showDishDetail,visible, detail, closeDetailDi
           renderItem={item => (
             <List.Item onClick={() => showDishDetail(item.id)}>
               <List.Item.Meta
-                avatar={<img width={150} height={150} alt={item.name} src={item.pic}/>}
+                avatar={<img width={100} height={100} alt={item.name} src={item.pic}/>}
                 title={<span className={styles.dishname}>{item.name}</span>}
                 description={<div>
                   <div>{item.desc}</div>

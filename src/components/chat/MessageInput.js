@@ -4,6 +4,7 @@ import styles from './Chat.less';
 const FormItem = Form.Item;
 
 const MessageInput = ({sendContent, handleSend, handleChange,words,visible,handleVisibleChange}) => {
+  words = ['你好！', '迟点给你答复'] ;//先写死，由前端缓存，不从后台缓存
   const content = words.map(d => <p key={d} className={styles["quick-send"]} onClick={()=>handleSend(d)}>{d}</p>);
   return (
     <div className={styles["chat-input"]}>
@@ -20,7 +21,7 @@ const MessageInput = ({sendContent, handleSend, handleChange,words,visible,handl
       </div>*/}
       <div className={styles.btn}>
         <Popover  content={content} placement="top" trigger="click" visible={visible}>
-          <Button type="primary" size="small" onClick={() => handleSend(sendContent)}>发送</Button>
+          <Button type="primary" size="middle" onClick={() => handleSend(sendContent)}>发送</Button>
         </Popover>
       </div>
     </div>

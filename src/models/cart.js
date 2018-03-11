@@ -1,5 +1,5 @@
-import {getPaidList, getUnPaidList, deleteDish, getOrderDetail,confirmOrder} from '../services/customer';
-import {getLocalStorage,getSessionStorage} from "../utils/helper";
+import {confirmOrder, deleteDish, getCartList, getOrderDetail, getPaidList, getUnPaidList} from '../services/customer';
+import {getSessionStorage,isObject} from "../utils/helper";
 import {routerRedux} from 'dva/router';
 import {message} from 'antd';
 
@@ -18,7 +18,8 @@ export default {
     totalPrice: 0,
     totalCount: 0,
     detail:{}, //订单详情
-    personNum:null //用餐人数
+    cartListVisible:false,
+    cartList:[], //购物车列表信息
   },
 
   subscriptions: {
@@ -50,7 +51,7 @@ export default {
       const activeKey = yield select(state => state.cart.activeKey);
       const isPaid = activeKey==='1'?false:true;
       if (isPaid) {
-        const {data} = yield call(getPaidList, getSessionStorage("merchantId"),getSessionStorage("tableNum"));
+        const {data} = yield call(getPaidList, getSessionStorage("merchantId"),getSessionStorage("tableNum"),2);
         yield put({
           type: 'refreshPayList',
           paidList:data.data.list,
@@ -59,7 +60,7 @@ export default {
           totalCount: data.data.totalCount
         })
       } else {
-        const {data} = yield call(getUnPaidList, getSessionStorage("merchantId"));
+        const {data} = yield call(getUnPaidList, getSessionStorage("merchantId"),getSessionStorage("tableNum"),1);
         if(data) {
           yield put({
             type: 'refreshPayList',
@@ -67,34 +68,6 @@ export default {
             price: data.data.price,
             count: data.data.count
           })
-        }
-      }
-    },
-    *toOrderDetail({payload}, {call,put,select}) {
-      const foods = yield select(state =>state.cart.unpaidData);
-      const personNum = yield select(state=>state.cart.personNum);
-      if(personNum==null || personNum==undefined||personNum=='') {
-        message.warn("请选择用餐人数！",2);
-      }
-      //确认订单
-      else {
-        const params = [];
-        foods.map(function (food) {
-          const obj = {
-            id: food.id,
-            type: food.type,
-            num: food.num
-          };
-          params.push(obj);
-        });
-        const {data} = yield call(confirmOrder, params, getSessionStorage("merchantId"),  personNum, getSessionStorage("tableNum"));
-        if (data) {
-          yield put(routerRedux.push({
-            pathname: '/app/v1/cart/orderdetail',
-            params: {
-              orderId: data.id
-            },
-          }));
         }
       }
     },
@@ -108,7 +81,7 @@ export default {
     },
 
     *backToUnpaidList({payload}, {call,put,select}) {
-      yield put(routerRedux.goBack());
+      yield put(routerRedux.push('/app/v1/cart'));
     },
 
     *deleteDish({dishId,orderId},{call,put,select}) {
@@ -118,6 +91,53 @@ export default {
          message.success("删除成功！", 0.2);
          //刷新支付列表
          yield put({ type: 'getPayList', payload: activeKey });
+      }
+    },
+
+    *confirmOrder({ payload }, { call, put,select }) {
+      yield put({
+        type:'closeCartList'
+      });
+      //结算，只结算自己的
+      const cartData = yield select(state => state.cart.cartList);
+      let shoppingCartId;
+      if(cartData.length >0) {
+        for(let i =0; i<cartData.length;i++) {
+          let item = cartData[i];
+          if(item.userId === getSessionStorage("userId")) {
+            shoppingCartId = item.id;
+            break;
+          } else {
+            continue;
+          }
+        }
+      }
+      if (isObject(shoppingCartId)) {
+        const {data} = yield call(confirmOrder,shoppingCartId,getSessionStorage("merchantId"),getSessionStorage("personNum"),getSessionStorage("tableNum"));
+        if(data&&data.isOk) {
+          const orderId = data.id;
+          yield put(routerRedux.push({
+            pathname: '/app/v1/cart/orderdetail',
+            params: {
+              orderId: orderId
+            },
+          }));
+          //清空购买数量
+          yield put({type:'menu/cleanPurchaseNum'});
+        }
+      } else {
+        message.warn("您当前没有要结算的购物车信息",3);
+      }
+    },
+    *getCartList({payload}, {call, put}) {
+      const {data} = yield call(getCartList,getSessionStorage("merchantId"),getSessionStorage("tableNum"));
+      if(data) {
+        //获取购物车列表信息
+        yield put ({
+          type:'refreshCartList',
+          cartList:data.data,
+          cartListVisible:true
+        });
       }
     }
   },
@@ -132,8 +152,15 @@ export default {
     showOrderDetail(state, payload) {
       return {...state, ...payload};
     },
-    handlePersonNumChange(state,payload) {
-      state.personNum = payload.personNum;
+    showCartList(state, payload) {
+      state.cartListVisible = true;
+      return {...state, ...payload};
+    },
+    closeCartList(state, payload) {
+      state.cartListVisible = false;
+      return {...state, ...payload};
+    },
+    refreshCartList(state, payload) {
       return {...state, ...payload};
     }
   },

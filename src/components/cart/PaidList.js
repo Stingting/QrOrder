@@ -16,7 +16,7 @@ const PaidList = ({paidList,deleteDish,showDishDetail,visible,closeDetailDialog,
                                 <Button type="danger">删除</Button>
                               </Popconfirm>]*/}}>
             <List.Item.Meta
-              avatar={<img width={150} height={150} alt={item.name} src={item.pic}/>}
+              avatar={<img width={100} height={100} alt={item.name} src={item.pic}/>}
               title={<span style={{fontWeight: 'bold',fontSize: 16}}>{item.name}</span>}
               description=
                 {

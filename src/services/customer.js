@@ -67,7 +67,7 @@ export function getMenu(merchantId) {
  * @returns {Object}
  */
 export function getChatRoomInfo(merchantId, tableNum) {
- return request(`/v1/customer/chatRoom/${merchantId}/${tableNum}`, {
+ return request(`/v1/table/${merchantId}/${tableNum}`, {
     method: 'get',
     headers:{
      authorization:getSessionStorage("token")
@@ -106,9 +106,15 @@ export function getPaidList(merchantId,tableNum) {
   })
 }
 
-//获取未支付订单列表
-export function getUnPaidList(merchantId) {
-  return request(`/v1/shopping/${merchantId}`, {
+/**
+ * 获取未支付订单列表
+ * @param merchantId
+ * @param tableNum
+ * @param status 1 : 未支付， 2：已支付， 10：所有
+ * @returns {Object} /v1/order/227/table/88?status=2
+ */
+export function getUnPaidList(merchantId,tableNum,status) {
+  return request(`/v1/order/${merchantId}/table/${tableNum}?status=${status}`, {
     method:'get',
     headers: {
       authorization:getSessionStorage("token")
@@ -187,14 +193,12 @@ export function changePurchaseNum(num,foodId,id,type,tableId) {
   })
 }
 
-//确认订单
-export function confirmOrder(food, merchantId, personNum, tableNum) {
+//确认下单(去结算)
+export function confirmOrder(shoppingCartId, merchantId, personNum, tableNum) {
   const params = {
-    food:JSON.stringify(food),
-    // food:"[{\"id\": 1107,\"num\": 1,\"type\": \"\"},{\"id\": 1102,\"num\": 2,\"type\": \"\"}]",
-    id:merchantId,
     personNum:personNum,
-    tableId:tableNum
+    tableId:Number(tableNum),
+    shoppingCartId:shoppingCartId
   };
   return request(`/v1/order/${merchantId}`, {
     method:'POST',
@@ -220,6 +224,22 @@ export function addOrCleanTable(params) {
       "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
     },
     body:qs.stringify(params)
+  })
+}
+
+
+/**
+ * 获取购物车列表
+ * @param merchantId
+ * @param tableId
+ * @returns {Object}
+ */
+export function getCartList(merchantId, tableId) {
+  return request(`/v1/shopping/${merchantId}/table/${tableId}`, {
+    method :'GET',
+    headers: {
+      authorization:getSessionStorage("token")
+    }
   })
 }
 

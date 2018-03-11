@@ -10,7 +10,7 @@ const MenuList = ({loading, loadingMore, showLoadingMore, data, visible, showDis
 
   //侧边分类栏
   const siderMenu = types.map((key) => (
-    <Menu.Item key={key}><span className="nav-text">{key}</span></Menu.Item>
+    <Menu.Item key={key}><span className="nav-text" title={key}>{key}</span></Menu.Item>
   ));
 
   //选中分类切换菜式
