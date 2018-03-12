@@ -6,7 +6,7 @@ const config = {
   appAuthor: 'christine',
   email: '1570010150@qq.com',
   scanPath:'/app/v1/scanpage',
-  emqttPath:'ws://121.46.29.196:8083/mqtt',
+  emqttPath:'ws://106.38.205.89:8083/mqtt',
   // emqttPath:'ws://192.168.2.101:8083/mqtt',
   topic:'/wechat',
   AppID:'wxda1acd35df7b63a5',
