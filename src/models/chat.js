@@ -34,18 +34,35 @@ export default {
         }
         //连接mqtt服务
         mqttClient.getInstance().on('connect', function () {
-          //订阅主题： orderSystem/2/2/chat,  orderSystem/business_id/table_id/chat
-          const topic = `orderSystem/${getSessionStorage("merchantId")}/${getSessionStorage("tableNum")}/chat`;
-          console.log(`订阅的主题：${topic}`);
-          mqttClient.getInstance().subscribe(topic);
+          //订阅的聊天室主题： orderSystem/2/2/chat,  orderSystem/business_id/table_id/chat
+          const chatTopic = `orderSystem/${getSessionStorage("merchantId")}/${getSessionStorage("tableNum")}/chat`;
+          //订阅的购物车主题
+          const shoppingCartTopic = `orderSystem/${getSessionStorage("merchantId")}/${getSessionStorage("tableNum")}/shoppingCart`;
+          console.log(`订阅的聊天室主题：${chatTopic}`);
+          console.log(`订阅的购物车主题：${shoppingCartTopic}`);
+
+          mqttClient.getInstance().subscribe(chatTopic);
+          mqttClient.getInstance().subscribe(shoppingCartTopic);
+
           mqttClient.getInstance().on('message', function (topic, message) {
-            // message is Buffer
-            console.log(`收到的消息 ${message.toString()}`);
-            //设置聊天消息
-            dispatch({type:'setChatMessage', chatMsg:message.toString()});
-            if(!history.location.pathname.includes('/app/v1/chat')) { //判断当前页面是否是聊天页面，这里用history.location.pathname获取当前路径
-              dispatch({type:'addUnreadCount'});
+
+            if(topic === chatTopic) {
+              console.log(`收到的聊天室消息 ${message.toString()}`);
+              //设置聊天消息
+              dispatch({type: 'setChatMessage', chatMsg: message.toString()});
+              if (!history.location.pathname.includes('/app/v1/chat')) { //判断当前页面是否是聊天页面，这里用history.location.pathname获取当前路径
+                dispatch({type: 'addUnreadCount'});
+              }
             }
+            if(topic === shoppingCartTopic) {
+              console.log(`收到的购物车消息${message.toString()}`);
+                //刷新购物车信息
+              dispatch({
+                type:'cart/getNewCartList'
+              })
+            }
+
+
           });
         });
 

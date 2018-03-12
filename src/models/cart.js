@@ -139,6 +139,17 @@ export default {
           cartListVisible:true
         });
       }
+    },
+    //刷新获取同桌点的菜式
+    *getNewCartList({payload},{call,put}) {
+      const {data} = yield call(getCartList,getSessionStorage("merchantId"),getSessionStorage("tableNum"));
+      if(data) {
+        //获取购物车列表信息
+        yield put ({
+          type:'refreshCartList',
+          cartList:data.data
+        });
+      }
     }
   },
 
