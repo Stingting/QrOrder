@@ -12,7 +12,7 @@ export default {
   state: {
       count:0, //	人数
       num:0,	//几号桌
-      remark:'',	//备注
+      name:'',	//餐桌名称
       words:['你好！', '迟点给你答复'],//常用短语
       sendMessages:[],
       sendContent:'', //发送的消息
@@ -84,7 +84,8 @@ export default {
       yield put({
         type: 'showChatRoomInfo' ,
         count : data.data.personNum,
-        num: data.data.id
+        num: data.data.id,
+        name:data.data.name
       });
     },
     *getChatRecord({payload}, {call,put}) {
