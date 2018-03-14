@@ -43,10 +43,10 @@ const CartList = ({confirmOrder,cartList,addToCartForCart,reduceToCartForCart}) 
     return columns;
   }
   const cartListPanel = cartList.map((item,key) => (
-    <div>
+    <div key={key}>
       <div className={styles.tag}>{item.nickName}</div>
       <div>
-        <Table dataSource={item.list} columns={getColumns(item.userId)} pagination={false} showHeader={false}/>
+        <Table rowKey="id" dataSource={item.list} columns={getColumns(item.userId)} pagination={false} showHeader={false}/>
       </div>
     </div>
 
