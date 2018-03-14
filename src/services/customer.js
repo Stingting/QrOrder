@@ -132,7 +132,7 @@ export function deleteDish(dishId, orderId) {
 
 //获取订单详情
 export function getOrderDetail(merchantId, orderId) {
-  return request(`v1/order/${merchantId}/${orderId}`, {
+  return request(`/v1/order/${merchantId}/${orderId}`, {
     method : 'GET',
     headers: {
       authorization:getSessionStorage("token")
@@ -143,7 +143,7 @@ export function getOrderDetail(merchantId, orderId) {
 
 //获取用户收藏的菜单列表
 export function getCollectList(merchantId) {
-  return request(`v1/menu/collect/${merchantId}`, {
+  return request(`/v1/menu/collect/${merchantId}`, {
     method :'GET',
     headers: {
       authorization:getSessionStorage("token")
@@ -184,7 +184,7 @@ export function changePurchaseNum(num,foodId,id,type,tableId) {
     type:type,
     tableId:tableId
   };
-  return request(`v1/shopping/${id}/table/${tableId}`, {
+  return request(`/v1/shopping/${id}/table/${tableId}`, {
     method:'PUT',
     headers:{
       authorization:getSessionStorage("token"),
