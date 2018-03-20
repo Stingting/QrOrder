@@ -38,7 +38,6 @@ const MenuList = ({loading, loadingMore, showLoadingMore, data, visible, showDis
                   itemLayout="horizontal"
                   dataSource={currentDishes}
                   size="middle"
-                  split={false}
                   renderItem={item => (
                     <List.Item className={styles.item}  onClick={() => showDishDetail(item.id)} >
                       <List.Item.Meta

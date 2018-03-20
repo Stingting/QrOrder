@@ -1,10 +1,25 @@
 import React from 'react';
 import { connect } from 'dva';
+import {Icon, NavBar} from 'antd-mobile';
 
 function About({dispatch,pcenter}) {
 
+  //返回个人中心
+  function userBack() {
+    dispatch({
+      type: 'pcenter/backToPcenter'
+    })
+  }
+
   return (
-    <div>关于我们</div>
+    <NavBar
+      mode="dark"
+      icon={<Icon type="left" />}
+      onLeftClick={() => userBack()}
+      rightContent={[
+        <Icon key="1" type="ellipsis" />
+      ]}
+    >关于我们</NavBar>
   );
 };
 

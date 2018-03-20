@@ -10,7 +10,6 @@ const RecDishes = ({list, loading, showDishDetail,visible, detail, closeDetailDi
       <div className={styles.content}>
         <List
           loading={loading}
-          grid={{column: 1}}
           dataSource={list}
           renderItem={item => (
             <List.Item onClick={() => showDishDetail(item.id)}>

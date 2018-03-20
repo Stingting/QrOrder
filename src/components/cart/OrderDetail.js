@@ -42,8 +42,8 @@ function OrderDetail ({dispatch,location,cart}) {
       />
       </div>
       <div className={styles.bottom}>
-        <span>总价：&yen;{detailData.price} &nbsp;&nbsp;</span>
-        <Button type="danger"  style={{display:detailData.status===1?'inline-block':'none'}}>确认支付</Button>
+        <span>合计：&yen;{detailData.price} &nbsp;&nbsp;</span>
+        <Button type="danger" size='default' style={{display:detailData.status===1?'inline-block':'none'}}>确认支付</Button>
       </div>
       <div className={styles["order-desc"]}>
         <div><span className={styles.title}>餐桌</span>&nbsp;{detailData.tableName}</div>
@@ -85,7 +85,7 @@ function OrderDetail ({dispatch,location,cart}) {
                      overlayClassName="fortest"
                      overlayStyle={{color: 'currentColor'}}
                      overlay={[
-                       (<Item key="1" value="home" data-seed="logId" icon={myImg('home')}>首页</Item>)
+                       (<Item key="1" value="home" data-seed="logId">首页</Item>)
                      ]}
                      align={{
                        overflow: {adjustY: 0, adjustX: 0},

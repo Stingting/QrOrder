@@ -48,8 +48,8 @@ const UnpaidList = ({unpaidData,toOrderDetail,nodataVisible}) => {
         {unpaidContent}
       </div>
       <div className={styles.bottom} style={{display:unpaidData.status===1?'inline-block':'none'}}>
-        <span>总价：&yen;{unpaidData.price} &nbsp;&nbsp;</span>
-        <Button type="danger">确认支付</Button>
+        <span>合计：&yen;{unpaidData.price} &nbsp;&nbsp;</span>
+        <Button type="danger" size='default'>确认支付</Button>
       </div>
     </div>
   );

@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'dva';
 import MainLayout from '../components/common/MainLayout';
-import {Divider, Icon} from 'antd';
+import {Icon} from 'antd';
 import styles from './PersonalCenter.less';
 import {getSessionStorage} from "../utils/helper";
 
@@ -67,22 +67,18 @@ function PersonalCenter({dispatch, pcenter}) {
         </div>
         <div className={styles['pcenter-content']}>
           <ul>
-            <li onClick={toCartPage}>
-              <Icon type="profile" className={styles['icon-collect']}/><span className={styles.title}>我的订单</span>
+            <li onClick={toCartPage} className={styles.divider}>
+              <Icon type="profile" className={styles['icon-profile']}/><span className={styles.title}>我的订单</span>
             </li>
-            <Divider style={{margin: '10px 0'}}/>
-            <li onClick={toCollectPage}>
+            <li onClick={toCollectPage} className={styles.divider}>
               <Icon type="star" className={styles['icon-collect']}/><span className={styles.title}>我的收藏</span>
             </li>
-            <Divider style={{margin: '10px 0'}}/>
-            <li onClick={changeTable}>
+            <li onClick={changeTable} className={styles.divider}>
               <Icon type="retweet" className={styles['icon-change']}/><span className={styles.title}>换桌</span>
             </li>
-            <Divider style={{margin: '10px 0'}}/>
-            <li onClick={cleanTable}>
+            <li onClick={cleanTable} className={styles.divider}>
               <Icon type="delete" className={styles['icon-clean']}/><span className={styles.title}>清桌</span>
             </li>
-            <Divider style={{margin: '10px 0'}}/>
             <li onClick={aboutUs}>
               <Icon type="bars" className={styles['icon-about']}/><span className={styles.title}>关于</span>
             </li>

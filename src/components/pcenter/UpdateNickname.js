@@ -3,6 +3,7 @@ import {connect} from 'dva';
 import {Icon, NavBar} from 'antd-mobile';
 
 function UpdateNickname({dispatch,pcenter}) {
+
   //返回个人中心
   function userBack() {
     dispatch({
@@ -14,7 +15,7 @@ function UpdateNickname({dispatch,pcenter}) {
       <NavBar
         mode="dark"
         icon={<Icon type="left" />}
-        onLeftClick={() => userBack}
+        onLeftClick={() => userBack()}
         rightContent={[
           <Icon key="1" type="ellipsis" />
         ]}
