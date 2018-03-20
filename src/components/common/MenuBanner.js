@@ -1,5 +1,6 @@
 import React from 'react';
-import {Icon, Menu,Badge,Modal} from 'antd';
+import {Icon, Menu,Badge} from 'antd';
+import {Modal} from 'antd-mobile';
 import {Link} from 'dva/router';
 import {connect} from 'dva';
 import styles from '../../assets/less/global.less';
@@ -83,14 +84,12 @@ function MenuBanner ({dispatch, navigation,menu,chat,cart}) {
         </Menu.Item>
       </Menu>
       <Modal
-        style={{top:360}}
-        width="100%"
+        popup
         visible={cartListVisible}
-        footer={null}
-        closable={false}
-        maskClosable={true}
-        onCancel={closeCartList}>
-        <CartList confirmOrder={confirmOrder} {...cartListProps} addToCartForCart={addToCartForCart} reduceToCartForCart={reduceToCartForCart}/>
+        onClose={closeCartList}
+        animationType="slide-up"
+      >
+      <CartList confirmOrder={confirmOrder} {...cartListProps} addToCartForCart={addToCartForCart} reduceToCartForCart={reduceToCartForCart}/>
       </Modal>
     </div>
   );

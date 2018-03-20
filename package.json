@@ -1,13 +1,14 @@
 {
   "private": true,
   "scripts": {
-    "start": "set PORT=80&&roadhog server",
+    "start": "set PORT=8080&&roadhog dev",
     "build": "roadhog build",
     "lint": "eslint --ext .js src test",
     "precommit": "npm run lint"
   },
   "dependencies": {
     "antd": "^3.1.4",
+    "antd-mobile": "^2.1.7",
     "dva": "^2.1.0",
     "dva-loading": "^1.0.4",
     "mockjs": "^1.0.1-beta3",
@@ -15,11 +16,12 @@
     "mqtt-react": "0.0.3",
     "path-to-regexp": "^2.1.0",
     "react": "^16.2.0",
-    "react-dom": "^16.2.0"
+    "react-dom": "^16.2.0",
+    "uuid": "^3.2.1"
   },
   "devDependencies": {
     "babel-plugin-dva-hmr": "^0.3.2",
-    "babel-plugin-import": "^1.6.3",
+    "babel-plugin-import": "^1.6.7",
     "eslint": "^4.14.0",
     "eslint-config-umi": "^0.1.1",
     "eslint-plugin-flowtype": "^2.34.1",

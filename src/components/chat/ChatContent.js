@@ -1,5 +1,5 @@
 import React from 'react';
-import {List,Avatar} from 'antd'
+import {Avatar} from 'antd'
 import styles from './Chat.less';
 import {getSessionStorage} from "../../utils/helper";
 import moment from 'moment';

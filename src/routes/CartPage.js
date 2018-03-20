@@ -1,22 +1,21 @@
 import React from 'react';
-import { connect } from 'dva';
-import {Tabs} from 'antd';
+import {connect} from 'dva';
+import {Layout, Tabs} from 'antd';
 import PaidList from '../components/cart/PaidList';
 import UnpaidList from '../components/cart/UnpaidList';
 import MainLayout from "../components/common/MainLayout";
-import {Layout} from 'antd';
-import styles from '../assets/less/global.less';
 import cartStyles from './CartPage.less';
+import {NavBar} from 'antd-mobile';
 
 const { Header, Content, Footer, Sider} = Layout;
 const TabPane = Tabs.TabPane;
 
 function CartPage({ dispatch , fetch, location, scan, cart,menu}) {
 
-  const { paidList,unpaidData,activeKey,price} = cart;
+  const { paidList,unpaidData,activeKey,price,nodataVisible} = cart;
   const {visible,detail} = menu;
-  const paidListProps = {paidList,visible,detail,price};
-  const unpaidListProps = {unpaidData,price};
+  const paidListProps = {paidList,visible,detail,nodataVisible};
+  const unpaidListProps = {unpaidData,nodataVisible};
 
   /**
    * 获取支付列表
@@ -85,15 +84,24 @@ function CartPage({ dispatch , fetch, location, scan, cart,menu}) {
     })
   }
 
+  /**
+   * 跳转订单详情页面
+   * @param orderId
+   */
+  function toOrderDetail(orderId) {
+    dispatch({
+      type:'cart/toOrderDetail',
+      orderId:orderId
+    })
+
+  }
   return (
     <MainLayout>
-        <div className={cartStyles['cart-head']}>
-          <span className={cartStyles['head-font']}>我的订单</span>
-        </div>
+      <NavBar mode="dark" style={{position:'fixed',width:'100%',zIndex:8}}>我的订单</NavBar>
         <div className={cartStyles.tab}>
           <Tabs defaultActiveKey={activeKey} onChange={getPayList}>
             <TabPane tab="未支付" key="1">
-              <UnpaidList {...unpaidListProps}/>
+              <UnpaidList {...unpaidListProps} toOrderDetail={toOrderDetail}/>
             </TabPane>
             <TabPane tab="已支付" key="2">
               <PaidList {...paidListProps}
@@ -103,6 +111,7 @@ function CartPage({ dispatch , fetch, location, scan, cart,menu}) {
                         changeCollect={changeCollect}
                         addToCart={addToCart}
                         reduceToCart={reduceToCart}
+                        toOrderDetail={toOrderDetail}
               />
             </TabPane>
           </Tabs>

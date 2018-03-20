@@ -1,9 +1,8 @@
 import React from 'react';
-import { connect } from 'dva';
-import {List,Avatar,Modal,message,Spin,Button, Icon} from 'antd';
-import styles from './UserCollection.less';
+import {connect} from 'dva';
+import {Icon, NavBar} from 'antd-mobile';
 
-function UpdateNickname({dispatch,pcenter,backToPcenter}) {
+function UpdateNickname({dispatch,pcenter}) {
   //返回个人中心
   function userBack() {
     dispatch({
@@ -12,12 +11,14 @@ function UpdateNickname({dispatch,pcenter,backToPcenter}) {
   }
   return (
     <div>
-      <div className={styles['collect-head']}>
-        <span className={styles['head-font']} onClick={userBack}><Icon type="left"/>个人信息</span>
-      </div>
-      <div>
-
-      </div>
+      <NavBar
+        mode="dark"
+        icon={<Icon type="left" />}
+        onLeftClick={() => userBack}
+        rightContent={[
+          <Icon key="1" type="ellipsis" />
+        ]}
+      >个人信息</NavBar>
     </div>
   )
 };

@@ -1,13 +1,16 @@
 import React from 'react';
-import {List,Avatar, Collapse,Popconfirm,Button,Modal} from 'antd';
+import {Icon, List, Modal} from 'antd';
 import DishDetail from "../portal/DishDetail";
-import moment from "moment";
+import {Result} from 'antd-mobile';
+import nodataSrc from '../../assets/img/nodata.png';
 
-const Panel = Collapse.Panel;
-const PaidList = ({paidList,deleteDish,showDishDetail,visible,closeDetailDialog,detail,changeCollect,addToCart,reduceToCart}) => {
+const PaidList = ({paidList,deleteDish,showDishDetail,visible,closeDetailDialog,detail,changeCollect,addToCart,reduceToCart,toOrderDetail}) => {
   const text = "您确定要删除吗？";
-  const panel = paidList.map((item,key) => (
-    <Panel header={<div>{item.tableName}，订单号：{item.id}， 订单总价:&yen;{item.price}， 下单时间：{moment(item.createTime).format('YYYY-MM-DD HH:mm:ss')}</div> } key={key}>
+  const paidContent = paidList.map((item,key) => (
+    <div>
+      <div style={{backgroundColor:'#f2f2f2',height:30,lineHeight:'30px',paddingLeft:10}}
+           key={key} onClick={()=>toOrderDetail(item.id)}>{item.tableName}<Icon type="right"/></div>
+      <div style={{backgroundColor:'white'}}>
       <List
         itemLayout="horizontal"
         dataSource={item.list}
@@ -17,7 +20,7 @@ const PaidList = ({paidList,deleteDish,showDishDetail,visible,closeDetailDialog,
                               </Popconfirm>]*/}}>
             <List.Item.Meta
               avatar={<img width={100} height={100} alt={item.name} src={item.pic}/>}
-              title={<span style={{fontWeight: 'bold',fontSize: 16}}>{item.name}</span>}
+              title={<span style={{fontWeight: 'bold',fontSize: 12}}>{item.name}</span>}
               description=
                 {
                   <div>
@@ -33,17 +36,22 @@ const PaidList = ({paidList,deleteDish,showDishDetail,visible,closeDetailDialog,
           </List.Item>
         )}
       />
-    </Panel>
+      </div>
+    </div>
   ));
 
   return (
     <div>
       <div style={{'display': paidList.length>0?'inline':'none'}}>
-        <Collapse accordion>
-          {panel}
-        </Collapse>
+          {paidContent}
       </div>
-      <div style={{'display':paidList.length>0?'none':'inline'}}>暂无已支付订单数据</div>
+      <div style={{'display':paidList.length>0?'none':'inline'}}>
+        result = <Result
+        img={<img src={nodataSrc} width={50} height={50}/>}
+        title="您暂时没有订单"
+        message="可以去菜单列表看看"
+      />
+      </div>
       <Modal
         title="菜式详情"
         mask={true}

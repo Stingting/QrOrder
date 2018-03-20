@@ -21,7 +21,7 @@ const MessageInput = ({sendContent, handleSend, handleChange,words,visible,handl
       </div>*/}
       <div className={styles.btn}>
         <Popover  content={content} placement="top" trigger="click" visible={visible}>
-          <Button type="primary" size="middle" onClick={() => handleSend(sendContent)}>发送</Button>
+          <Button type="primary" size="default" onClick={() => handleSend(sendContent)}>发送</Button>
         </Popover>
       </div>
     </div>

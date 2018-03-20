@@ -1,14 +1,23 @@
 {
   "extraBabelPlugins": [
-     ["import", { "libraryName": "antd", "libraryDirectory": "es", "style": "css" }]
+     ["import", { "libraryName": "antd", "libraryDirectory": "es", "style": true }],
+     ["import", { "libraryName": "antd-mobile","libraryDirectory": "es", "style": true},"antd-mobile-import"]
    ],
 
+  "env": {
+    "development": {
+      "inline": true
+    }
+  },
+
    "proxy": {
-       "/v1": {
-      //   "target": "http://localhost:3004/",
-         "target": "http://rapapi.org/mockjsdata/31420/v1/",
-         "changeOrigin": true,
-         "pathRewrite": { "^/v1" : "" }
-       }
-     }
+         "/v1": {
+           //"target": "http://192.168.2.102:8090/v1",
+           //"target": "http://wdyn4m.natappfree.cc/v1",
+           "target": "http://localhost:8090/v1",
+           //"target": "http://rapapi.org/mockjsdata/31420/v1/",
+           "changeOrigin": true,
+           "pathRewrite": { "^/v1" : "" }
+         }
+    }
 }

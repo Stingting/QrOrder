@@ -1,13 +1,49 @@
 import React from 'react';
-import { connect } from 'dva';
-import {List,Avatar,Modal,message,Spin,Button, Icon} from 'antd';
+import {connect} from 'dva';
+import {List, Modal} from 'antd';
 import styles from './UserCollection.less';
 import DishDetail from "../portal/DishDetail";
+import { Popover, NavBar, Icon ,Result} from 'antd-mobile';
+import nodataSrc from '../../assets/img/nodata.png';
+const Item = Popover.Item;
 
 function UserCollection({dispatch,pcenter,menu}) {
 
   const {loadingMore,showLoadingMore,loading,data} = pcenter;
   const {visible,detail} = menu;
+
+  let result;
+  if(data&&data.length>0) {
+    result= <div className={styles['collect-content']}>
+      <List
+        className={styles["demo-loadmore-list"]}
+        loading={loading}
+        itemLayout="horizontal"
+        dataSource={data}
+        size="middle"
+        renderItem={item => (
+          <List.Item className={styles.item}  onClick={() => showDishDetail(item.id)} >
+            <List.Item.Meta
+              avatar={<img width={100} height={100} alt={item.name} src={item.pic}/>}
+              title={<span className={styles.dishname}>{item.name}</span>}
+              description={<div>
+                <div>{item.desc}</div>
+                <div>{item.type}&nbsp;月售&nbsp;{item.saleCount}</div>
+                <div><span style={{color: 'red'}}>&yen;{item.price}</span>
+                </div>
+              </div>}
+            />
+          </List.Item>
+        )}
+      />
+    </div>
+  } else {
+    result = <Result
+      img={<img src={nodataSrc} width={50} height={50}/>}
+      title="您没有收藏的菜式"
+      message="可以去菜单列表看看"
+    />
+  }
 
   function showDishDetail(id) {
     dispatch({
@@ -58,34 +94,47 @@ function UserCollection({dispatch,pcenter,menu}) {
       type: 'pcenter/backToPcenter'
     })
   }
+
+  /**
+   * 返回首页
+   */
+  function onSelect(opt) {
+    dispatch({
+      type:'cart/backToHome'
+    })
+  }
+
   return (
     <div>
-      <div className={styles['collect-head']} onClick={collectBack}>
-       <Icon type="left"/>我的收藏
-      </div>
-      <div className={styles['collect-content']}>
-        <List
-          className={styles["demo-loadmore-list"]}
-          loading={loading}
-          itemLayout="horizontal"
-          dataSource={data}
-          size="middle"
-          renderItem={item => (
-            <List.Item className={styles.item}  onClick={() => showDishDetail(item.id)} >
-              <List.Item.Meta
-                avatar={<img width={100} height={100} alt={item.name} src={item.pic}/>}
-                title={<span className={styles.dishname}>{item.name}</span>}
-                description={<div>
-                  <div>{item.desc}</div>
-                  <div>{item.type}&nbsp;月售&nbsp;{item.saleCount}</div>
-                  <div><span style={{color: 'red'}}>&yen;{item.price}</span>
-                  </div>
-                </div>}
-              />
-            </List.Item>
-          )}
-        />
-      </div>
+      <NavBar
+        mode="dark"
+        icon={<Icon type="left" />}
+        onLeftClick={() => collectBack()}
+        rightContent={
+          <Popover mask
+                   overlayClassName="fortest"
+                   overlayStyle={{color: 'currentColor'}}
+                   overlay={[
+                     (<Item key="1" value="home" data-seed="logId">首页</Item>)
+                   ]}
+                   align={{
+                     overflow: {adjustY: 0, adjustX: 0},
+                     offset: [-10, 0],
+                   }}
+                   onSelect={onSelect}>
+            <div style={{
+              height: '100%',
+              padding: '0 15px',
+              marginRight: '-15px',
+              display: 'flex',
+              alignItems: 'center',
+            }}>
+              <Icon type="ellipsis"/>
+            </div>
+          </Popover>
+        }
+      >我的收藏</NavBar>
+      {result}
       <Modal
         title="菜式详情"
         visible={visible}

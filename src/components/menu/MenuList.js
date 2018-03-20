@@ -19,8 +19,6 @@ const MenuList = ({loading, loadingMore, showLoadingMore, data, visible, showDis
   }
   return (
     <div className={styles.menu}>
-      <div className={styles.head}><span>本店菜谱</span></div>
-        <div style={{paddingTop:50}}>
           <Layout>
             <Sider width={100} style={{ overflow: 'auto', height: '100vh', position: 'fixed', left: 0 ,background: '#fff'}}>
               <Menu
@@ -60,7 +58,6 @@ const MenuList = ({loading, loadingMore, showLoadingMore, data, visible, showDis
               </div>
           </Content>
         </Layout>
-      </div>
       {/*弹框组件要放在List标签外面，否则有冒泡事件，无法关闭弹窗*/}
       <Modal
         title="菜式详情"
