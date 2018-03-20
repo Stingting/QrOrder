@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'dva';
 import MainLayout from '../components/common/MainLayout';
-import {Icon,Divider} from 'antd';
+import {Divider, Icon} from 'antd';
 import styles from './PersonalCenter.less';
 import {getSessionStorage} from "../utils/helper";
 
@@ -95,7 +95,7 @@ function PersonalCenter({dispatch, pcenter}) {
 
 PersonalCenter.propTypes = {
 };
-function mapStateToProps({}) {
-  return {};
+function mapStateToProps({pcenter}) {
+  return {pcenter};
 }
 export default connect(mapStateToProps)(PersonalCenter);

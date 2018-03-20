@@ -3,13 +3,14 @@ import {connect} from 'dva';
 import {List, Modal} from 'antd';
 import styles from './UserCollection.less';
 import DishDetail from "../portal/DishDetail";
-import { Popover, NavBar, Icon ,Result} from 'antd-mobile';
+import {Icon, NavBar, Popover, Result} from 'antd-mobile';
 import nodataSrc from '../../assets/img/nodata.png';
+
 const Item = Popover.Item;
 
 function UserCollection({dispatch,pcenter,menu}) {
 
-  const {loadingMore,showLoadingMore,loading,data} = pcenter;
+  const {loading,data} = pcenter;
   const {visible,detail} = menu;
 
   let result;
@@ -39,7 +40,7 @@ function UserCollection({dispatch,pcenter,menu}) {
     </div>
   } else {
     result = <Result
-      img={<img src={nodataSrc} width={50} height={50}/>}
+      img={<img src={nodataSrc} width={50} height={50} alt=''/>}
       title="您没有收藏的菜式"
       message="可以去菜单列表看看"
     />

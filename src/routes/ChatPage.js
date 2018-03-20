@@ -5,11 +5,6 @@ import ChatContent from '../components/chat/ChatContent';
 import MessageInput from '../components/chat/MessageInput';
 import MainLayout from '../components/common/MainLayout';
 
-import {Layout} from 'antd';
-import styles from '../assets/less/global.less';
-
-const { Header, Content, Footer, Sider} = Layout;
-
 function ChatPage({ dispatch , fetch, location, chat}) {
 
   const {num, count, name,sendContent,sendMessages,words,visible} = chat;
@@ -27,7 +22,7 @@ function ChatPage({ dispatch , fetch, location, chat}) {
 
   //发送消息
   function handleSend(msg) {
-    if (msg !='') {
+    if (msg !=='') {
       dispatch({
         type: 'chat/handleSend', //指定action,namespace+action
         msg: msg

@@ -36,7 +36,7 @@ const UnpaidList = ({unpaidData,toOrderDetail,nodataVisible}) => {
       </div>
   } else {
     unpaidContent = <Result
-      img={<img src={nodataSrc} width={50} height={50}/>}
+      img={<img src={nodataSrc} width={50} height={50} alt=''/>}
       title="您暂时没有订单"
       message="可以去菜单列表看看"
     />;

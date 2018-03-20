@@ -5,9 +5,9 @@ import {Result} from 'antd-mobile';
 import nodataSrc from '../../assets/img/nodata.png';
 
 const PaidList = ({paidList,deleteDish,showDishDetail,visible,closeDetailDialog,detail,changeCollect,addToCart,reduceToCart,toOrderDetail}) => {
-  const text = "您确定要删除吗？";
+  // const text = "您确定要删除吗？";
   const paidContent = paidList.map((item,key) => (
-    <div>
+    <div key={key}>
       <div style={{backgroundColor:'#f2f2f2',height:30,lineHeight:'30px',paddingLeft:10}}
            key={key} onClick={()=>toOrderDetail(item.id)}>{item.tableName}<Icon type="right"/></div>
       <div style={{backgroundColor:'white'}}>
@@ -47,7 +47,7 @@ const PaidList = ({paidList,deleteDish,showDishDetail,visible,closeDetailDialog,
       </div>
       <div style={{'display':paidList.length>0?'none':'inline'}}>
         result = <Result
-        img={<img src={nodataSrc} width={50} height={50}/>}
+        img={<img src={nodataSrc} width={50} height={50} alt=''/>}
         title="您暂时没有订单"
         message="可以去菜单列表看看"
       />

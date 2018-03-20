@@ -4,7 +4,7 @@ import MenuBanner from './MenuBanner';
 import {Layout} from 'antd';
 import styles from '../../assets/less/global.less';
 
-const { Header, Content, Footer, Sider} = Layout;
+const {Content} = Layout;
 
 function MainLayout({ children, location }) {
   return (

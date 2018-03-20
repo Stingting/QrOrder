@@ -1,9 +1,9 @@
 import React from 'react';
-import {Avatar, Layout, List, Modal,Menu} from 'antd';
+import {Layout, List, Menu, Modal} from 'antd';
 import DishDetail from '../portal/DishDetail';
 import styles from './MenuList.less';
 
-const { Header, Content, Footer, Sider} = Layout;
+const {Content, Sider} = Layout;
 
 const MenuList = ({loading, loadingMore, showLoadingMore, data, visible, showDishDetail, detail,
                     closeDetailDialog, changeCollect, addToCart, reduceToCart,types, currentType,currentDishes,changeCurrentType}) => {

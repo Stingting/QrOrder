@@ -1,7 +1,7 @@
 import pathToRegexp from 'path-to-regexp';
 import constant from '../config';
 import {routerRedux} from 'dva/router';
-import {setLocalStorage,setSessionStorage} from "../utils/helper";
+import {setSessionStorage} from "../utils/helper";
 import {login} from "../services/customer";
 
 export default {

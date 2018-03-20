@@ -1,18 +1,17 @@
 import React from 'react';
 import {connect} from 'dva';
-import {Layout, Tabs} from 'antd';
+import {Tabs} from 'antd';
 import PaidList from '../components/cart/PaidList';
 import UnpaidList from '../components/cart/UnpaidList';
 import MainLayout from "../components/common/MainLayout";
 import cartStyles from './CartPage.less';
 import {NavBar} from 'antd-mobile';
 
-const { Header, Content, Footer, Sider} = Layout;
 const TabPane = Tabs.TabPane;
 
 function CartPage({ dispatch , fetch, location, scan, cart,menu}) {
 
-  const { paidList,unpaidData,activeKey,price,nodataVisible} = cart;
+  const { paidList,unpaidData,activeKey,nodataVisible} = cart;
   const {visible,detail} = menu;
   const paidListProps = {paidList,visible,detail,nodataVisible};
   const unpaidListProps = {unpaidData,nodataVisible};

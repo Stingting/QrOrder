@@ -1,5 +1,5 @@
-import {getDishDetail, getMenu,changePurchaseNum,changeCollect} from '../services/customer';
-import {getLocalStorage,getSessionStorage} from "../utils/helper";
+import {changeCollect, changePurchaseNum, getDishDetail, getMenu} from '../services/customer';
+import {getSessionStorage} from "../utils/helper";
 
 export default {
 

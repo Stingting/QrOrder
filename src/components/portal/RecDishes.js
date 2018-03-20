@@ -1,5 +1,5 @@
 import React from 'react';
-import {Card, List, Modal,Avatar} from 'antd';
+import {List, Modal} from 'antd';
 import DishDetail from "./DishDetail";
 import styles from './RecDishes.less';
 

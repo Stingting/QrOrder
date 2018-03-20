@@ -4,12 +4,8 @@ import {connect} from 'dva';
 import RecDishes from "../components/portal/RecDishes";
 import MerchantDesc from "../components/portal/MerchantDesc";
 import MainLayout from '../components/common/MainLayout';
-import {Layout,Modal,Button, Form, Input} from 'antd';
+import {Modal} from 'antd';
 import EditPersonNum from '../components/portal/EditPersonNum';
-
-const FormItem = Form.Item;
-
-const { Header, Content, Footer, Sider} = Layout;
 
 function Portal({ dispatch , fetch, location, recDishes,menu}) {
   function showDishDetail(id) {

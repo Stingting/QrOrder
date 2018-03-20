@@ -1,6 +1,6 @@
 import {routerRedux} from 'dva/router';
 import {getCollectList} from "../services/customer";
-import {getLocalStorage,getSessionStorage} from "../utils/helper";
+import {getSessionStorage} from "../utils/helper";
 
 export default {
 

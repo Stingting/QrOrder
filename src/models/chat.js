@@ -1,8 +1,6 @@
-import constant from '../config';
 import mqttClient from '../utils/mqttUtil';
-import {getMenu, getChatRoomInfo,getChatRecord} from "../services/customer";
-import {getLocalStorage,getSessionStorage} from "../utils/helper";
-import moment from 'moment';
+import {getChatRecord, getChatRoomInfo} from "../services/customer";
+import {getSessionStorage} from "../utils/helper";
 import uuid from 'uuid';
 
 export default {

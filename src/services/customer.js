@@ -1,5 +1,4 @@
 import request from '../utils/request';
-import constant from '../config';
 import qs from 'qs';
 import {getSessionStorage} from "../utils/helper";
 

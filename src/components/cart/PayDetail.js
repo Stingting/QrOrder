@@ -1,9 +1,9 @@
 import React from 'react';
-import {Layout,Button,List,Avatar,Icon} from 'antd';
-import { connect } from 'dva';
+import {Avatar, Button, Icon, Layout, List} from 'antd';
+import {connect} from 'dva';
 import styles from './PayDetail.less';
 
-const { Header, Content, Footer, Sider} = Layout;
+const { Header, Content, Footer} = Layout;
 
 
 function PayDetail ({dispatch,details,cart}) {

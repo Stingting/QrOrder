@@ -1,7 +1,6 @@
 import React from 'react';
-import {Input, Icon, Button,Form,Popover} from 'antd';
+import {Button, Input, Popover} from 'antd';
 import styles from './Chat.less';
-const FormItem = Form.Item;
 
 const MessageInput = ({sendContent, handleSend, handleChange,words,visible,handleVisibleChange}) => {
   words = ['你好！', '迟点给你答复'] ;//先写死，由前端缓存，不从后台缓存
