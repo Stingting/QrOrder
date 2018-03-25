@@ -1,5 +1,6 @@
 import {changeCollect, changePurchaseNum, getDishDetail, getMenu} from '../services/customer';
 import {getSessionStorage} from "../utils/helper";
+import {Toast} from 'antd-mobile';
 
 export default {
 
@@ -104,6 +105,13 @@ export default {
           isCollect:isCollect
       });
       const {data} = yield call(changeCollect, foodId, getSessionStorage("merchantId"),isCollect);
+      if(data&& data.isOk) {
+        if(isCollect) {
+          Toast.info("收藏成功！可到我的收藏查看");
+        } else {
+          Toast.info("取消收藏成功！")
+        }
+      }
     }
   },
 

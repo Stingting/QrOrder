@@ -1,5 +1,6 @@
 import React from 'react';
-import {List, Modal} from 'antd';
+import {List} from 'antd';
+import {Modal} from 'antd-mobile';
 import DishDetail from "./DishDetail";
 import styles from './RecDishes.less';
 
@@ -29,12 +30,10 @@ const RecDishes = ({list, loading, showDishDetail,visible, detail, closeDetailDi
       </div>
       <Modal
         title="菜式详情"
-        mask={true}
-        maskStyle={{backgroundColor:'rgba(232,230,225,0.5)'}}
-        footer={null}
         visible={visible}
-        onOk={() => closeDetailDialog(true)}
-        onCancel={() => closeDetailDialog(true)}
+        footer={[]}
+        closable={true}
+        onClose={() => closeDetailDialog(true)}
       >
         <DishDetail detail = {detail} changeCollect={changeCollect} addToCart={addToCart} reduceToCart={reduceToCart}></DishDetail>
       </Modal>

@@ -1,42 +1,52 @@
 .dish-detail {
-  min-height: 300px;
   .img {
     text-align: center;
   }
   .dishname {
-    padding-top: 20px;
-    font-size: 16px;
+    padding: 5px 20px;
+    font-size: 12px;
     font-weight: bold;
+    text-align: left;
+    color: black;
   }
-  .price {
-    width: 30%;
-    float: left;
-    color: orangered;
-    font-weight: bold;
-    font-size: 18px;
+  .salecount {
+    padding: 5px 20px;
+    font-size: 10px;
+    text-align: left;
   }
-  .operate {
-    width: 70%;
-    float: left;
-    text-align: right;
-    .cart {
-      cursor: pointer;
-      background-color: rgba(255,194,15,0.62);
-      border-radius: 18px;
-      font-size: 14px;
-      padding: 6px;
+  .bottom {
+    padding: 5px 20px;
+    .price {
+      text-align: left;
+      width: 30%;
+      float: left;
+      color: orangered;
+      font-weight: bold;
+      font-size: 22px;
     }
-    .cart:hover{
-      background-color: rgba(255,127,11,0.62);
-    }
-    .addorplus {
-      .count {
-        padding: 0 10px;
+    .operate {
+      width: 70%;
+      float: left;
+      text-align: right;
+      .cart {
+        cursor: pointer;
+        background-color: rgba(255, 194, 15, 0.62);
+        border-radius: 18px;
+        font-size: 15px;
+        padding: 10px;
       }
-    }
-    .collect {
-      padding-left: 10px;
-      cursor: pointer;
+      .cart:hover {
+        background-color: rgba(255, 127, 11, 0.62);
+      }
+      .addorplus {
+        .count {
+          padding: 0 10px;
+        }
+      }
+      .collect {
+        padding-left: 10px;
+        cursor: pointer;
+      }
     }
   }
 }
