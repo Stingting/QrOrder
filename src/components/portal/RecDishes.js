@@ -1,33 +1,35 @@
 import React from 'react';
 import {List} from 'antd';
-import {Modal} from 'antd-mobile';
+import {Modal,WingBlank} from 'antd-mobile';
 import DishDetail from "./DishDetail";
 import styles from './RecDishes.less';
+import recsvg from '../../assets/svg/recommend.svg';
 
 const RecDishes = ({list, loading, showDishDetail,visible, detail, closeDetailDialog,changeCollect,addToCart,reduceToCart}) => {
   return (
     <div className={styles["rec-dishes"]}>
-      <div className={styles.title}>推荐菜式</div>
-      <div className={styles.content}>
-        <List
-          loading={loading}
-          dataSource={list}
-          renderItem={item => (
-            <List.Item onClick={() => showDishDetail(item.id)}>
-              <List.Item.Meta
-                avatar={<img width={100} height={100} alt={item.name} src={item.pic}/>}
-                title={<span className={styles.dishname}>{item.name}</span>}
-                description={<div>
-                  <div>{item.desc}</div>
-                  <div>{item.type.name}&nbsp;月售:&nbsp;{item.saleCount}</div>
-                  <div><span style={{color: 'red'}}>&yen;{item.price}</span>
-                  </div>
-                </div>}
-              />
-            </List.Item>
-          )}
-        />
-      </div>
+      <WingBlank>
+        <div className={styles.title}><img src={recsvg} alt=''/>推荐菜式</div>
+        <div className={styles.content}>
+            <List
+              loading={loading}
+              dataSource={list}
+              renderItem={item => (
+                <List.Item onClick={() => showDishDetail(item.id)}>
+                  <List.Item.Meta
+                    avatar={<img width={100} height={100} alt={item.name} src={item.pic}/>}
+                    title={<span className={styles.dishname}>{item.name}</span>}
+                    description={<div className={styles.desc}>
+                      <div className={styles.row1}>{item.desc}</div>
+                      <div className={styles.row2}>{/*{item.type.name}&nbsp;*/}月售:&nbsp;{item.saleCount}</div>
+                      <div className={styles.row3}>&yen;{item.price}</div>
+                    </div>}
+                  />
+                </List.Item>
+              )}
+            />
+        </div>
+      </WingBlank>
       <Modal
         title="菜式详情"
         visible={visible}

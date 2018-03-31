@@ -1,10 +1,22 @@
 import React from 'react';
-import {Icon, Menu,Badge} from 'antd';
-import {Modal} from 'antd-mobile';
+import {Menu} from 'antd';
+import {Modal,Badge} from 'antd-mobile';
 import {Link} from 'dva/router';
 import {connect} from 'dva';
 import styles from '../../assets/less/global.less';
 import CartList from '../../components/cart/CartList';
+import homesvg from '../../assets/svg/home.svg';
+import menusvg from '../../assets/svg/menu.svg';
+import cartsvg from '../../assets/svg/cart.svg';
+import chatsvg from '../../assets/svg/chat.svg';
+import usersvg from '../../assets/svg/user.svg';
+import useractivesvg from '../../assets/svg/user-active.svg';
+import chatactivesvg from '../../assets/svg/chat-active.svg';
+import homeactivesvg from '../../assets/svg/home-active.svg';
+import menuactivesvg from '../../assets/svg/menu-active.svg';
+import cartactivesvg from '../../assets/svg/cart-active.svg';
+import SVG from 'react-inlinesvg';
+import chat from "../../models/chat";
 
 function MenuBanner ({dispatch, navigation,menu,chat,cart}) {
 
@@ -61,25 +73,39 @@ function MenuBanner ({dispatch, navigation,menu,chat,cart}) {
         mode="horizontal"
         onClick={handleClick}
         selectedKeys={[navigation.current]}>
-        <Menu.Item key="portal" style={{width:'20%'}}> <Icon type="home"  className={styles.menu}/><div className={styles["menu-text"]}>首页</div>
+        <Menu.Item key="portal" style={{width:'20%'}}>
+          {navigation.current ==='portal'?<SVG src={homeactivesvg}></SVG>:<SVG src={homesvg}></SVG>}
+          <div className={styles[navigation.current ==='portal'?"menu-text-active":"menu-text"]}>首页</div>
           <Link to="/app/v1/cportal"></Link>
         </Menu.Item>
-        <Menu.Item key="menu" style={{width:'20%'}}> <Icon type="appstore-o" className={styles.menu}/><div className={styles["menu-text"]}>菜谱</div>
+        <Menu.Item key="menu" style={{width:'20%'}}>
+          {navigation.current ==='menu'?<SVG src={menuactivesvg}></SVG>:<SVG src={menusvg}></SVG>}
+          <div className={styles[navigation.current ==='menu'?"menu-text-active":"menu-text"]}>菜谱</div>
           <Link to="/app/v1/menu"></Link>
         </Menu.Item>
         <Menu.Item key="cart" style={{width:'20%'}}>
-          <Badge count={totalPurchaseNum} overflowCount={999} offset={[0,50]}>
-          <div className={styles["circle-shopping-cart"]}>
-            <Icon type="shopping-cart"className={styles.menu}  style={{marginTop:-10,marginRight:0}}/>
-          </div>
+          <Badge text={totalPurchaseNum} overflowCount={55}  style={{ marginLeft: 32}}>
+            <span style={{paddingBottom:12, display:'inline-block'}}>
+              {navigation.current ==='cart'?<SVG src={cartactivesvg}></SVG>:<SVG src={cartsvg}></SVG>}
+            </span>
           </Badge>
+          {/*<sup style={{display:totalPurchaseNum===0?'none':'inline'}}>{totalPurchaseNum}</sup>*/}
+          <div className={styles[navigation.current ==='cart'?"menu-text-active":"menu-text"]}>购物车</div>
           {/*<Link to="/app/v1/cart"></Link>*/}
         </Menu.Item>
-        <Menu.Item key="chat" style={{width:'20%'}}> <Icon type="message"  className={styles.menu}/><sup style={{display:unReadCount===0?'none':'inline'}}>{unReadCount}</sup>
-          <div className={styles["menu-text"]}>呼叫</div>
+        <Menu.Item key="chat" style={{width:'20%'}}>
+          <Badge text={unReadCount} overflowCount={55}  style={{ marginLeft: 32}}>
+            <span style={{paddingBottom:12, display:'inline-block'}}>
+              {navigation.current ==='chat'?<SVG src={chatactivesvg}></SVG>:<SVG src={chatsvg}></SVG>}
+            </span>
+          </Badge>
+          {/*<sup style={{display:unReadCount===0?'none':'inline'}}>{unReadCount}</sup>*/}
+          <div className={styles[navigation.current ==='chat'?"menu-text-active":"menu-text"]}>呼叫</div>
           <Link to="/app/v1/chat"></Link>
         </Menu.Item>
-        <Menu.Item key="user" style={{width:'20%'}}> <Icon type="user"  className={styles.menu}/><div className={styles["menu-text"]}>我</div>
+        <Menu.Item key="user" style={{width:'20%'}}>
+          {navigation.current ==='user'?<SVG src={useractivesvg}></SVG>:<SVG src={usersvg}></SVG>}
+          <div className={styles[navigation.current ==='user'?"menu-text-active":"menu-text"]}>我</div>
           <Link to="/app/v1/user"></Link>
         </Menu.Item>
       </Menu>

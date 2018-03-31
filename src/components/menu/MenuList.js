@@ -1,5 +1,5 @@
 import React from 'react';
-import {Layout, List, Menu} from 'antd';
+import {Layout, List} from 'antd';
 import {Modal} from 'antd-mobile';
 import DishDetail from '../portal/DishDetail';
 import styles from './MenuList.less';
@@ -9,27 +9,23 @@ const {Content, Sider} = Layout;
 const MenuList = ({loading, loadingMore, showLoadingMore, data, visible, showDishDetail, detail,
                     closeDetailDialog, changeCollect, addToCart, reduceToCart,types, currentType,currentDishes,changeCurrentType}) => {
 
+  //选中分类切换菜式
+  function handleTypeClick(key) {
+    changeCurrentType(key);
+  }
+
   //侧边分类栏
   const siderMenu = types.map((key) => (
-    <Menu.Item key={key}><span className="nav-text" title={key}>{key}</span></Menu.Item>
+    <li key={key} onClick={()=>handleTypeClick(key)} className={key===currentType?styles["li-selected"]:''}>{key}</li>
   ));
 
-  //选中分类切换菜式
-  function handleTypeClick(e) {
-    changeCurrentType(e.key);
-  }
   return (
     <div className={styles.menu}>
           <Layout>
-            <Sider width={100} style={{ overflow: 'auto', height: '100vh', position: 'fixed', left: 0 ,background: '#fff'}}>
-              <Menu
-                style={{borderRight:0}}
-                theme='light'
-                mode="inline"
-                onClick={handleTypeClick}
-                selectedKeys={[currentType]}>
-                {siderMenu}
-              </Menu>
+            <Sider width={100} style={{height: '100vh', position: 'fixed', left: 0 , background: '#fff'}}>
+              <ul>
+              {siderMenu}
+              </ul>
             </Sider>
             <Content  style={{marginLeft:100}}>
               <div className={styles.content}>
@@ -44,11 +40,10 @@ const MenuList = ({loading, loadingMore, showLoadingMore, data, visible, showDis
                       <List.Item.Meta
                         avatar={<img width={100} height={100} alt={item.name} src={item.pic}/>}
                         title={<span className={styles.dishname}>{item.name}</span>}
-                        description={<div>
-                          <div>{item.desc}</div>
-                          <div>{item.type.name}&nbsp;月售:&nbsp;{item.saleCount}</div>
-                          <div><span style={{color: 'red'}}>&yen;{item.price}</span>
-                          </div>
+                        description={<div className={styles.desc}>
+                          <div className={styles.row1}>{item.desc}</div>
+                          <div className={styles.row2}>{/*{item.type.name}&nbsp;*/}月售:&nbsp;{item.saleCount}</div>
+                          <div className={styles.row3}>&yen;{item.price}</div>
                         </div>}
                       />
                     </List.Item>

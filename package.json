@@ -17,6 +17,7 @@
     "path-to-regexp": "^2.1.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
+    "react-inlinesvg": "^0.8.1",
     "uuid": "^3.2.1"
   },
   "devDependencies": {

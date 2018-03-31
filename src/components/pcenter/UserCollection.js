@@ -1,11 +1,12 @@
 import React from 'react';
 import {connect} from 'dva';
 import {List} from 'antd';
-import {Modal} from 'antd-mobile';
+import {Modal,WingBlank} from 'antd-mobile';
 import styles from './UserCollection.less';
 import DishDetail from "../portal/DishDetail";
 import {Icon, NavBar, Popover, Result} from 'antd-mobile';
-import nodataSrc from '../../assets/img/nodata.png';
+import SVG from 'react-inlinesvg';
+import nodatasvg from '../../assets/svg/nodata.svg';
 
 const Item = Popover.Item;
 
@@ -16,32 +17,29 @@ function UserCollection({dispatch,pcenter,menu}) {
 
   let result;
   if(data&&data.length>0) {
-    result= <div className={styles['collect-content']}>
-      <List
-        className={styles["demo-loadmore-list"]}
+    result= <List
         loading={loading}
         itemLayout="horizontal"
         dataSource={data}
-        size="middle"
         renderItem={item => (
           <List.Item className={styles.item}  onClick={() => showDishDetail(item.id)} >
             <List.Item.Meta
               avatar={<img width={100} height={100} alt={item.name} src={item.pic}/>}
               title={<span className={styles.dishname}>{item.name}</span>}
-              description={<div>
-                <div>{item.desc}</div>
-                <div>{item.type}&nbsp;月售&nbsp;{item.saleCount}</div>
-                <div><span style={{color: 'red'}}>&yen;{item.price}</span>
+              description={
+                <div className={styles.desc}>
+                  <div className={styles.row1}>{item.desc}</div>
+                  <div className={styles.row2}>{/*{item.type.name}&nbsp;*/}月售:&nbsp;{item.saleCount}</div>
+                  <div className={styles.row3}>&yen;{item.price}</div>
                 </div>
-              </div>}
+              }
             />
           </List.Item>
         )}
       />
-    </div>
   } else {
     result = <Result
-      img={<img src={nodataSrc} width={50} height={50} alt=''/>}
+      img={<SVG src={nodatasvg}></SVG>}
       title="您没有收藏的菜式"
       message="可以去菜单列表看看"
     />
@@ -54,8 +52,13 @@ function UserCollection({dispatch,pcenter,menu}) {
     })
   }
   function closeDetailDialog( closeFlag) {
+    //关闭菜式详情弹框
     dispatch({
       type : 'menu/closeDetailDialog'
+    });
+    //刷新收藏列表
+    dispatch({
+      type:'pcenter/getCollectList'
     })
   }
 
@@ -136,7 +139,11 @@ function UserCollection({dispatch,pcenter,menu}) {
           </Popover>
         }
       >我的收藏</NavBar>
-      {result}
+      <div className={styles['collect-content']}>
+        <WingBlank>
+          {result}
+        </WingBlank>
+      </div>
       <Modal
         title="菜式详情"
         visible={visible}

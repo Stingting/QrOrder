@@ -24,12 +24,11 @@ const EditPersonNum = ({form:{getFieldDecorator,validateFields},joinTable}) => {
     });
   }
   return (
-    <div>
       <div style={{textAlign:'center'}}>
         <Form onSubmit={(e)=>handleSubmit(e)} className="login-form">
           <FormItem label="用餐人数：" {...formItemLayout}>
             {getFieldDecorator('personNum',  {
-              rules: [{ required: true, message: '请填写用餐人数！' }],
+              rules: [{ required: true, message: '请输入用餐人数！' }],
             })(
               <InputNumber min={1}/>
             )}
@@ -41,7 +40,6 @@ const EditPersonNum = ({form:{getFieldDecorator,validateFields},joinTable}) => {
           </FormItem>
         </Form>
       </div>
-    </div>
   );
 }
 

@@ -1,9 +1,14 @@
 import React from 'react';
 import {connect} from 'dva';
 import MainLayout from '../components/common/MainLayout';
-import {Icon} from 'antd';
 import styles from './PersonalCenter.less';
 import {getSessionStorage} from "../utils/helper";
+import userheadsvg from '../assets/svg/user-head.svg';
+import changesvg from '../assets/svg/change.svg';
+import collectsvg from '../assets/svg/collect-active.svg';
+import cleansvg from '../assets/svg/clean.svg';
+import ordersvg from '../assets/svg/order.svg';
+import aboutsvg from '../assets/svg/about.svg';
 
 function PersonalCenter({dispatch, pcenter}) {
 
@@ -61,26 +66,26 @@ function PersonalCenter({dispatch, pcenter}) {
       <div>
         <div className={styles['pcenter-head']} onClick={toUpdateNickname}>
           <div className={styles.head}>
-            <img width={60} height={60} src={getSessionStorage("head")} alt=''/>
+            <img width={60} height={60} src={getSessionStorage("head")===''?userheadsvg:getSessionStorage("head")} alt=''/>
           </div>
           <div className={styles.name}>user</div>
         </div>
         <div className={styles['pcenter-content']}>
           <ul>
             <li onClick={toCartPage} className={styles.divider}>
-              <Icon type="profile" className={styles['icon-profile']}/><span className={styles.title}>我的订单</span>
+              <img src={ordersvg} alt=''/><span className={styles.title}>我的订单</span>
             </li>
             <li onClick={toCollectPage} className={styles.divider}>
-              <Icon type="star" className={styles['icon-collect']}/><span className={styles.title}>我的收藏</span>
+              <img src={collectsvg} alt=''/><span className={styles.title}>我的收藏</span>
             </li>
             <li onClick={changeTable} className={styles.divider}>
-              <Icon type="retweet" className={styles['icon-change']}/><span className={styles.title}>换桌</span>
+              <img src={changesvg} alt=''/><span className={styles.title}>换桌</span>
             </li>
             <li onClick={cleanTable} className={styles.divider}>
-              <Icon type="delete" className={styles['icon-clean']}/><span className={styles.title}>清桌</span>
+              <img src={cleansvg} alt=''/><span className={styles.title}>清桌</span>
             </li>
             <li onClick={aboutUs}>
-              <Icon type="bars" className={styles['icon-about']}/><span className={styles.title}>关于</span>
+              <img src={aboutsvg} alt=''/><span className={styles.title}>关于</span>
             </li>
           </ul>
         </div>

@@ -1,9 +1,9 @@
 import React from 'react';
-import {Button, Divider, List} from 'antd';
+import {Button, List} from 'antd';
 import {connect} from 'dva';
-import styles from './PayDetail.less';
-import { Popover, NavBar, Icon } from 'antd-mobile';
-import homeSrc from '../../assets/img/home.png';
+import styles from './OrderDetail.less';
+import {Icon, NavBar, Popover} from 'antd-mobile';
+import SVG from 'react-inlinesvg';
 
 import moment from 'moment';
 
@@ -17,7 +17,6 @@ function OrderDetail ({dispatch,location,cart}) {
       <div className={styles.tip}>
         {tip}
       </div>
-      <Divider/>
       <div className={styles.content}>
       <List
         itemLayout="horizontal"
@@ -27,12 +26,13 @@ function OrderDetail ({dispatch,location,cart}) {
             <List.Item.Meta
               avatar={<img width={100} height={100} alt={item.name} src={item.pic}/>}
               title={<span className={styles.dishname}>{item.name}</span>}
-              description={<div>
-                <div>{item.desc}</div>
-                <div>{item.type.name}&nbsp;月售:&nbsp;{item.saleCount}</div>
-                <div><span style={{color: 'red'}}>&yen;{item.price}</span>
+              description={
+                <div className={styles.desc}>
+                  <div className={styles.row1}>{item.desc}</div>
+                  <div className={styles.row2}>{/*{item.type.name}&nbsp;*/}月售:&nbsp;{item.saleCount}</div>
+                  <div className={styles.row3}>&yen;{item.price}</div>
                 </div>
-              </div>}
+              }
             />
             <div>
               &times;{item.num}
@@ -71,7 +71,7 @@ function OrderDetail ({dispatch,location,cart}) {
     })
   }
 
-  const myImg = src => <img src={homeSrc} width={18} height={18} alt="" />;
+  const myImg = src => <SVG src={src}></SVG>;
 
   return (
     <div>
@@ -105,9 +105,7 @@ function OrderDetail ({dispatch,location,cart}) {
           }
         >订单详情</NavBar>
       </div>
-      <div>
-        {orderDetailContent}
-      </div>
+      {orderDetailContent}
     </div>
   );
 };

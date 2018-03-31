@@ -22,19 +22,35 @@ body {
   margin-right: 0;
   color: rgb(132,138,133);
 }
+.active-menu{
+  font-size: 22px;
+  padding-bottom: 0;
+  margin-right: 0;
+  background-image:-webkit-linear-gradient(#eee,#000);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  -webkit-text-stroke:1px transparent;
+}
 .menu-text {
   margin-top: -16px;
-  margin-right: 10px;
   font-size: 10px;
   line-height: 15px;
-  color:rgb(132,138,133);
+  color:#707070;
+}
+.menu-text-active{
+  margin-top: -16px;
+  font-size: 10px;
+  line-height: 15px;
+  color:#1296db;
 }
 
 /*菜单栏右上角数字样式*/
 sup{
   background: red;
   color: white;
-  border-radius: 20px; /*圆角*/
+  -moz-border-radius: 60px;
+  -webkit-border-radius: 60px;
+  border-radius: 60px; /*圆角*/
   padding: 0px 6px; /*左右边距*/
   top: -1em; /*数字离图片右上角的高度*/
   left:-1em;
@@ -57,5 +73,6 @@ sup{
   background: -moz-linear-gradient(right, rgba(255, 153, 51,0), rgba(255, 153, 51,1)); /* Firefox 3.6 - 15 */
   background: linear-gradient(to right, rgba(255, 153, 51,0), rgba(255, 153, 51,1)); /* 标准的语法（必须放在最后） */
 }
+
 
 

@@ -1,4 +1,4 @@
-import {changeCollect, changePurchaseNum, getDishDetail, getMenu} from '../services/customer';
+import {changeCollect, changePurchaseNum, getCartList, getDishDetail, getMenu} from '../services/customer';
 import {getSessionStorage} from "../utils/helper";
 import {Toast} from 'antd-mobile';
 
@@ -24,6 +24,10 @@ export default {
         //进入菜单页面时触发的操作
         if(pathname.includes('/app/v1/menu')) {
           dispatch({type: 'getMenu'});
+        }
+        //进入首页时获取当前用户的购物车购买数量
+        if(pathname.includes('/app/v1/cportal')) {
+          dispatch({type: 'getCartInfo'});
         }
       });
     },
@@ -112,6 +116,26 @@ export default {
           Toast.info("取消收藏成功！")
         }
       }
+    },
+    *getCartInfo({payload}, {call,put,select}) {
+      //获取当前用户的购物车数量
+      const {data} = yield call(getCartList,getSessionStorage("merchantId"),getSessionStorage("tableNum"));
+      if(data) {
+        let totalPurchaseNum=0;
+        let cartList = data.data;
+        let userId = getSessionStorage("userId");
+        for(let i=0;i<cartList.length;i++) {
+          let cart = cartList[i];
+          if(userId === cart.userId) {
+            totalPurchaseNum = cart.count;
+            break;
+          }
+        }
+        yield put ({
+          type:'refreshTotalPurchaseNum',
+          totalPurchaseNum:totalPurchaseNum
+        });
+      }
     }
   },
 
@@ -129,32 +153,32 @@ export default {
     },
     closeDetailDialog(state,payload) {
       state.visible = false;
-      return {...state, payload};
+      return {...state, ...payload};
     },
     showLoadMore(state, payload) {
-      return {...state, payload};
+      return {...state, ...payload};
     },
     changeCollectState(state, payload) {
       state.detail.isCollect = payload.isCollect;
-      return {...state, payload}
+      return {...state, ...payload}
     },
     addPurchaseNum(state, payload) {
       state.detail.selectedCount++;
       state.totalPurchaseNum++;
-      return {...state, payload}
+      return {...state, ...payload}
     },
     reducePurchaseNum(state,payload) {
       state.detail.selectedCount--;
       state.totalPurchaseNum--;
-      return {...state,payload}
+      return {...state,...payload}
     },
     addCartPurchaseNum(state, payload) {
       state.totalPurchaseNum++;
-      return {...state, payload}
+      return {...state, ...payload}
     },
     reduceCartPurchaseNum(state,payload) {
       state.totalPurchaseNum--;
-      return {...state,payload}
+      return {...state,...payload}
     },
     changeCurrentType(state,payload) {
       const currentType = payload.key;
@@ -165,6 +189,9 @@ export default {
     cleanPurchaseNum(state,payload) {
       console.log(`已经下单，清空购买数量了`);
       state.totalPurchaseNum = 0;
+      return {...state, ...payload};
+    },
+    refreshTotalPurchaseNum(state, payload) {
       return {...state, ...payload};
     }
   },

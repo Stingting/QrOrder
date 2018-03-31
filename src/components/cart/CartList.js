@@ -1,7 +1,10 @@
 import React from 'react';
-import {Table,Icon,Button} from 'antd';
+import {Button, Table} from 'antd';
 import styles from './CartList.less';
 import {getSessionStorage} from "../../utils/helper";
+import addsvg from '../../assets/svg/add.svg';
+import minussvg from '../../assets/svg/minus.svg';
+import {WhiteSpace} from 'antd-mobile';
 
 const CartList = ({confirmOrder,cartList,addToCartForCart,reduceToCartForCart}) => {
 
@@ -11,7 +14,10 @@ const CartList = ({confirmOrder,cartList,addToCartForCart,reduceToCartForCart}) 
       title: '菜名',
       dataIndex: 'name',
       key: 'name',
-      width: '30%'
+      width: '30%',
+      render: (text, record) => (
+        <div className={styles["column-list"]} key={text}>{text}</div>
+      ),
     }, {
       title: '价格',
       dataIndex: 'price',
@@ -19,7 +25,7 @@ const CartList = ({confirmOrder,cartList,addToCartForCart,reduceToCartForCart}) 
       render: (text, record) => (
         <span key={text}>&yen;{text}</span>
       ),
-      width: '30%',
+      width: '20%',
     },
       {
         title: '操作',
@@ -28,17 +34,16 @@ const CartList = ({confirmOrder,cartList,addToCartForCart,reduceToCartForCart}) 
         render: (text, record) => (
           <div>
             <span className={styles.addorplus} style={{display:userId === getSessionStorage("userId")?'inline':'none'}}>
-              <Icon type="minus-circle-o" style={{fontSize: 20}} onClick={() => reduceToCartForCart(record)}/>
+              <img src={minussvg} alt='' onClick={() => reduceToCartForCart(record)}/>
               <span className={styles.count}>{record.num}</span>
-              <Icon type="plus-circle" style={{fontSize: 20, color: 'orange'}}
-                    onClick={() => addToCartForCart(record)}/>
+              <img src={addsvg} alt='' onClick={() => addToCartForCart(record)}/>
             </span>
             <span className={styles.addorplus} style={{display:userId === getSessionStorage("userId")?'none':'inline'}}>
               <span className={styles.count}> &times;{record.num}</span>
             </span>
           </div>
         ),
-        width: '40%',
+        width: '50%',
       }];
     return columns;
   }
@@ -53,12 +58,16 @@ const CartList = ({confirmOrder,cartList,addToCartForCart,reduceToCartForCart}) 
   ));
 
   return (
-      <div className={styles["cart-list"]}>
-        {cartListPanel}
-        <div className={styles.btn}>
-          <Button type="primary" size="default" onClick={confirmOrder} >去结算</Button>
+    <div>
+      <WhiteSpace/>
+        <div className={styles["cart-list"]}>
+          {cartListPanel}
+          <div className={styles.btn}>
+            <Button type="primary" size="default" onClick={confirmOrder} >去结算</Button>
+          </div>
         </div>
-      </div>
+      <WhiteSpace/>
+    </div>
   )
 };
 

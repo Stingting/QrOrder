@@ -6,7 +6,6 @@ import scanpage from './routes/ScanPage';
 import menu from './routes/MenuPage';
 import chat from './routes/ChatPage';
 import cart from './routes/CartPage';
-import PayDetail from './components/cart/PayDetail';
 import OrderDetail from './components/cart/OrderDetail';
 import user from './routes/PersonalCenter';
 import UserCollection from './components/pcenter/UserCollection';
@@ -23,7 +22,6 @@ function RouterConfig({ history }) {
         <Route path="/app/v1/menu" exact component={menu} />
         <Route path="/app/v1/chat" exact component={chat} />
         <Route path="/app/v1/cart" exact component={cart} />
-        <Route path="/app/v1/cart/paydetail" exact component={PayDetail} />
         <Route path="/app/v1/cart/orderdetail" exact component={OrderDetail} />
         <Route path="/app/v1/user" exact component={user} />
         <Route path="/app/v1/user/collect" exact component={UserCollection} />

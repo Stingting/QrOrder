@@ -62,7 +62,7 @@ export default {
       return { ...state, ...payload };
     },
     showLoadMore(state, payload) {
-      return {...state, payload};
+      return {...state, ...payload};
     },
     showLoading(state, payload) {
       return {...state, ...payload};
