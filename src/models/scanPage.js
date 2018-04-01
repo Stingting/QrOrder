@@ -3,6 +3,7 @@ import constant from '../config';
 import {routerRedux} from 'dva/router';
 import {setSessionStorage} from "../utils/helper";
 import {login} from "../services/customer";
+import {Toast} from 'antd-mobile';
 
 export default {
   namespace: 'scan',
@@ -16,19 +17,26 @@ export default {
   },
   effects: {
     *login({ payload }, { call, put }) {
-      const {data} = yield call(login, payload);
-      if (data) {
-        const token = data.authorization;
-        const head = data.head;
-        const userId = data.id;
-        const nickName = data.nickName;
-        setSessionStorage("token", token);
-        setSessionStorage("head", head);
-        setSessionStorage("userId", userId);
-        setSessionStorage("nickName", nickName);
-        //跳转到首页
-        yield put(routerRedux.push('/app/v1/cportal'));
-      }
+        const {data,err} = yield call(login, payload);
+        if(err) {
+          if(err.response.status === 504) {
+            Toast.offline('服务器请求异常!!!', 4);
+          } else {
+            throw new Error(err.message);
+          }
+        }
+        else if (data) {
+          const token = data.authorization;
+          const head = data.head;
+          const userId = data.id;
+          const nickName = data.nickName;
+          setSessionStorage("token", token);
+          setSessionStorage("head", head);
+          setSessionStorage("userId", userId);
+          setSessionStorage("nickName", nickName);
+          //跳转到首页
+          yield put(routerRedux.push('/app/v1/cportal'));
+        }
     },
 
     *toIndex({ payload },{select,call, put}){
