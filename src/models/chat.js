@@ -28,49 +28,60 @@ export default {
           //获取聊天记录
           dispatch({type: 'getChatRecord'});
           //进入聊天页面时清空未读条数
-          dispatch({type:'clearUnReadCount'});
+          dispatch({type: 'clearUnReadCount'});
         }
+
+        //订阅的聊天室主题： orderSystem/2/2/chat,  orderSystem/business_id/table_id/chat
+        const chatTopic = `orderSystem/${getSessionStorage("merchantId")}/${getSessionStorage("tableNum")}/chat`;
+        //订阅的购物车主题
+        const shoppingCartTopic = `orderSystem/${getSessionStorage("merchantId")}/${getSessionStorage("tableNum")}/shoppingCart`;
+
         //连接mqtt服务
-        mqttClient.getInstance().on('connect', function () {
-          //订阅的聊天室主题： orderSystem/2/2/chat,  orderSystem/business_id/table_id/chat
-          const chatTopic = `orderSystem/${getSessionStorage("merchantId")}/${getSessionStorage("tableNum")}/chat`;
-          //订阅的购物车主题
-          const shoppingCartTopic = `orderSystem/${getSessionStorage("merchantId")}/${getSessionStorage("tableNum")}/shoppingCart`;
-          console.log(`订阅的聊天室主题：${chatTopic}`);
-          console.log(`订阅的购物车主题：${shoppingCartTopic}`);
+        console.log(`mqtt实例是否已创建:${mqttClient.isConnected()}`);
+        if (! mqttClient.isConnected()) {
+          const client = mqttClient.getInstance();
+          client.on('connect', function () {
+            client.subscribe(chatTopic);
+            client.subscribe(shoppingCartTopic);
+            console.log('连接mqtt服务成功...')
+            console.log(`订阅的聊天室主题：${chatTopic}`);
+            console.log(`订阅的购物车主题：${shoppingCartTopic}`);
+          });
 
-          mqttClient.getInstance().subscribe(chatTopic);
-          mqttClient.getInstance().subscribe(shoppingCartTopic);
+          client.on('reconnect', function () {
+            console.log('正在重连mqtt服务...')
+          });
 
-          mqttClient.getInstance().on('message', function (topic, message) {
-
-            if(topic === chatTopic) {
+          client.on('message', function (topic, message) {
+            if (topic === chatTopic) {
               console.log(`收到的聊天室消息 ${message.toString()}`);
               //设置聊天消息
-              dispatch({type: 'setChatMessage', chatMsg: message.toString()});
+              dispatch ({type: 'setChatMessage', chatMsg: message.toString()});
               if (!history.location.pathname.includes('/app/v1/chat')) { //判断当前页面是否是聊天页面，这里用history.location.pathname获取当前路径
                 dispatch({type: 'addUnreadCount'});
               }
             }
-            if(topic === shoppingCartTopic) {
+            if (topic === shoppingCartTopic) {
               console.log(`收到的购物车消息${message.toString()}`);
-                //刷新购物车信息
+              //刷新购物车信息
               dispatch({
-                type:'cart/getNewCartList'
+                type: 'cart/getNewCartList'
               })
             }
-
-
           });
-        });
 
-        mqttClient.getInstance().on('close', function () {
-            console.log("emqtt closed...");
-        });
+          client.on('close', function () {
+            console.log("mqtt连接断开...");
+            client.unsubscribe(chatTopic);
+            client.unsubscribe(shoppingCartTopic);
+            console.log(`取消订阅主题：${chatTopic}`);
+            console.log(`取消订阅主题：${shoppingCartTopic}`);
+          });
 
-        mqttClient.getInstance().on("error", function (error) {
-          console.log(error.toString());
-        });
+          client.on("error", function (error) {
+            console.log(error.toString());
+          });
+        }
 
       });
     },

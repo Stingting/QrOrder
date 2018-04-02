@@ -3,9 +3,11 @@ import constant from "../config";
 
 const mqttClient = (function () {
   let instance;
+  let connected = false;
 
   function createInstance() {
     const  client = connect(constant.emqttPath);
+    connected = true;
     return client;
   }
 
@@ -15,6 +17,9 @@ const mqttClient = (function () {
         instance = createInstance();
       }
       return instance;
+    },
+    isConnected : function () {
+      return connected;
     }
   };
 })();
