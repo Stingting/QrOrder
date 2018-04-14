@@ -6,7 +6,7 @@ import styles from './MenuList.less';
 
 const {Content, Sider} = Layout;
 
-const MenuList = ({loading, loadingMore, showLoadingMore, data, visible, showDishDetail, detail,
+const MenuList = ({data, visible, showDishDetail, detail,
                     closeDetailDialog, changeCollect, addToCart, reduceToCart,types, currentType,currentDishes,changeCurrentType}) => {
 
   //选中分类切换菜式

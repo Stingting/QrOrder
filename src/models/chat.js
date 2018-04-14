@@ -2,7 +2,7 @@ import mqttClient from '../utils/mqttUtil';
 import {getChatRecord, getChatRoomInfo} from "../services/customer";
 import {getSessionStorage} from "../utils/helper";
 import uuid from 'uuid';
-
+import {Toast} from 'antd-mobile';
 export default {
 
   namespace: 'chat',
@@ -52,7 +52,8 @@ export default {
             console.log('正在重连mqtt服务...')
           });
 
-          client.on('message', function (topic, message) {
+          client.on('message', function (topic, message, payload) {
+            console.log(`收到消息。。。是否重复：dup=${payload.dup}`);
             if (topic === chatTopic) {
               console.log(`收到的聊天室消息 ${message.toString()}`);
               //设置聊天消息
@@ -89,27 +90,47 @@ export default {
 
   effects: {
     *getChatRoomInfo({ payload }, { call, put }) {  // eslint-disable-line
-      const {data} = yield call(getChatRoomInfo, getSessionStorage("merchantId"), getSessionStorage("tableNum"));
-      yield put({
-        type: 'showChatRoomInfo' ,
-        count : data.data.personNum,
-        num: data.data.id,
-        name:data.data.name
-      });
+      const {data,err} = yield call(getChatRoomInfo, getSessionStorage("merchantId"), getSessionStorage("tableNum"));
+      if(err) {
+        throw new Error(err.message);
+      } else {
+        if (data.msg) {
+          if (data.msg !== "") {
+            Toast.info(data.msg);
+          }
+        }
+        else {
+          yield put({
+            type: 'showChatRoomInfo',
+            count: data.data.personNum,
+            num: data.data.id,
+            name: data.data.name
+          });
+        }
+      }
     },
     *getChatRecord({payload}, {call,put}) {
-      const {data} = yield call(getChatRecord, getSessionStorage("merchantId"), getSessionStorage("tableNum"));
-      if(data) {
-        const chatRecords = [];
-        if(data.data!=null && data.data.length>0) {
-          data.data.map((item, key) => (
-            chatRecords.push(item.data)
-          ));
-          console.log(`聊天记录：${JSON.stringify(chatRecords)}`);
-          yield put({
-            type: 'refreshChatMsg',
-            chatRecords: chatRecords
-          });
+      const {data,err} = yield call(getChatRecord, getSessionStorage("merchantId"), getSessionStorage("tableNum"));
+      if(err) {
+        throw new Error(err.message);
+      } else {
+        if (data.msg) {
+          if (data.msg !== "") {
+            Toast.info(data.msg);
+          }
+        }
+        else {
+          const chatRecords = [];
+          if (data.data !== null && data.data.length > 0) {
+            data.data.map((item, key) => (
+              chatRecords.push(item.data)
+            ));
+            console.log(`聊天记录：${JSON.stringify(chatRecords)}`);
+            yield put({
+              type: 'refreshChatMsg',
+              chatRecords: chatRecords
+            });
+          }
         }
       }
     }

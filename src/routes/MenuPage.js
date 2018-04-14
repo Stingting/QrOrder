@@ -6,7 +6,7 @@ import {NavBar} from 'antd-mobile';
 
 function MenuPage({ dispatch , fetch, location, menu}) {
 
-  const {loading,data,visible,detail,loadingMore,showLoadingMore,purchaseNum,types,currentType,currentDishes} = menu;
+  const {data,visible,detail,purchaseNum,types,currentType,currentDishes} = menu;
 
   function showDishDetail(id) {
     dispatch({
@@ -62,7 +62,7 @@ function MenuPage({ dispatch , fetch, location, menu}) {
     })
   }
 
-  const menuListProps={loading, visible,detail,loadingMore,showLoadingMore,purchaseNum,types,currentType,currentDishes};
+  const menuListProps={visible,detail,purchaseNum,types,currentType,currentDishes};
 
   return (
     <MainLayout>

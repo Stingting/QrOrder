@@ -12,13 +12,12 @@ const Item = Popover.Item;
 
 function UserCollection({dispatch,pcenter,menu}) {
 
-  const {loading,data} = pcenter;
+  const {data} = pcenter;
   const {visible,detail} = menu;
 
   let result;
   if(data&&data.length>0) {
     result= <List
-        loading={loading}
         itemLayout="horizontal"
         dataSource={data}
         renderItem={item => (

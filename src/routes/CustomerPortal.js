@@ -72,7 +72,7 @@ function Portal({ dispatch , fetch, location, recDishes,menu}) {
   }
 
   const {
-    loading, list, name,pic,desc
+    list, name,pic,desc
   } = recDishes;
 
   const {
@@ -88,7 +88,7 @@ function Portal({ dispatch , fetch, location, recDishes,menu}) {
   };
 
   const dishProps = {
-    list, loading, visible,detail
+    list, visible,detail
   };
   return (
     <MainLayout>

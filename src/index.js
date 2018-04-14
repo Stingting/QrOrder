@@ -8,7 +8,7 @@ import {Toast} from "antd-mobile";
 const app = dva({
   history: browserHistory,
   onError(e) {
-    Toast.info(e.message); //全局错误处理
+    Toast.fail(e.message, 2); //全局错误提示
   },
 });
 

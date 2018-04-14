@@ -2,17 +2,61 @@ import request from '../utils/request';
 import qs from 'qs';
 import {getSessionStorage} from "../utils/helper";
 
+
+export const ContentType = {
+  JSON : "application/json;charset=UTF-8",
+  FORM : "application/x-www-form-urlencoded; charset=UTF-8"
+};
+
+export const HttpMethod = {
+  GET : "GET",
+  POST : "POST",
+  PUT : "PUT",
+  PATCH : "PATCH",
+  DELETE : "DELETE",
+  OPTIONS : "OPTIONS"
+};
+
+/**
+ * 封装header
+ * @returns {{"Content-Type": string}}
+ */
+const getTokenHeaders = () => {
+  return {
+    authorization:getSessionStorage("token")
+  }
+};
+/**
+ *
+ * @returns {{"Content-Type": string, authorization}}
+ */
+const getTokenFormHeaders = () =>{
+  return {
+    "Content-Type": ContentType.FORM,
+    authorization:getSessionStorage("token")
+  }
+};
+
+/**
+ *
+ * @returns {{"Content-Type": string}}
+ */
+const getNoTokenFormHeader = () =>{
+  return {
+    "Content-Type": ContentType.FORM,
+  }
+};
+
+
 /**
  * 登录
  * @param params
  * @returns {Object}
  */
 export function login(params) {
-  return request('/v1/user/login', {
-    method:'POST',
-    headers:{
-      "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"
-    },
+  return request(`/v1/user/login`, {
+    method:HttpMethod.POST,
+    headers:getNoTokenFormHeader(),
     body:qs.stringify(params)
   })
 }
@@ -25,10 +69,8 @@ export function login(params) {
  */
 export function getMerchantInfo(merchantId) {
   return request(`/v1/home/${merchantId}`, {
-    method: 'GET',
-    headers: {
-      authorization:getSessionStorage("token")
-    }
+    method: HttpMethod.GET,
+    headers: getTokenHeaders()
   });
 }
 
@@ -37,10 +79,8 @@ export function getMerchantInfo(merchantId) {
  */
 export function getDishDetail(merchantId, dishId) {
   return request(`/v1/menu/${merchantId}/${dishId}`, {
-    method : 'GET',
-    headers: {
-      authorization:getSessionStorage("token")
-    }
+    method : HttpMethod.GET,
+    headers: getTokenHeaders()
   });
 }
 
@@ -52,10 +92,8 @@ export function getDishDetail(merchantId, dishId) {
  */
 export function getMenu(merchantId) {
   return request(`/v1/menu/${merchantId}`, {
-    method :'GET',
-    headers:{
-      authorization:getSessionStorage("token")
-    }
+    method :HttpMethod.GET,
+    headers:getTokenHeaders()
   });
 }
 
@@ -67,10 +105,8 @@ export function getMenu(merchantId) {
  */
 export function getChatRoomInfo(merchantId, tableNum) {
  return request(`/v1/table/${merchantId}/${tableNum}`, {
-    method: 'get',
-    headers:{
-     authorization:getSessionStorage("token")
-    }
+    method: HttpMethod.GET,
+    headers:getTokenHeaders()
   })
 }
 
@@ -82,10 +118,8 @@ export function getChatRoomInfo(merchantId, tableNum) {
  */
 export function getChatRecord(merchantId, tableNum) {
   return request(`/v1/chat/${merchantId}/table/${tableNum}`, {
-    method:'get',
-    headers:{
-      authorization:getSessionStorage("token")
-    }
+    method:HttpMethod.GET,
+    headers:getTokenHeaders()
   })
 }
 
@@ -99,10 +133,8 @@ export function getChatRecord(merchantId, tableNum) {
  */
 export function getPaidList(merchantId,tableNum,status) {
   return request(`/v1/order/${merchantId}/table/${tableNum}?status=${status}`, {
-    method:'get',
-    headers: {
-      authorization:getSessionStorage("token")
-    }
+    method:HttpMethod.GET,
+    headers:getTokenHeaders()
   })
 }
 
@@ -115,10 +147,8 @@ export function getPaidList(merchantId,tableNum,status) {
  */
 export function getUnPaidList(merchantId,tableNum,status) {
   return request(`/v1/order/${merchantId}/table/${tableNum}?status=${status}`, {
-    method:'get',
-    headers: {
-      authorization:getSessionStorage("token")
-    }
+    method:HttpMethod.GET,
+    headers:getTokenHeaders()
   })
 }
 
@@ -132,10 +162,8 @@ export function deleteDish(dishId, orderId) {
 //获取订单详情
 export function getOrderDetail(merchantId, orderId) {
   return request(`/v1/order/${merchantId}/${orderId}`, {
-    method : 'GET',
-    headers: {
-      authorization:getSessionStorage("token")
-    }
+    method : HttpMethod.GET,
+    headers: getTokenHeaders()
   })
 }
 
@@ -143,10 +171,8 @@ export function getOrderDetail(merchantId, orderId) {
 //获取用户收藏的菜单列表
 export function getCollectList(merchantId) {
   return request(`/v1/menu/collect/${merchantId}`, {
-    method :'GET',
-    headers: {
-      authorization:getSessionStorage("token")
-    }
+    method :HttpMethod.GET,
+    headers:getTokenHeaders()
   })
 }
 
@@ -164,11 +190,8 @@ export function changeCollect(dishId, merchantId, isCollect) {
     isCollect:isCollect
   };
   return request(`/v1/menu/collect/${merchantId}/${dishId}`, {
-    method :'PUT',
-    headers: {
-      authorization:getSessionStorage("token"),
-      "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
-    },
+    method :HttpMethod.PUT,
+    headers: getTokenFormHeaders(),
     body:qs.stringify(params)
   })
 }
@@ -184,11 +207,8 @@ export function changePurchaseNum(num,foodId,id,type,tableId) {
     tableId:tableId
   };
   return request(`/v1/shopping/${id}/table/${tableId}`, {
-    method:'PUT',
-    headers:{
-      authorization:getSessionStorage("token"),
-      "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
-    },
+    method:HttpMethod.PUT,
+    headers:getTokenFormHeaders(),
     body:qs.stringify(params)
   })
 }
@@ -201,11 +221,8 @@ export function confirmOrder(shoppingCartId, merchantId, personNum, tableNum) {
     shoppingCartId:shoppingCartId
   };
   return request(`/v1/order/${merchantId}`, {
-    method:'POST',
-    headers:{
-      authorization:getSessionStorage("token"),
-      "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
-    },
+    method:HttpMethod.POST,
+    headers:getTokenFormHeaders(),
     body:qs.stringify(params)
   })
 }
@@ -218,11 +235,8 @@ export function confirmOrder(shoppingCartId, merchantId, personNum, tableNum) {
  */
 export function addOrCleanTable(params) {
   return request(`/v1/table/${params.merchantId}`, {
-    method :'PUT',
-    headers: {
-      authorization:getSessionStorage("token"),
-      "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
-    },
+    method :HttpMethod.PUT,
+    headers: getTokenFormHeaders(),
     body:qs.stringify(params)
   })
 }
@@ -236,10 +250,8 @@ export function addOrCleanTable(params) {
  */
 export function getCartList(merchantId, tableId) {
   return request(`/v1/shopping/${merchantId}/table/${tableId}`, {
-    method :'GET',
-    headers: {
-      authorization:getSessionStorage("token")
-    }
+    method :HttpMethod.GET,
+    headers:getTokenHeaders()
   })
 }
 

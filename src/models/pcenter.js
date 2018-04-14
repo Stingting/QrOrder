@@ -1,6 +1,7 @@
 import {routerRedux} from 'dva/router';
 import {getCollectList} from "../services/customer";
 import {getSessionStorage} from "../utils/helper";
+import {Toast} from 'antd-mobile';
 
 export default {
 
@@ -9,7 +10,6 @@ export default {
   state: {
       count:0, //总数
       data:[], //菜单列表
-      loading:false
   },
 
   subscriptions: {
@@ -35,17 +35,24 @@ export default {
       yield put(routerRedux.push('/app/v1/user/about', payload));
     },
     *getCollectList({payload}, {call, put, select}) {
-      yield put({type: 'showLoading', loading: true});
-      const {data} = yield call(getCollectList, getSessionStorage("merchantId"));
-      if(data) {
-        yield put(
-          {
-            type: 'showCollectList',
-            data:data.data,
-            count:data.count,
-            loading:false
+      const {data,err} = yield call(getCollectList, getSessionStorage("merchantId"));
+      if(err) {
+        throw new Error(err.message);
+      } else {
+        if (data.msg) {
+          if (data.msg !== "") {
+            Toast.info(data.msg);
           }
-        );
+        }
+        else {
+          yield put(
+            {
+              type: 'showCollectList',
+              data: data.data,
+              count: data.count
+            }
+          );
+        }
       }
     },
     *backToPcenter({payload}, {call,put,select}) {

@@ -5,14 +5,13 @@ import DishDetail from "./DishDetail";
 import styles from './RecDishes.less';
 import recsvg from '../../assets/svg/recommend.svg';
 
-const RecDishes = ({list, loading, showDishDetail,visible, detail, closeDetailDialog,changeCollect,addToCart,reduceToCart}) => {
+const RecDishes = ({list, showDishDetail,visible, detail, closeDetailDialog,changeCollect,addToCart,reduceToCart}) => {
   return (
     <div className={styles["rec-dishes"]}>
       <WingBlank>
         <div className={styles.title}><img src={recsvg} alt=''/>推荐菜式</div>
         <div className={styles.content}>
             <List
-              loading={loading}
               dataSource={list}
               renderItem={item => (
                 <List.Item onClick={() => showDishDetail(item.id)}>

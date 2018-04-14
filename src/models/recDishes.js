@@ -1,5 +1,6 @@
 import {getMerchantInfo,addOrCleanTable} from '../services/customer';
 import {getSessionStorage,setSessionStorage,isObject} from "../utils/helper";
+import {Toast} from 'antd-mobile';
 
 export default {
   namespace : 'recDishes',
@@ -10,7 +11,6 @@ export default {
     name:'', //商家名称
     pic:[], //商家图片
     list: [], //初始化推荐菜单列表
-    loading : false,//控制加载状态
     addPersonNumModalVisible:false
   },
   reducers: {
@@ -32,25 +32,25 @@ export default {
   effects: {
     //声明时需要添加*，普通函数内部不能使用yield关键字，否则会出错
     *getMerchantInfo(action, {put, call}) {
-      yield put({type: 'showLoading', loading: true});
-      const {data} = yield call(getMerchantInfo, getSessionStorage("merchantId"));
-      // console.log(data);
-      //请求成功
-      if (data) {
-        yield put({
-          type : 'showDishList',
-          loading : false,
-          list : data.data.food,
-          count:data.data.count,
-          desc:data.data.desc,
-          name:data.data.name,
-          pic:(data.data.pic===undefined||data.data.pic===''||data.data.pic==null)?[]:data.data.pic
-      });
+      const {data,err} = yield call(getMerchantInfo, getSessionStorage("merchantId"));
+      if(err) {
+        throw new Error(err.message);
       } else {
-        yield put ({
-          type:'showLoading',
-          loading : false
-        })
+        if (data.msg) {
+          if (data.msg !== "") {
+            Toast.info(data.msg);
+          }
+        }
+        else {
+          yield put({
+            type: 'showDishList',
+            list: data.data.food,
+            count: data.data.count,
+            desc: data.data.desc,
+            name: data.data.name,
+            pic: (data.data.pic === undefined || data.data.pic === '' || data.data.pic == null) ? [] : data.data.pic
+          });
+        }
       }
     },
     *joinTable({personNum}, {put,call}) {
@@ -60,15 +60,24 @@ export default {
           tableId:getSessionStorage("tableNum"),
           personNum:personNum
        };
-       const {data} = yield call(addOrCleanTable,params);
-       if(data&&data.isOk) {
-         setSessionStorage("personNum", personNum);
-         console.log(`加入餐桌成功！`);
-         console.log(`当前餐桌用餐人数：${getSessionStorage("personNum")}`);
-         yield put({
-           type:'closeDialog'
-         })
-       }
+      const {data,err} = yield call(addOrCleanTable,params);
+      if(err) {
+        throw new Error(err.message);
+      } else {
+        if (data.msg) {
+          if (data.msg !== "") {
+            Toast.info(data.msg);
+          }
+        }
+        else {
+          setSessionStorage("personNum", personNum);
+          console.log(`加入餐桌成功！`);
+          console.log(`当前餐桌用餐人数：${getSessionStorage("personNum")}`);
+          yield put({
+            type: 'closeDialog'
+          })
+        }
+      }
     }
   }
 ,

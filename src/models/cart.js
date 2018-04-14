@@ -51,34 +51,63 @@ export default {
       const activeKey = yield select(state => state.cart.activeKey);
       const isPaid = activeKey==='1'?false:true;
       if (isPaid) {
-        const {data} = yield call(getPaidList, getSessionStorage("merchantId"),getSessionStorage("tableNum"),2);
-        yield put({
-          type: 'refreshPayList',
-          paidList:data.data.list,
-          totalPerson:data.data.totalPerson,
-          totalPrice: data.data.totalPrice,
-          totalCount: data.data.totalCount,
-          nodataVisible:data.data.list>0?false:true
-        })
+        const {data,err} = yield call(getPaidList, getSessionStorage("merchantId"),getSessionStorage("tableNum"),2);
+        if(err) {
+          throw new Error(err.message);
+        } else {
+          if (data.msg) {
+            if (data.msg !== "") {
+              Toast.info(data.msg);
+            }
+          }
+          else {
+            yield put({
+              type: 'refreshPayList',
+              paidList: data.data.list,
+              totalPerson: data.data.totalPerson,
+              totalPrice: data.data.totalPrice,
+              totalCount: data.data.totalCount,
+              nodataVisible: data.data.list > 0 ? false : true
+            })
+          }
+        }
       } else {
-        const {data} = yield call(getUnPaidList, getSessionStorage("merchantId"),getSessionStorage("tableNum"),1);
-        if(data) {
-          yield put({
-            type: 'refreshPayList',
-            unpaidData: data.data,
-            nodataVisible:data.data.list>0?false:true
-          })
+        const {data,err} = yield call(getUnPaidList, getSessionStorage("merchantId"),getSessionStorage("tableNum"),1);
+        if(err) {
+          throw new Error(err.message);
+        } else {
+          if (data.msg) {
+            if (data.msg !== "") {
+              Toast.info(data.msg);
+            }
+          }
+          else {
+            yield put({
+              type: 'refreshPayList',
+              unpaidData: data.data,
+              nodataVisible: data.data.list > 0 ? false : true
+            })
+          }
         }
       }
     },
 
     *getOrderDetail({orderId}, {call,put,select}) {
-      const {data} = yield call (getOrderDetail,getSessionStorage("merchantId"),orderId);
-      if(data) {
-        yield put({
-          type: 'showOrderDetail',
-          detail: data.data
-        })
+      const {data,err} = yield call (getOrderDetail,getSessionStorage("merchantId"),orderId);
+      if(err) {
+        throw new Error(err.message);
+      } else {
+        if (data.msg) {
+          if (data.msg !== "") {
+            Toast.info(data.msg);
+          }
+        }
+        else {
+          yield put({
+            type: 'showOrderDetail',
+            detail: data.data
+          })
+        }
       }
     },
 
@@ -128,42 +157,69 @@ export default {
         }
       }
       if (isObject(shoppingCartId)) {
-        const {data} = yield call(confirmOrder,shoppingCartId,getSessionStorage("merchantId"),getSessionStorage("personNum"),getSessionStorage("tableNum"));
-        if(data&&data.isOk) {
-          const orderId = data.id;
-          yield put(routerRedux.push({
-            pathname: '/app/v1/cart/orderdetail',
-            params: {
-              orderId: orderId
-            },
-          }));
-          //清空购买数量
-          yield put({type:'menu/cleanPurchaseNum'});
+        const {data,err} = yield call(confirmOrder,shoppingCartId,getSessionStorage("merchantId"),getSessionStorage("personNum"),getSessionStorage("tableNum"));
+        if(err) {
+          throw new Error(err.message);
+        } else {
+          if (data.msg) {
+            if (data.msg !== "") {
+              Toast.info(data.msg);
+            }
+          }
+          else {
+            const orderId = data.id;
+            yield put(routerRedux.push({
+              pathname: '/app/v1/cart/orderdetail',
+              params: {
+                orderId: orderId
+              },
+            }));
+            //清空购买数量
+            yield put({type: 'menu/cleanPurchaseNum'});
+          }
         }
       } else {
         Toast.info("您当前没有要结算的购物车信息!",1);
       }
     },
     *getCartList({payload}, {call, put}) {
-      const {data} = yield call(getCartList,getSessionStorage("merchantId"),getSessionStorage("tableNum"));
-      if(data) {
-        //获取购物车列表信息
-        yield put ({
-          type:'refreshCartList',
-          cartList:data.data,
-          cartListVisible:true
-        });
+      const {data,err} = yield call(getCartList,getSessionStorage("merchantId"),getSessionStorage("tableNum"));
+      if(err) {
+        throw new Error(err.message);
+      } else {
+        if (data.msg) {
+          if (data.msg !== "") {
+            Toast.info(data.msg);
+          }
+        }
+        else {
+          //获取购物车列表信息
+          yield put({
+            type: 'refreshCartList',
+            cartList: data.data,
+            cartListVisible: true
+          });
+        }
       }
     },
     //刷新获取同桌点的菜式
     *getNewCartList({payload},{call,put}) {
-      const {data} = yield call(getCartList,getSessionStorage("merchantId"),getSessionStorage("tableNum"));
-      if(data) {
-        //获取购物车列表信息
-        yield put ({
-          type:'refreshCartList',
-          cartList:data.data
-        });
+      const {data,err} = yield call(getCartList,getSessionStorage("merchantId"),getSessionStorage("tableNum"));
+      if(err) {
+        throw new Error(err.message);
+      } else {
+        if (data.msg) {
+          if (data.msg !== "") {
+            Toast.info(data.msg);
+          }
+        }
+        else {
+          //获取购物车列表信息
+          yield put({
+            type: 'refreshCartList',
+            cartList: data.data
+          });
+        }
       }
     },
     //订单列表跳转订单详情页面

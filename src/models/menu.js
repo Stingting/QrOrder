@@ -10,7 +10,6 @@ export default {
     count:0, //总数
     data:{}, //分类菜单map数据
     visible:false, //弹框是否可见
-    loading:false, //显示列表加载样式
     detail:{}, //菜式详情
     totalPurchaseNum:0 ,//记录总的购买数量
     types:[],//菜式分类
@@ -35,70 +34,126 @@ export default {
 
   effects: {
     *getMenu({ payload }, { call, put , select}) {  // eslint-disable-line
-      yield put({type: 'showLoading', loading: true});
-      const {data} = yield call(getMenu, getSessionStorage("merchantId"));
-      if(data) {
-        const types = Object.keys(data.data);
-        const currentType = types.length>0?types[0]:'';
-        const currentDishes = data.data[currentType];
-        yield put(
-          {
-            type: 'showMenu',
-            data:data.data,
-            count:data.count,
-            loading:false,
-            types:types,
-            currentType:currentType,
-            currentDishes:currentDishes
+      const {data,err} = yield call(getMenu, getSessionStorage("merchantId"));
+      if(err) {
+        throw new Error(err.message);
+      } else {
+        if (data.msg) {
+          if (data.msg !== "") {
+            Toast.info(data.msg);
           }
-        );
+        }
+        else {
+          const types = Object.keys(data.data);
+          const currentType = types.length > 0 ? types[0] : '';
+          const currentDishes = data.data[currentType];
+          yield put(
+            {
+              type: 'showMenu',
+              data: data.data,
+              count: data.count,
+              types: types,
+              currentType: currentType,
+              currentDishes: currentDishes
+            }
+          );
+        }
       }
     },
     *getDishDetail({payload:id}, {put, call}) {
-      const {data} = yield call(getDishDetail, getSessionStorage("merchantId"), id);
-      if(data) {
-        yield put({
-          type : 'showDishDetail',
-          detail : data.data,
-          visible:true
-        })
+      const {data,err} = yield call(getDishDetail, getSessionStorage("merchantId"), id);
+      if(err) {
+        throw new Error(err.message);
+      } else {
+        if (data.msg) {
+          if (data.msg !== "") {
+            Toast.info(data.msg);
+          }
+        }
+        else {
+          yield put({
+            type: 'showDishDetail',
+            detail: data.data,
+            visible: true
+          })
+        }
       }
     },
 
     *addToCart({dishId, dishType}, {call, put, select}) {
-      yield put({type: 'addPurchaseNum'});
-      const selectedCount = yield select(state => state.menu.detail.selectedCount);
-      const {data} = yield call(changePurchaseNum, selectedCount,dishId,getSessionStorage("merchantId"),dishType,getSessionStorage("tableNum"));
+      let selectedCount = yield select(state => state.menu.detail.selectedCount);
+      const {data,err} = yield call(changePurchaseNum, selectedCount++ ,dishId,getSessionStorage("merchantId"),dishType,getSessionStorage("tableNum"));
+      if(err) {
+        throw new Error(err.message);
+      } else {
+        if (data.msg) {
+          if (data.msg !== "") {
+            Toast.info(data.msg);
+          }
+        }
+        else {
+          yield put({type: 'addPurchaseNum'});
+        }
+      }
 
     },
 
     *reduceToCart({dishId,dishType}, {call,put,select}) {
-      yield put({type: 'reducePurchaseNum'});
-      const selectedCount = yield select(state => state.menu.detail.selectedCount);
-      const {data} = yield call(changePurchaseNum, selectedCount,dishId,getSessionStorage("merchantId"),dishType,getSessionStorage("tableNum"));
+      let selectedCount = yield select(state => state.menu.detail.selectedCount);
+      const {data,err} = yield call(changePurchaseNum, selectedCount--,dishId,getSessionStorage("merchantId"),dishType,getSessionStorage("tableNum"));
+      if(err) {
+        throw new Error(err.message);
+      } else {
+        if (data.msg) {
+          if (data.msg !== "") {
+            Toast.info(data.msg);
+          }
+        }
+        else {
+          yield put({type: 'reducePurchaseNum'});
+        }
+      }
     },
 
     *addToCartForCart({dish}, {call, put, select}) {
-      yield put({type: 'addCartPurchaseNum'});
       let num = dish.num +1;
-      const {data} = yield call(changePurchaseNum,num,dish.id,getSessionStorage("merchantId"),dish.type,getSessionStorage("tableNum"));
-      if(data&&data.isOk) {
+      const {data,err} = yield call(changePurchaseNum,num,dish.id,getSessionStorage("merchantId"),dish.type,getSessionStorage("tableNum"));
+      if(err) {
+        throw new Error(err.message);
+      } else {
+        if (data.msg) {
+          if (data.msg !== "") {
+            Toast.info(data.msg);
+          }
+        }
+        else {
+          yield put({type: 'addCartPurchaseNum'});
           //刷新购车列表
-        yield put({
-          type:'cart/getCartList'
-        })
+          yield put({
+            type: 'cart/getCartList'
+          })
+        }
       }
     },
 
     *reduceToCartForCart({dish}, {call,put,select}) {
-      yield put({type: 'reduceCartPurchaseNum'});
       let num = dish.num - 1;
-      const {data} = yield call(changePurchaseNum, num, dish.id, getSessionStorage("merchantId"), dish.type, getSessionStorage("tableNum"));
-      if(data&&data.isOk) {
-        //刷新购车列表
-        yield put({
-          type:'cart/getCartList'
-        })
+      const {data,err} = yield call(changePurchaseNum, num, dish.id, getSessionStorage("merchantId"), dish.type, getSessionStorage("tableNum"));
+      if(err) {
+        throw new Error(err.message);
+      } else {
+        if (data.msg) {
+          if (data.msg !== "") {
+            Toast.info(data.msg);
+          }
+        }
+        else {
+          yield put({type: 'reduceCartPurchaseNum'});
+          //刷新购车列表
+          yield put({
+            type: 'cart/getCartList'
+          })
+        }
       }
 
     },
@@ -108,33 +163,51 @@ export default {
           type:'changeCollectState',
           isCollect:isCollect
       });
-      const {data} = yield call(changeCollect, foodId, getSessionStorage("merchantId"),isCollect);
-      if(data&& data.isOk) {
-        if(isCollect) {
-          Toast.info("收藏成功！可到我的收藏查看");
-        } else {
-          Toast.info("取消收藏成功！")
+      const {data,err} = yield call(changeCollect, foodId, getSessionStorage("merchantId"),isCollect);
+      if(err) {
+        throw new Error(err.message);
+      } else {
+        if (data.msg) {
+          if (data.msg !== "") {
+            Toast.info(data.msg);
+          }
+        }
+        else {
+          if (isCollect) {
+            Toast.info("收藏成功！可到我的收藏查看");
+          } else {
+            Toast.info("取消收藏成功！")
+          }
         }
       }
     },
     *getCartInfo({payload}, {call,put,select}) {
       //获取当前用户的购物车数量
-      const {data} = yield call(getCartList,getSessionStorage("merchantId"),getSessionStorage("tableNum"));
-      if(data) {
-        let totalPurchaseNum=0;
-        let cartList = data.data;
-        let userId = getSessionStorage("userId");
-        for(let i=0;i<cartList.length;i++) {
-          let cart = cartList[i];
-          if(userId === cart.userId) {
-            totalPurchaseNum = cart.count;
-            break;
+      const {data,err} = yield call(getCartList,getSessionStorage("merchantId"),getSessionStorage("tableNum"));
+      if(err) {
+        throw new Error(err.message);
+      } else {
+        if (data.msg) {
+          if (data.msg !== "") {
+            Toast.info(data.msg);
           }
         }
-        yield put ({
-          type:'refreshTotalPurchaseNum',
-          totalPurchaseNum:totalPurchaseNum
-        });
+        else {
+          let totalPurchaseNum = 0;
+          let cartList = data.data;
+          let userId = getSessionStorage("userId");
+          for (let i = 0; i < cartList.length; i++) {
+            let cart = cartList[i];
+            if (userId === cart.userId) {
+              totalPurchaseNum = cart.count;
+              break;
+            }
+          }
+          yield put({
+            type: 'refreshTotalPurchaseNum',
+            totalPurchaseNum: totalPurchaseNum
+          });
+        }
       }
     }
   },
