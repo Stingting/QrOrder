@@ -1,8 +1,20 @@
 .detail-content {
   background-color: white;
   overflow: auto;
+  .tip {
+    font-size: 16px;
+    line-height: 48px;
+    z-index: 5;
+    position: fixed;
+    width: 100%;
+    padding-left: 10px;
+    padding-top: 45px;
+    border-bottom: 1px dotted #0e80d2;
+    background-color: white;
+
+  }
   .content {
-     padding: 50px 10px 0px 10px;
+     padding: 95px 10px 0px 10px;
     .dishname {
       font-weight: bold;
       font-size: 12px;
@@ -25,17 +37,6 @@
         color: red;
       }
     }
-  }
-  .tip {
-    font-size: 16px;
-    height: 50px;
-    line-height: 50px;
-    position: fixed;
-    z-index: 5;
-    width: 100%;
-    padding-left: 10px;
-    border-bottom: 1px solid #dddddd;
-
   }
   .bottom {
     border-top: 1px dotted #ccc;

@@ -1,10 +1,10 @@
 import React from 'react';
-import {Icon, List} from 'antd';
-import {Modal,WingBlank} from 'antd-mobile';
+import {List} from 'antd';
+import {Modal, Result, WingBlank} from 'antd-mobile';
 import DishDetail from "../portal/DishDetail";
-import {Result} from 'antd-mobile';
 import SVG from 'react-inlinesvg';
 import nodatasvg from '../../assets/svg/nodata.svg';
+import rightarrow from '../../assets/svg/arrow-right.svg';
 import styles from './PaidList.less'
 
 const PaidList = ({paidList,deleteDish,showDishDetail,visible,closeDetailDialog,detail,changeCollect,addToCart,reduceToCart,toOrderDetail}) => {
@@ -14,7 +14,7 @@ const PaidList = ({paidList,deleteDish,showDishDetail,visible,closeDetailDialog,
     paidContent = paidList.map((item, key) => (
       <div key={key} className={styles["paid-list"]}>
         <div className={styles.title}
-             key={key} onClick={() => toOrderDetail(item.id)}>{item.tableName}<Icon type="right"/></div>
+             key={key} onClick={() => toOrderDetail(item.id)}>{item.tableName}<img src={rightarrow} alt=""/></div>
         <div className={styles.item}>
           <List
             itemLayout="horizontal"

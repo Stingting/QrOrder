@@ -1,4 +1,9 @@
 .cart-list {
+  .cart-content {
+      height: 200px;
+      overflow-y: auto;
+      padding-bottom: 50px;
+  }
   .addorplus {
     .count {
       padding: 0 10px;
@@ -9,11 +14,9 @@
     padding-left: 10px;
     height: 30px;
     line-height: 30px;
+    font-weight: bold;
     background-color: #fafafa;
-  }
-  .btn {
-    padding: 10px;
-    text-align: right;
+    border-left: 3px solid #0e80d2;
   }
   .column-list {
     width: 120px;
@@ -21,4 +24,35 @@
     text-overflow: ellipsis;
     white-space: nowrap;
   }
+  .food-price {
+    font-weight: bold;
+  }
+  .btn {
+     z-index: 999;
+     position: fixed;
+     height: 50px;
+     line-height: 50px;
+     bottom: 0;
+     width: 100%;
+     border-top: 1px solid #cccccc;
+     text-align: center;
+     background-color: white;
+    .left {
+       width: 70%;
+       float: left;
+      text-align: left;
+      padding-left: 10px;
+      .total {
+        padding-left: 20px;
+        font-weight: bold;
+        color: #000c17;
+      }
+    }
+    .right {
+      width: 30%;
+      float: right;
+      background-color: #0e80d2;
+      color: white;
+    }
+   }
 }

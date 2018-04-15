@@ -75,8 +75,8 @@ function OrderDetail ({dispatch,location,cart}) {
 
   return (
     <div>
-      <div className={styles.navbar}>
         <NavBar
+          style={{position:'fixed',width:'100%',zIndex:8}}
           mode="dark"
           icon={<Icon type="left" />}
           onLeftClick={() => backToUnpaidList()}
@@ -104,7 +104,6 @@ function OrderDetail ({dispatch,location,cart}) {
             </Popover>
           }
         >订单详情</NavBar>
-      </div>
       {orderDetailContent}
     </div>
   );

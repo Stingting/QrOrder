@@ -73,22 +73,20 @@ function UserCollection({dispatch,pcenter,menu}) {
   /**
    * 增加购买数量
    */
-  function addToCart(dishId,dishType) {
+  function addToCart(dish) {
     dispatch({
       type:'menu/addToCart',
-      dishId:dishId,
-      dishType:dishType
+      dish:dish
     })
   }
 
   /*
    *减少购买数量
    */
-  function reduceToCart(dishId, dishType) {
+  function reduceToCart(dish) {
     dispatch({
       type:'menu/reduceToCart',
-      dishId:dishId,
-      dishType:dishType
+      dish:dish
     })
   }
 
@@ -111,6 +109,7 @@ function UserCollection({dispatch,pcenter,menu}) {
   return (
     <div>
       <NavBar
+        style={{position:'fixed',width:'100%',zIndex:8}}
         mode="dark"
         icon={<Icon type="left" />}
         onLeftClick={() => collectBack()}

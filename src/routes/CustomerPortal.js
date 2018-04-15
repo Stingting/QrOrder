@@ -32,22 +32,20 @@ function Portal({ dispatch , fetch, location, recDishes,menu}) {
   /**
    * 增加购买数量
    */
-  function addToCart(dishId,dishType) {
+  function addToCart(dish) {
     dispatch({
       type:'menu/addToCart',
-      dishId:dishId,
-      dishType:dishType
+      dish:dish
     })
   }
 
   /*
    *减少购买数量
    */
-  function reduceToCart(dishId, dishType) {
+  function reduceToCart(dish) {
     dispatch({
       type:'menu/reduceToCart',
-      dishId:dishId,
-      dishType:dishType
+      dish:dish
     })
   }
 

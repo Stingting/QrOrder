@@ -1,12 +1,14 @@
 import React from 'react';
-import {Button, Table} from 'antd';
+import {Table} from 'antd';
+import {Badge, WhiteSpace} from 'antd-mobile';
 import styles from './CartList.less';
 import {getSessionStorage} from "../../utils/helper";
 import addsvg from '../../assets/svg/add.svg';
 import minussvg from '../../assets/svg/minus.svg';
-import {WhiteSpace} from 'antd-mobile';
+import cartlistsvg from '../../assets/svg/cart-list.svg';
+import SVG from 'react-inlinesvg';
 
-const CartList = ({confirmOrder,cartList,addToCartForCart,reduceToCartForCart}) => {
+const CartList = ({confirmOrder,cartList,totalPurchasePrice, totalPurchaseNum,addToCartForCart,reduceToCartForCart}) => {
 
   function getColumns(userId) {
 
@@ -23,7 +25,7 @@ const CartList = ({confirmOrder,cartList,addToCartForCart,reduceToCartForCart}) 
       dataIndex: 'price',
       key: 'price',
       render: (text, record) => (
-        <span key={text}>&yen;{text}</span>
+        <span key={text} className={styles["food-price"]}>&yen;{text}</span>
       ),
       width: '20%',
     },
@@ -61,9 +63,17 @@ const CartList = ({confirmOrder,cartList,addToCartForCart,reduceToCartForCart}) 
     <div>
       <WhiteSpace/>
         <div className={styles["cart-list"]}>
-          {cartListPanel}
+          <div  className={styles["cart-content"]}>
+            {cartListPanel}
+          </div>
           <div className={styles.btn}>
-            <Button type="primary" size="default" onClick={confirmOrder} >去结算</Button>
+            <div className={styles.left}>
+              <Badge text={totalPurchaseNum} overflowCount={55}  style={{ marginLeft: 52}}>
+                <SVG src={cartlistsvg}></SVG>
+              </Badge>
+              <span className={styles.total}>&yen;{totalPurchasePrice}</span>
+            </div>
+            <div className={styles.right} onClick={confirmOrder}>去结算</div>
           </div>
         </div>
       <WhiteSpace/>

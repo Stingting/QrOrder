@@ -20,10 +20,10 @@ import chat from "../../models/chat";
 
 function MenuBanner ({dispatch, navigation,menu,chat,cart}) {
 
-  const totalPurchaseNum = menu.totalPurchaseNum;
   const unReadCount = chat.unReadCount;
   const {cartListVisible,cartList} = cart;
-  const cartListProps = {cartList};
+  const {totalPurchaseNum, totalPurchasePrice} = menu;
+  const cartListProps = {cartList, totalPurchasePrice, totalPurchaseNum};
 
   function handleClick (e) {
     dispatch({

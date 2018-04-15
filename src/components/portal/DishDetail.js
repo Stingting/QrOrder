@@ -21,13 +21,13 @@ const DishDetail = ({detail, changeCollect,addToCart,reduceToCart}) => {
           <div className={styles.price}>&yen;{detail.price}</div>
         </div>
         <div className={styles.right}>
-            <div className={styles.cart} onClick={()=>addToCart(detail.id,detail.type)} style={{'display' : detail.selectedCount===0?'inline':'none'}}>
+            <div className={styles.cart} onClick={()=>addToCart(detail)} style={{'display' : detail.selectedCount===0?'inline':'none'}}>
               <img src={cartsvg} alt=""/><span style={{paddingLeft:6}}>加入购物车</span>
             </div>
             <div className={styles.addorplus} style={{'display' : detail.selectedCount===0?'none':'inline'}}>
-              <img src={minussvg} alt="" onClick={()=>reduceToCart(detail.id,detail.type)}/>
+              <img src={minussvg} alt="" onClick={()=>reduceToCart(detail)}/>
               <span className={styles.count}>{detail.selectedCount}</span>
-              <img src={addsvg} alt="" onClick={()=>addToCart(detail.id,detail.type)}/>
+              <img src={addsvg} alt="" onClick={()=>addToCart(detail)}/>
             </div>
             <div className={styles.collect} style={{display: detail.isCollect === true ? 'none' : 'inline'}} onClick={()=>changeCollect(detail.id,true)}>
               <img src={collectsvg} alt=""/>

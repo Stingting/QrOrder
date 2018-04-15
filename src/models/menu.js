@@ -11,7 +11,8 @@ export default {
     data:{}, //分类菜单map数据
     visible:false, //弹框是否可见
     detail:{}, //菜式详情
-    totalPurchaseNum:0 ,//记录总的购买数量
+    totalPurchaseNum:0 ,//记录购物车总的购买数量
+    totalPurchasePrice:0 ,//记录购物车总的购买价格
     types:[],//菜式分类
     currentType:'',//当前选中的菜式分类
     currentDishes:[] //当前菜式分类的菜式列表
@@ -80,9 +81,10 @@ export default {
       }
     },
 
-    *addToCart({dishId, dishType}, {call, put, select}) {
+    *addToCart({dish}, {call, put, select}) {
       let selectedCount = yield select(state => state.menu.detail.selectedCount);
-      const {data,err} = yield call(changePurchaseNum, selectedCount++ ,dishId,getSessionStorage("merchantId"),dishType,getSessionStorage("tableNum"));
+      let num = selectedCount + 1;
+      const {data,err} = yield call(changePurchaseNum, num ,dish.id,getSessionStorage("merchantId"),dish.type,getSessionStorage("tableNum"));
       if(err) {
         throw new Error(err.message);
       } else {
@@ -92,15 +94,19 @@ export default {
           }
         }
         else {
-          yield put({type: 'addPurchaseNum'});
+          yield put({
+            type: 'addPurchaseNum',
+            price:dish.price
+          });
         }
       }
 
     },
 
-    *reduceToCart({dishId,dishType}, {call,put,select}) {
+    *reduceToCart({dish}, {call,put,select}) {
       let selectedCount = yield select(state => state.menu.detail.selectedCount);
-      const {data,err} = yield call(changePurchaseNum, selectedCount--,dishId,getSessionStorage("merchantId"),dishType,getSessionStorage("tableNum"));
+      let num = selectedCount -1;
+      const {data,err} = yield call(changePurchaseNum,num,dish.id,getSessionStorage("merchantId"),dish.type,getSessionStorage("tableNum"));
       if(err) {
         throw new Error(err.message);
       } else {
@@ -110,12 +116,16 @@ export default {
           }
         }
         else {
-          yield put({type: 'reducePurchaseNum'});
+          yield put({
+            type: 'reducePurchaseNum',
+            price:dish.price
+          });
         }
       }
     },
 
     *addToCartForCart({dish}, {call, put, select}) {
+      //购物车列表的操作
       let num = dish.num +1;
       const {data,err} = yield call(changePurchaseNum,num,dish.id,getSessionStorage("merchantId"),dish.type,getSessionStorage("tableNum"));
       if(err) {
@@ -127,7 +137,13 @@ export default {
           }
         }
         else {
-          yield put({type: 'addCartPurchaseNum'});
+          yield put(
+              {
+                type: 'addCartPurchaseNum',
+                price:dish.price
+              }
+            );
+
           //刷新购车列表
           yield put({
             type: 'cart/getCartList'
@@ -137,6 +153,7 @@ export default {
     },
 
     *reduceToCartForCart({dish}, {call,put,select}) {
+      //购物车列表的操作
       let num = dish.num - 1;
       const {data,err} = yield call(changePurchaseNum, num, dish.id, getSessionStorage("merchantId"), dish.type, getSessionStorage("tableNum"));
       if(err) {
@@ -148,7 +165,11 @@ export default {
           }
         }
         else {
-          yield put({type: 'reduceCartPurchaseNum'});
+          yield put(
+            {
+              type: 'reduceCartPurchaseNum',
+              price:dish.price
+            });
           //刷新购车列表
           yield put({
             type: 'cart/getCartList'
@@ -194,18 +215,21 @@ export default {
         }
         else {
           let totalPurchaseNum = 0;
+          let totalPurceasePrice = 0;
           let cartList = data.data;
           let userId = getSessionStorage("userId");
           for (let i = 0; i < cartList.length; i++) {
             let cart = cartList[i];
             if (userId === cart.userId) {
               totalPurchaseNum = cart.count;
+              totalPurceasePrice = cart.price;
               break;
             }
           }
           yield put({
             type: 'refreshTotalPurchaseNum',
-            totalPurchaseNum: totalPurchaseNum
+            totalPurchaseNum: totalPurchaseNum,
+            totalPurchasePrice:totalPurceasePrice
           });
         }
       }
@@ -238,19 +262,23 @@ export default {
     addPurchaseNum(state, payload) {
       state.detail.selectedCount++;
       state.totalPurchaseNum++;
+      state.totalPurchasePrice = state.totalPurchasePrice + payload.price;
       return {...state, ...payload}
     },
     reducePurchaseNum(state,payload) {
       state.detail.selectedCount--;
       state.totalPurchaseNum--;
+      state.totalPurchasePrice = state.totalPurchasePrice - payload.price;
       return {...state,...payload}
     },
     addCartPurchaseNum(state, payload) {
       state.totalPurchaseNum++;
+      state.totalPurchasePrice = state.totalPurchasePrice + payload.price;
       return {...state, ...payload}
     },
     reduceCartPurchaseNum(state,payload) {
       state.totalPurchaseNum--;
+      state.totalPurchasePrice = state.totalPurchasePrice - payload.price;
       return {...state,...payload}
     },
     changeCurrentType(state,payload) {
@@ -260,8 +288,9 @@ export default {
       return {...state, ...payload};
     },
     cleanPurchaseNum(state,payload) {
-      console.log(`已经下单，清空购买数量了`);
+      console.log(`已经下单，清空购物车购买数量和总价了`);
       state.totalPurchaseNum = 0;
+      state.totalPurchasePrice = 0;
       return {...state, ...payload};
     },
     refreshTotalPurchaseNum(state, payload) {

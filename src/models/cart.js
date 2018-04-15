@@ -199,6 +199,22 @@ export default {
             cartList: data.data,
             cartListVisible: true
           });
+          //获取当前用户的购物车总数及总价
+          if(data.data.length >0) {
+            for(let i =0; i<data.data.length;i++) {
+              let item = data.data[i];
+              if(item.userId === getSessionStorage("userId")) {
+                yield put ({
+                  type: 'menu/refreshTotalPurchaseNum',
+                  totalPurchaseNum: item.count,
+                  totalPurchasePrice:item.price
+                });
+                break;
+              } else {
+                continue;
+              }
+            }
+          }
         }
       }
     },
