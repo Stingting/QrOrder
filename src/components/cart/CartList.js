@@ -6,6 +6,7 @@ import {getSessionStorage} from "../../utils/helper";
 import addsvg from '../../assets/svg/add.svg';
 import minussvg from '../../assets/svg/minus.svg';
 import cartlistsvg from '../../assets/svg/cart-list.svg';
+import cartlistdisabledsvg from '../../assets/svg/cart-list-disabled.svg';
 import SVG from 'react-inlinesvg';
 
 const CartList = ({confirmOrder,cartList,totalPurchasePrice, totalPurchaseNum,addToCartForCart,reduceToCartForCart}) => {
@@ -59,6 +60,8 @@ const CartList = ({confirmOrder,cartList,totalPurchasePrice, totalPurchaseNum,ad
 
   ));
 
+  const price = totalPurchaseNum==0?'':<span className={styles.total}>&yen;{totalPurchasePrice}</span>;
+
   return (
     <div>
       <WhiteSpace/>
@@ -69,11 +72,11 @@ const CartList = ({confirmOrder,cartList,totalPurchasePrice, totalPurchaseNum,ad
           <div className={styles.btn}>
             <div className={styles.left}>
               <Badge text={totalPurchaseNum} overflowCount={55}  style={{ marginLeft: 52}}>
-                <SVG src={cartlistsvg}></SVG>
+                <SVG src={totalPurchaseNum==0?cartlistdisabledsvg:cartlistsvg}></SVG>
               </Badge>
-              <span className={styles.total}>&yen;{totalPurchasePrice}</span>
+              {price}
             </div>
-            <div className={styles.right} onClick={confirmOrder}>去结算</div>
+            <div className={totalPurchaseNum==0?styles["right-disable"]:styles.right} onClick={confirmOrder}>去结算</div>
           </div>
         </div>
       <WhiteSpace/>

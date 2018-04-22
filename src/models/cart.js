@@ -179,7 +179,8 @@ export default {
           }
         }
       } else {
-        Toast.info("您当前没有要结算的购物车信息!",1);
+        return;
+        // Toast.info("您当前没有要结算的购物车信息!",1);
       }
     },
     *getCartList({payload}, {call, put}) {
