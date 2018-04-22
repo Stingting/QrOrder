@@ -121,7 +121,7 @@ export default {
         }
         else {
           const chatRecords = [];
-          if (data.data !== null && data.data.length > 0) {
+          if (data.data && data.data.length > 0) {
             data.data.map((item, key) => (
               chatRecords.push(item.data)
             ));
