@@ -47,20 +47,27 @@ const getNoTokenFormHeader = () =>{
   }
 };
 
-
 /**
- * 登录
- * @param params
+ * 获取微信授权认证登录url
  * @returns {Object}
  */
-export function login(params) {
-  return request(`/v1/user/login`, {
-    method:HttpMethod.POST,
-    headers:getNoTokenFormHeader(),
-    body:qs.stringify(params)
-  })
+export function wechatAuth() {
+  return request(`/v1/wechat/auth`, {
+    method: HttpMethod.GET
+  });
 }
 
+/**
+ * 获取微信用户信息
+ * @param code
+ * @param state
+ * @returns {Object}
+ */
+export function getUserInfo(code,state) {
+  return request(`/v1/wechat/userinfo?code=${code}&state=${state}`, {
+    method : HttpMethod.GET
+  })
+}
 
 /**
  * 获取商家详情
@@ -224,6 +231,19 @@ export function confirmOrder(shoppingCartId, merchantId, personNum, tableNum) {
     method:HttpMethod.POST,
     headers:getTokenFormHeaders(),
     body:qs.stringify(params)
+  })
+}
+
+/**
+ * 确认支付订单
+ * @param merchantId
+ * @param orderId
+ * @returns {Object}
+ */
+export function confirmPay(merchantId, orderId) {
+  return request(`/v1/order/${merchantId}/confirm/${orderId}`, {
+    method :HttpMethod.POST,
+    headers:getTokenHeaders()
   })
 }
 

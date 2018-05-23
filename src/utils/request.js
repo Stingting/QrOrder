@@ -9,7 +9,7 @@ function checkStatus(response) {
     return response;
   }
   */
-  if(response.status ===504) {
+  if(response.status ===504 || response.status ===404) {
     const error = new Error(`请求服务器资源失败！`);
     error.response = response;
     throw error;

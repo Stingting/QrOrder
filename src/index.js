@@ -1,12 +1,12 @@
 import dva from 'dva';
 import './index.css';
 import createLoading from 'dva-loading';
-import { browserHistory } from 'dva/router';
+import createHistory from 'history/createBrowserHistory';
+// import createHistory from 'history/createHashHistory';
 import {Toast} from "antd-mobile";
-
 // 1. Initialize
 const app = dva({
-  history: browserHistory,
+  history: createHistory(),
   onError(e) {
     Toast.fail(e.message, 2); //全局错误提示
   },
